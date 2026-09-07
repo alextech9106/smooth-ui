@@ -61,8 +61,8 @@ export class AppComponent {
   ];
 
   public buttonsGroup: SuiButton[] = [
-    { name: 'Button 1', icon: 'check' },
-    { name: 'Button 2', icon: 'x' },
-    { name: 'Button 3', icon: 'star' },
+    { name: 'Button 1', icon: 'check', selected: false },
+    { name: 'Button 2', icon: 'x', selected: true },
+    { name: 'Button 3', icon: 'star', selected: false },
   ];
 }
