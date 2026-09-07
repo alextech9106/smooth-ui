@@ -1,5 +1,6 @@
 <div [class]="classes()">
-  @for (button of buttons(); track button) {
-    <sui-button [shape]="'flat'" [variant]="variant()" icon="{{ button.icon }}" name="{{ button.name }}" />
+  @for (button of buttons(); track button.name) {
+    <sui-button [icon]="button.icon ?? ''" [name]="button.name" [selected]="button.selected ?? false"
+                [shape]="'flat'" [variant]="variant()" />
   }
 </div>

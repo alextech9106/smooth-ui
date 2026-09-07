@@ -15,6 +15,7 @@ export class SuiButtonComponent {
   public fullWidth: InputSignal<boolean> = input(false);
   public iconEnd: InputSignal<boolean> = input(false);
   public loading: InputSignal<boolean> = input(false);
+  public selected: InputSignal<boolean> = input(false);
 
   public iconSize: InputSignal<number> = input(20);
 
@@ -27,7 +28,7 @@ export class SuiButtonComponent {
 
   protected readonly classes: Signal<string> = computed(
     () =>
-      `sui-button sui-button--${this.variant()} sui-button--${this.size()} sui-button--${this.state()} sui-button--${this.shape()} ${this.fullWidth() ? 'sui-button--full-width' : ''}`,
+      `sui-button sui-button--${this.variant()} sui-button--${this.size()} ${this.state() !== 'default' ? 'sui-button--' + this.state() : ''} sui-button--${this.shape()} ${this.fullWidth() ? 'sui-button--full-width' : ''} ${this.selected() ? 'sui-button--selected' : ''}`,
   );
   protected readonly showIconStart: Signal<boolean> = computed(
     () => this.icon() !== '' && !this.iconEnd(),

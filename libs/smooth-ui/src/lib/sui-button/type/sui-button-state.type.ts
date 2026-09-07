@@ -1,1 +1,1 @@
-export type SUI_BUTTON_STATE = 'default' | 'selected' | 'focus' | 'disabled';
+export type SUI_BUTTON_STATE = 'default' | 'focus' | 'disabled';

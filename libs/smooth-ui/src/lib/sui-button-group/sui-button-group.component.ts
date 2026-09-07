@@ -12,6 +12,7 @@ import { SUI_BUTTON_GROUP_VARIANT } from './type/sui-button-group-variant.type';
 })
 export class SuiButtonGroupComponent {
   public buttons: InputSignal<SuiButton[]> = input.required();
+
   public shape: InputSignal<SUI_BUTTON_GROUP_SHAPE> = input<SUI_BUTTON_GROUP_SHAPE>('flat');
   public variant: InputSignal<SUI_BUTTON_GROUP_VARIANT> = input<SUI_BUTTON_GROUP_VARIANT>('ghost');
 

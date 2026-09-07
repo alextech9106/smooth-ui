@@ -10,6 +10,7 @@ export interface SuiButton {
   iconEnd?: boolean;
   iconSize?: number;
   loading?: boolean;
+  selected?: boolean;
   shape?: SUI_BUTTON_SHAPE;
   size?: SUI_BUTTON_SIZE;
   state?: SUI_BUTTON_STATE;

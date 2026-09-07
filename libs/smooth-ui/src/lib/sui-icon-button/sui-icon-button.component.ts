@@ -13,10 +13,13 @@ import { SUI_ICON_BUTTON_STATE } from './type/sui-icon-button-state.type';
   templateUrl: './sui-icon-button.component.html',
 })
 export class SuiIconButtonComponent {
+  public selected: InputSignal<boolean> = input(false);
+
   public badge: InputSignal<number> = input(0);
   public iconSize: InputSignal<number> = input(20);
 
   public icon: InputSignal<string> = input.required();
+
   public shape: InputSignal<SUI_ICON_BUTTON_SHAPE> = input<SUI_ICON_BUTTON_SHAPE>('default');
   public size: InputSignal<SUI_ICON_BUTTON_SIZE> = input<SUI_ICON_BUTTON_SIZE>('md');
   public state: InputSignal<SUI_ICON_BUTTON_STATE> = input<SUI_ICON_BUTTON_STATE>('default');
@@ -24,6 +27,6 @@ export class SuiIconButtonComponent {
 
   protected readonly classes: Signal<string> = computed(
     () =>
-      `sui-icon-button sui-icon-button--${this.variant()} sui-icon-button--${this.size()} sui-icon-button--${this.state()} sui-icon-button--${this.shape()}`,
+      `sui-icon-button sui-icon-button--${this.variant()} sui-icon-button--${this.size()} sui-icon-button--${this.state()} sui-icon-button--${this.shape()} ${this.selected() ? 'sui-icon-button--selected' : ''}`,
   );
 }

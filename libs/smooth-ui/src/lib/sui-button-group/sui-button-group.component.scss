@@ -19,10 +19,10 @@
   }
 
   &--ghost {
-    border: var(--sui-border-width-thin) solid var(--sui-color-accent-border);
+    border: var(--sui-border-width-thin) solid var(--sui-color-accent-solid);
 
     sui-button:not(:first-child) {
-      border-left: var(--sui-border-width-thin) solid var(--sui-color-accent-border);
+      border-left: var(--sui-border-width-thin) solid var(--sui-color-accent-solid);
     }
   }
 }
