@@ -1,0 +1,9 @@
+<span [ngClass]="{'badge-anchor': badge()}">
+  <button [class]="classes()" type="button">
+    <sui-icon [name]="icon()" [size]="iconSize()" />
+  </button>
+
+  @if (badge()) {
+    <span class="badge">{{ badge() }}</span>
+  }
+</span>

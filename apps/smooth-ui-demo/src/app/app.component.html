@@ -1,0 +1,76 @@
+<div>
+  <h1>Smooth UI Icons</h1>
+
+  <div style="display: flex; gap: 1rem;">
+    @for (icon of icons; track icon) {
+      <sui-icon [name]="icon" />
+    }
+  </div>
+</div>
+
+<div>
+  <h1>Smooth UI Button</h1>
+
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <sui-button name="Prueba" />
+    <sui-button name="Prueba" variant="secondary" />
+    <sui-button name="Prueba" variant="tonal" />
+    <sui-button name="Prueba" variant="outline" />
+    <sui-button name="Prueba" variant="ghost" />
+    <sui-button name="Prueba" variant="danger" />
+    <sui-button name="Prueba" state="focus" />
+    <sui-button name="Prueba" state="disabled" />
+    <sui-button name="Prueba" state="selected" />
+    <sui-button icon="check" name="Prueba" />
+    <sui-button [iconEnd]="true" icon="check" name="Prueba" />
+    <sui-button icon="check" name="Prueba" shape="flat" variant="outline" />
+    <sui-button icon="check" name="Prueba" shape="rounded" variant="outline" />
+    <sui-button icon="check" name="Prueba" shape="pill" variant="outline" />
+    <sui-button [loading]="true" name="Prueba" />
+    <sui-button name="Prueba" size="sm" variant="primary" />
+    <sui-button name="Prueba" variant="primary" />
+    <sui-button name="Prueba" size="lg" variant="primary" />
+  </div>
+
+  <div style="width: 500px">
+    <sui-button [fullWidth]="true" name="Prueba" />
+  </div>
+</div>
+
+<div>
+  <h1>Smooth UI Icon Button</h1>
+
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <sui-icon-button icon="sun" variant="ghost" />
+    <sui-icon-button icon="sun" variant="outline" />
+    <sui-icon-button icon="sun" variant="solid" />
+    <sui-icon-button icon="sun" shape="flat" variant="outline" />
+    <sui-icon-button icon="sun" shape="default" variant="outline" />
+    <sui-icon-button icon="sun" shape="round" variant="outline" />
+    <sui-icon-button icon="sun" state="focus" variant="solid" />
+    <sui-icon-button icon="sun" state="disabled" variant="solid" />
+    <sui-icon-button icon="sun" state="selected" variant="solid" />
+    <sui-icon-button icon="sun" size="sm" variant="solid" />
+    <sui-icon-button icon="sun" size="md" variant="solid" />
+    <sui-icon-button icon="sun" size="lg" variant="solid" />
+    <sui-icon-button [badge]=10 icon="sun" variant="solid" />
+  </div>
+</div>
+
+<div>
+  <h1>Smooth UI Button Group</h1>
+
+  <div style="display: flex; flex-direction: column; gap: 1rem;">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <sui-button-group [buttons]="buttonsGroup" shape="flat" />
+      <sui-button-group [buttons]="buttonsGroup" shape="rounded" />
+      <sui-button-group [buttons]="buttonsGroup" shape="pill" />
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <sui-button-group [buttons]="buttonsGroup" shape="flat" variant="primary" />
+      <sui-button-group [buttons]="buttonsGroup" shape="rounded" variant="primary" />
+      <sui-button-group [buttons]="buttonsGroup" shape="pill" variant="primary" />
+    </div>
+  </div>
+</div>

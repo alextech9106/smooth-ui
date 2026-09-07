@@ -1,0 +1,28 @@
+.sui-button-group {
+  display: inline-flex;
+  overflow: hidden;
+
+  sui-button:not(:first-child) {
+    border-left: var(--sui-border-width-thin) solid var(--sui-color-accent-solid);
+  }
+
+  &--flat {
+    border-radius: var(--sui-radius-none);
+  }
+
+  &--rounded {
+    border-radius: var(--sui-radius-md);
+  }
+
+  &--pill {
+    border-radius: var(--sui-radius-full);
+  }
+
+  &--ghost {
+    border: var(--sui-border-width-thin) solid var(--sui-color-accent-border);
+
+    sui-button:not(:first-child) {
+      border-left: var(--sui-border-width-thin) solid var(--sui-color-accent-border);
+    }
+  }
+}
