@@ -11,6 +11,7 @@ describe('SuiIconComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(SuiIconComponent);
+    fixture.componentRef.setInput('name', 'check');
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

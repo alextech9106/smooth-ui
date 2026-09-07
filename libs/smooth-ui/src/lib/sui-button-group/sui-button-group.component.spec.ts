@@ -11,6 +11,7 @@ describe('SuiButtonGroupComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(SuiButtonGroupComponent);
+    fixture.componentRef.setInput('buttons', []);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
