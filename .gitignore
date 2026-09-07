@@ -18,7 +18,7 @@ node_modules
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
+.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -38,16 +38,18 @@ testem.log
 .DS_Store
 Thumbs.db
 
-.nx/cache
-.nx/workspace-data
-.cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md
-
-.claude/worktrees
-.claude/settings.local.json
-.nx/polygraph
-.nx/self-healing
-.nx/migrate-runs
+# Angular
 .angular
 
-__screenshots__/
+# Nx
+.nx
+
+# Agents
+.agents
+.claude
+.codex
+.cursor
+.gemini
+.github
+.opencode
+.verdaccio
