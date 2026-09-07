@@ -20,7 +20,7 @@
     "noUncheckedSideEffectImports": false,
     "types": ["*"],
     "paths": {
-      "@alextech9106/smooth-ui": ["./dist/smooth-ui"]
+      "@alextech9106/smooth-ui": ["./libs/smooth-ui/src/public-api.ts"]
     }
   }
 }
