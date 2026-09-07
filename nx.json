@@ -21,7 +21,7 @@
       }
     },
     {
-      "plugin": "@nx/oxlint",
+      "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint"
       }
@@ -51,11 +51,12 @@
       "unitTestRunner": "none"
     },
     "@nx/angular:library": {
-      "linter": "oxlint",
+      "linter": "eslint",
       "unitTestRunner": "vitest-angular"
     },
     "@nx/angular:component": {
-      "style": "css"
+      "style": "scss",
+      "type": "component"
     }
   },
   "release": {
