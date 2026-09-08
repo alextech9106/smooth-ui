@@ -12,4 +12,5 @@ export interface SuiIconButton {
   size?: SUI_BUTTON_SIZE;
   state?: SUI_BUTTON_STATE;
   variant?: SUI_ICON_BUTTON_VARIANT;
+  callback?: () => void;
 }

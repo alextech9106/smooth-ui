@@ -3,7 +3,10 @@
 
   <div style="display: flex; gap: 1rem;">
     @for (icon of icons; track icon) {
-      <sui-icon [name]="icon" />
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <sui-icon [name]="icon" />
+        <p>{{ icon }}</p>
+      </div>
     }
   </div>
 </div>
@@ -43,17 +46,17 @@
   <div style="display: flex; align-items: center; gap: 1rem;">
     <sui-icon-button icon="sun" variant="ghost" />
     <sui-icon-button icon="sun" variant="outline" />
-    <sui-icon-button icon="sun" variant="solid" />
+    <sui-icon-button icon="sun" variant="primary" />
     <sui-icon-button icon="sun" shape="flat" variant="outline" />
-    <sui-icon-button icon="sun" shape="default" variant="outline" />
-    <sui-icon-button icon="sun" shape="round" variant="outline" />
-    <sui-icon-button icon="sun" state="focus" variant="solid" />
-    <sui-icon-button icon="sun" state="disabled" variant="solid" />
-    <sui-icon-button [selected]="true" icon="sun" variant="solid" />
-    <sui-icon-button icon="sun" size="sm" variant="solid" />
-    <sui-icon-button icon="sun" size="md" variant="solid" />
-    <sui-icon-button icon="sun" size="lg" variant="solid" />
-    <sui-icon-button [badge]=10 icon="sun" variant="solid" />
+    <sui-icon-button icon="sun" variant="outline" />
+    <sui-icon-button icon="sun" shape="pill" variant="outline" />
+    <sui-icon-button icon="sun" state="focus" variant="primary" />
+    <sui-icon-button icon="sun" state="disabled" variant="primary" />
+    <sui-icon-button [selected]="true" icon="sun" variant="primary" />
+    <sui-icon-button icon="sun" size="sm" variant="primary" />
+    <sui-icon-button icon="sun" size="md" variant="primary" />
+    <sui-icon-button icon="sun" size="lg" variant="primary" />
+    <sui-icon-button [badge]=10 icon="sun" variant="primary" />
   </div>
 </div>
 
@@ -62,15 +65,49 @@
 
   <div style="display: flex; flex-direction: column; gap: 1rem;">
     <div style="display: flex; align-items: center; gap: 1rem;">
-      <sui-button-group [buttons]="buttonsGroup" shape="flat" />
-      <sui-button-group [buttons]="buttonsGroup" shape="rounded" />
-      <sui-button-group [buttons]="buttonsGroup" shape="pill" />
+      <sui-button-group [buttons]="buttonsGroup" shape="flat" size="sm" type="button" />
+      <sui-button-group [buttons]="buttonsGroup" shape="rounded" type="button" />
+      <sui-button-group [buttons]="buttonsGroup" shape="pill" size="lg" type="button" />
     </div>
 
     <div style="display: flex; align-items: center; gap: 1rem;">
-      <sui-button-group [buttons]="buttonsGroup" shape="flat" variant="primary" />
-      <sui-button-group [buttons]="buttonsGroup" shape="rounded" variant="primary" />
-      <sui-button-group [buttons]="buttonsGroup" shape="pill" variant="primary" />
+      <sui-button-group [buttons]="buttonsGroup" shape="flat" size="sm" type="button" variant="primary" />
+      <sui-button-group [buttons]="buttonsGroup" shape="rounded" type="button" variant="primary" />
+      <sui-button-group [buttons]="buttonsGroup" shape="pill" size="lg" type="button" variant="primary" />
     </div>
+
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <sui-button-group [buttons]="buttonsGroup" shape="flat" size="sm" type="icon" />
+      <sui-button-group [buttons]="buttonsGroup" shape="rounded" type="icon" />
+      <sui-button-group [buttons]="buttonsGroup" shape="pill" size="lg" type="icon" />
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <sui-button-group [buttons]="buttonsGroup" shape="flat" size="sm" type="icon" variant="primary" />
+      <sui-button-group [buttons]="buttonsGroup" shape="rounded" type="icon" variant="primary" />
+      <sui-button-group [buttons]="buttonsGroup" shape="pill" size="lg" type="icon" variant="primary" />
+    </div>
+  </div>
+</div>
+
+<div>
+  <h1>Smooth UI Button Split</h1>
+
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <!--    <sui-button-split icon="more-vertical" mode="icon" shape="flat" size="sm" />-->
+    <!--    <sui-button-split icon="more-vertical" mode="icon" shape="rounded" />-->
+    <!--    <sui-button-split icon="more-vertical" mode="icon" shape="pill" size="lg" />-->
+
+    <!--    <sui-button-split icon="more-vertical" mode="icon" shape="flat" size="sm" variant="primary" />-->
+    <!--    <sui-button-split icon="more-vertical" mode="icon" shape="rounded" variant="primary" />-->
+    <!--    <sui-button-split icon="more-vertical" mode="icon" shape="pill" size="lg" variant="primary" />-->
+
+    <sui-button-split [menuItems]="menuItems" name="Save" shape="flat" size="sm" />
+    <sui-button-split [menuItems]="menuItems" name="Save" shape="rounded" />
+    <sui-button-split [menuItems]="menuItems" name="Save" shape="pill" size="lg" />
+
+    <sui-button-split [menuItems]="menuItems" name="Save" shape="flat" size="sm" variant="primary" />
+    <sui-button-split [menuItems]="menuItems" name="Save" shape="rounded" variant="primary" />
+    <sui-button-split [menuItems]="menuItems" name="Save" shape="pill" size="lg" variant="primary" />
   </div>
 </div>

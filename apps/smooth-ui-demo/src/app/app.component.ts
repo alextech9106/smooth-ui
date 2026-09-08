@@ -1,15 +1,24 @@
-import { Component } from '@angular/core';
 import {
+  MenuItem,
   SuiButton,
   SuiButtonComponent,
   SuiButtonGroupComponent,
+  SuiButtonSplitComponent,
+  SuiIconButton,
   SuiIconButtonComponent,
   SuiIconComponent,
 } from '@alextech9106/smooth-ui';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  imports: [SuiButtonComponent, SuiIconComponent, SuiIconButtonComponent, SuiButtonGroupComponent],
+  imports: [
+    SuiButtonComponent,
+    SuiIconComponent,
+    SuiIconButtonComponent,
+    SuiButtonGroupComponent,
+    SuiButtonSplitComponent,
+  ],
   templateUrl: './app.component.html',
 })
 export class AppComponent {
@@ -61,8 +70,20 @@ export class AppComponent {
   ];
 
   public buttonsGroup: SuiButton[] = [
-    { name: 'Button 1', icon: 'check', selected: false },
-    { name: 'Button 2', icon: 'x', selected: true },
+    { name: 'Button 1', icon: 'check', selected: true },
+    { name: 'Button 2', icon: 'x', selected: false },
     { name: 'Button 3', icon: 'star', selected: false },
+  ];
+
+  public iconsGroup: SuiIconButton[] = [
+    { icon: 'check', selected: false },
+    { icon: 'x', selected: true },
+    { icon: 'star', selected: false },
+  ];
+
+  public menuItems: MenuItem[] = [
+    { title: 'Item 1', icon: { name: 'check', size: 16 } },
+    { title: 'Item 2', icon: { name: 'x', size: 16 }, separatorAfter: true },
+    { title: 'Item 3', icon: { name: 'star', size: 16 } },
   ];
 }

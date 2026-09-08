@@ -2,7 +2,8 @@
   display: inline-flex;
   overflow: hidden;
 
-  sui-button:not(:first-child) {
+  sui-button:not(:first-child),
+  sui-icon-button:not(:first-child) {
     border-left: var(--sui-border-width-thin) solid var(--sui-color-accent-solid);
   }
 
@@ -19,10 +20,11 @@
   }
 
   &--ghost {
-    border: var(--sui-border-width-thin) solid var(--sui-color-accent-solid);
+    border: var(--sui-border-width-thin) solid var(--sui-color-border-default);
 
-    sui-button:not(:first-child) {
-      border-left: var(--sui-border-width-thin) solid var(--sui-color-accent-solid);
+    sui-button:not(:first-child),
+    sui-icon-button:not(:first-child) {
+      border-left: var(--sui-border-width-thin) solid var(--sui-color-border-default);
     }
   }
 }

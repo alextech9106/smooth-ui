@@ -1,0 +1,22 @@
+<div class="sui-button-split">
+  @if (mode() === 'default') {
+    <sui-button-group #button [buttons]="buttonSplit()" [shape]="shape()" [size]="size()" [variant]="variant()" />
+  } @else {
+    <sui-button-group [buttons]="iconSplit()" [shape]="shape()" [size]="size()" [variant]="variant()" />
+  }
+
+  @if (menuOpen() && menuItems().length) {
+    <div #menu [ngClass]="{'split-menu-top': placement() === 'top'}" class="split-menu">
+      @for (menuItem of menuItems(); track menuItem.title) {
+        <div class="split-menu-item">
+          <sui-icon [name]="menuItem.icon.name" [size]="menuItem.icon.size" />
+          <p>{{ menuItem.title }}</p>
+        </div>
+
+        @if (menuItem.separatorAfter) {
+          <div class="split-separator"></div>
+        }
+      }
+    </div>
+  }
+</div>
