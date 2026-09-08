@@ -1,10 +1,18 @@
-import { Component, computed, input, InputSignal, Signal } from '@angular/core';
+import { NgClass } from '@angular/common';
+import {
+  Component,
+  computed,
+  input,
+  InputSignal,
+  output,
+  OutputEmitterRef,
+  Signal,
+} from '@angular/core';
+import { SUI_BUTTON_SHAPE } from '../../types/sui-button-shape.type';
+import { SUI_BUTTON_SIZE } from '../../types/sui-button-size.type';
+import { SUI_BUTTON_STATE } from '../../types/sui-button-state.type';
 import { SuiIconComponent } from '../sui-icon/sui-icon.component';
 import { SUI_ICON_BUTTON_VARIANT } from './type/sui-icon-button-variant.type';
-import { SUI_ICON_BUTTON_SIZE } from './type/sui-icon-button-size.type';
-import { NgClass } from '@angular/common';
-import { SUI_ICON_BUTTON_SHAPE } from './type/sui-icon-button-shape.type';
-import { SUI_ICON_BUTTON_STATE } from './type/sui-icon-button-state.type';
 
 @Component({
   imports: [SuiIconComponent, NgClass],
@@ -20,10 +28,12 @@ export class SuiIconButtonComponent {
 
   public icon: InputSignal<string> = input.required();
 
-  public shape: InputSignal<SUI_ICON_BUTTON_SHAPE> = input<SUI_ICON_BUTTON_SHAPE>('default');
-  public size: InputSignal<SUI_ICON_BUTTON_SIZE> = input<SUI_ICON_BUTTON_SIZE>('md');
-  public state: InputSignal<SUI_ICON_BUTTON_STATE> = input<SUI_ICON_BUTTON_STATE>('default');
+  public shape: InputSignal<SUI_BUTTON_SHAPE> = input<SUI_BUTTON_SHAPE>('rounded');
+  public size: InputSignal<SUI_BUTTON_SIZE> = input<SUI_BUTTON_SIZE>('md');
+  public state: InputSignal<SUI_BUTTON_STATE> = input<SUI_BUTTON_STATE>('default');
   public variant: InputSignal<SUI_ICON_BUTTON_VARIANT> = input<SUI_ICON_BUTTON_VARIANT>('ghost');
+
+  public onClick: OutputEmitterRef<void> = output<void>();
 
   protected readonly classes: Signal<string> = computed(
     () =>

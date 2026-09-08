@@ -1,5 +1,5 @@
 <span [ngClass]="{'badge-anchor': badge()}">
-  <button [class]="classes()" type="button">
+  <button (click)="onClick.emit()" [class]="classes()" type="button">
     <sui-icon [name]="icon()" [size]="iconSize()" />
   </button>
 

@@ -1,11 +1,13 @@
-<button [class]="classes()" type="button">
+<button (click)="onClick.emit()" [class]="classes()" [ngClass]="{ 'sui-spacing-8': name() === ''}" type="button">
   @if (loading()) {
     <span aria-hidden="true" class="sui-button--spinner"></span>
   } @else {
     @if (showIconStart()) {
       <sui-icon [name]="icon()" [size]="iconSize()" />
     }
-    <span>{{ name() }}</span>
+    @if (name() !== '') {
+      <span>{{ name() }}</span>
+    }
     @if (showIconEnd()) {
       <sui-icon [name]="icon()" [size]="iconSize()" />
     }

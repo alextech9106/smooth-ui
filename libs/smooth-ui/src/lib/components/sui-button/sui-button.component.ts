@@ -1,12 +1,21 @@
-import { Component, computed, input, InputSignal, Signal } from '@angular/core';
+import { NgClass } from '@angular/common';
+import {
+  Component,
+  computed,
+  input,
+  InputSignal,
+  output,
+  OutputEmitterRef,
+  Signal,
+} from '@angular/core';
+import { SUI_BUTTON_SHAPE } from '../../types/sui-button-shape.type';
+import { SUI_BUTTON_SIZE } from '../../types/sui-button-size.type';
+import { SUI_BUTTON_STATE } from '../../types/sui-button-state.type';
 import { SuiIconComponent } from '../sui-icon/sui-icon.component';
 import { SUI_BUTTON_VARIANT } from './type/sui-button-variant.type';
-import { SUI_BUTTON_SIZE } from './type/sui-button-size.type';
-import { SUI_BUTTON_STATE } from './type/sui-button-state.type';
-import { SUI_BUTTON_SHAPE } from './type/sui-button-shape.type';
 
 @Component({
-  imports: [SuiIconComponent],
+  imports: [SuiIconComponent, NgClass],
   selector: 'sui-button',
   styleUrl: './sui-button.component.scss',
   templateUrl: './sui-button.component.html',
@@ -26,14 +35,16 @@ export class SuiButtonComponent {
   public state: InputSignal<SUI_BUTTON_STATE> = input<SUI_BUTTON_STATE>('default');
   public variant: InputSignal<SUI_BUTTON_VARIANT> = input<SUI_BUTTON_VARIANT>('primary');
 
-  protected readonly classes: Signal<string> = computed(
-    () =>
-      `sui-button sui-button--${this.variant()} sui-button--${this.size()} ${this.state() !== 'default' ? 'sui-button--' + this.state() : ''} sui-button--${this.shape()} ${this.fullWidth() ? 'sui-button--full-width' : ''} ${this.selected() ? 'sui-button--selected' : ''}`,
-  );
+  public onClick: OutputEmitterRef<void> = output<void>();
+
   protected readonly showIconStart: Signal<boolean> = computed(
     () => this.icon() !== '' && !this.iconEnd(),
   );
   protected readonly showIconEnd: Signal<boolean> = computed(
     () => this.icon() !== '' && this.iconEnd(),
+  );
+  protected readonly classes: Signal<string> = computed(
+    () =>
+      `sui-button sui-button--${this.variant()} sui-button--${this.size()} ${this.state() !== 'default' ? 'sui-button--' + this.state() : ''} sui-button--${this.shape()} ${this.fullWidth() ? 'sui-button--full-width' : ''} ${this.selected() ? 'sui-button--selected' : ''}`,
   );
 }

@@ -8,7 +8,7 @@
   border-radius: var(--sui-radius-md);
   border: none;
   box-shadow: var(--sui-elevation-xs);
-  font-family: var(--sui-font-sans), sans-serif;
+  font-family: var(--sui-font-sans);
   font-size: var(--sui-font-size-sm);
   cursor: pointer;
   transition: background-color var(--sui-duration-base) var(--sui-ease-smooth), border-color var(--sui-duration-fast) var(--sui-ease-smooth), color var(--sui-duration-fast) var(--sui-ease-smooth), box-shadow var(--sui-duration-fast) var(--sui-ease-smooth), transform var(--sui-duration-fast) var(--sui-ease-smooth);
@@ -164,7 +164,7 @@
   }
 
   &--flat {
-    border-radius: var(--sui-radius-none);
+    border-radius: var(--sui-radius-none) !important;
   }
 
   &--rounded {
@@ -172,7 +172,7 @@
   }
 
   &--pill {
-    border-radius: var(--sui-radius-full);
+    border-radius: var(--sui-radius-full) !important;
   }
 
   &--spinner {
@@ -191,7 +191,6 @@
     padding: 0 var(--sui-spacing-12);
     font-size: 13px;
     border-radius: var(--sui-radius-sm);
-    gap: var(--sui-spacing-6);
   }
 
   &--lg {
@@ -206,4 +205,8 @@
       transform: rotate(360deg);
     }
   }
+}
+
+.sui-spacing-8 {
+  padding: 0 var(--sui-spacing-8);
 }

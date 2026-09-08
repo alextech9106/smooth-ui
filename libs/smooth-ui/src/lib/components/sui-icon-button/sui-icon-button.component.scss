@@ -49,7 +49,7 @@
     }
   }
 
-  &--solid {
+  &--primary {
     background: var(--sui-color-accent-solid);
     color: var(--sui-color-accent-on-solid);
 
@@ -69,11 +69,11 @@
   }
 
   &--flat {
-    border-radius: var(--sui-radius-none);
+    border-radius: var(--sui-radius-none) !important;
   }
 
-  &--round {
-    border-radius: var(--sui-radius-full);
+  &--pill {
+    border-radius: var(--sui-radius-full) !important;
   }
 
   &--selected {
