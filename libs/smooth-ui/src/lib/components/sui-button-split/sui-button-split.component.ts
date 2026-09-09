@@ -20,6 +20,7 @@ import { SUI_BUTTON_SIZE } from '../../types/sui-button-size.type';
 import { SuiButtonGroupComponent } from '../sui-button-group/sui-button-group.component';
 import { SuiIconComponent } from '../sui-icon/sui-icon.component';
 import { SUI_BUTTON_SPLIT_MODE } from './type/sui-button-split-mode.type';
+import { SUI_BUTTON_SPLIT_PLACEMENT } from './type/sui-button-split-placement.type';
 import { SUI_BUTTON_SPLIT_VARIANT } from './type/sui-button-split-variant.type';
 
 @Component({
@@ -42,9 +43,8 @@ export class SuiButtonSplitComponent {
   public size: InputSignal<SUI_BUTTON_SIZE> = input<SUI_BUTTON_SIZE>('md');
   public variant: InputSignal<SUI_BUTTON_SPLIT_VARIANT> = input<SUI_BUTTON_SPLIT_VARIANT>('ghost');
 
-  protected readonly menuOpen: WritableSignal<boolean> = signal(false);
-  protected readonly placement: WritableSignal<'bottom' | 'top'> = signal('bottom');
-  protected readonly classes: Signal<string> = computed<string>(() => `sui-button-split`);
+  protected readonly menuOpen: WritableSignal<boolean> = signal<boolean>(false);
+  protected readonly placement: WritableSignal<SUI_BUTTON_SPLIT_PLACEMENT> = signal<SUI_BUTTON_SPLIT_PLACEMENT>('bottom');
 
   protected readonly buttonSplit: Signal<SuiButton[]> = computed<SuiButton[]>(() => [
     { name: this.name() },

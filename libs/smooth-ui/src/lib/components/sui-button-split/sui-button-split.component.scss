@@ -30,7 +30,7 @@
       border-radius: var(--sui-radius-sm);
       font-size: var(--sui-font-size-sm);
       color: var(--sui-color-text-primary);
-      font-family: var(--sui-font-sans);
+      font-family: var(--sui-font-sans), sans-serif;
 
       &:hover {
         background: var(--sui-color-bg-subtle);

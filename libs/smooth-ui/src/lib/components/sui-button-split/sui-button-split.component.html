@@ -1,6 +1,6 @@
 <div class="sui-button-split">
   @if (mode() === 'default') {
-    <sui-button-group #button [buttons]="buttonSplit()" [shape]="shape()" [size]="size()" [variant]="variant()" />
+    <sui-button-group [buttons]="buttonSplit()" [shape]="shape()" [size]="size()" [variant]="variant()" />
   } @else {
     <sui-button-group [buttons]="iconSplit()" [shape]="shape()" [size]="size()" [variant]="variant()" />
   }
