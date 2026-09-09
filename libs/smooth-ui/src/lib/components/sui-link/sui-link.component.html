@@ -1,0 +1,8 @@
+@if (external()) {
+  <a [class]="classes()" [href]="url()" class="sui-link sui-link-external" target="_blank">
+    {{ title() }}
+    <sui-icon [size]="16" name="external-link" />
+  </a>
+} @else {
+  <a [class]="classes()" [routerLink]="url()" class="sui-link">{{ title() }}</a>
+}

@@ -1,0 +1,41 @@
+.sui-link {
+  cursor: pointer;
+  font-weight: 500;
+  text-underline-offset: 3px;
+  text-decoration: none;
+  font-family: var(--sui-font-sans), sans-serif;
+  color: var(--sui-color-accent-text);
+  border-radius: var(--sui-radius-xs);
+
+  &-external {
+    display: flex;
+    align-items: center;
+    gap: var(--sui-spacing-4);
+  }
+
+  &-muted {
+    color: var(--sui-color-text-secondary);
+  }
+
+  &-disabled {
+    color: var(--sui-color-text-disabled);
+    cursor: not-allowed;
+
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+
+  &-focus {
+    outline: none;
+    box-shadow: var(--sui-focus-ring);
+  }
+
+  &-underline {
+    text-decoration: underline;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
