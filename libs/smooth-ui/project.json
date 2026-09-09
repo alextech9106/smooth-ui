@@ -31,7 +31,9 @@
         "production": {
           "tsConfig": "libs/smooth-ui/tsconfig.lib.prod.json"
         },
-        "development": {}
+        "development": {
+          "watch": true
+        }
       }
     },
     "nx-release-publish": {
