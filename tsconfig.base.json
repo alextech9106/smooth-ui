@@ -18,9 +18,6 @@
     "target": "es2022",
     "customConditions": ["@alextech9106/source"],
     "noUncheckedSideEffectImports": false,
-    "types": ["*"],
-    "paths": {
-      "@alextech9106/smooth-ui": ["./libs/smooth-ui/src/public-api.ts"]
-    }
+    "types": ["*"]
   }
 }
