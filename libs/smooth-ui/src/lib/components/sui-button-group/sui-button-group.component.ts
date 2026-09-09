@@ -14,8 +14,7 @@ import { SUI_BUTTON_GROUP_VARIANT } from './type/sui-button-group-variant.type';
   templateUrl: './sui-button-group.component.html',
 })
 export class SuiButtonGroupComponent {
-  public buttons: InputSignal<SuiButton[]> = input.required();
-
+  public buttons: InputSignal<SuiButton[]> = input.required<SuiButton[]>();
   public shape: InputSignal<SUI_BUTTON_SHAPE> = input<SUI_BUTTON_SHAPE>('flat');
   public size: InputSignal<SUI_BUTTON_SIZE> = input<SUI_BUTTON_SIZE>('md');
   public type: InputSignal<SUI_BUTTON_GROUP_TYPE> = input<SUI_BUTTON_GROUP_TYPE>('button');
@@ -23,6 +22,6 @@ export class SuiButtonGroupComponent {
 
   protected readonly classes: Signal<string> = computed(
     () =>
-      `sui-button-group sui-button-group--${this.shape()} sui-button-group--${this.size()} sui-button-group--${this.variant()}`,
+      `sui-button-group sui-button-group-${this.shape()} sui-button-group-${this.size()} sui-button-group-${this.variant()}`,
   );
 }

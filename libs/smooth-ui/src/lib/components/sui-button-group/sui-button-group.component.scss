@@ -7,19 +7,19 @@
     border-left: var(--sui-border-width-thin) solid var(--sui-color-accent-solid);
   }
 
-  &--flat {
+  &-flat {
     border-radius: var(--sui-radius-none);
   }
 
-  &--rounded {
+  &-rounded {
     border-radius: var(--sui-radius-md);
   }
 
-  &--pill {
+  &-pill {
     border-radius: var(--sui-radius-full);
   }
 
-  &--ghost {
+  &-ghost {
     border: var(--sui-border-width-thin) solid var(--sui-color-border-default);
 
     sui-button:not(:first-child),

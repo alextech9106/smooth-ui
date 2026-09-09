@@ -1,12 +1,12 @@
 <div [class]="classes()">
   @if (type() === 'button') {
     @for (button of buttons(); track button.name) {
-      <sui-button (onClick)="button.callback?.()" [icon]="button.icon ?? ''" [name]="button.name"
+      <sui-button (trigger)="button.callback?.()" [icon]="button.icon ?? ''" [name]="button.name"
                   [selected]="button.selected ?? false" [shape]="'flat'" [size]="size()" [variant]="variant()" />
     }
   } @else {
     @for (button of buttons(); track button.name) {
-      <sui-icon-button (onClick)="button.callback?.()" [icon]="button.icon ?? ''" [selected]="button.selected ?? false"
+      <sui-icon-button (trigger)="button.callback?.()" [icon]="button.icon ?? ''" [selected]="button.selected ?? false"
                        [shape]="'flat'" [size]="size()" [variant]="variant()" />
     }
   }

@@ -1,6 +1,6 @@
 <span [ngClass]="{'badge-anchor': badge()}">
-  <button (click)="onClick.emit()" [class]="classes()" type="button">
-    <sui-icon [name]="icon()" [size]="iconSize()" />
+  <button (click)="trigger.emit()" [class]="classes()" type="button">
+    <sui-icon [name]="icon()" [size]="computedIconSize()" />
   </button>
 
   @if (badge()) {
