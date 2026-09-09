@@ -8,9 +8,9 @@ import { SuiIconService } from './sui-icon.service';
   templateUrl: './sui-icon.component.html',
 })
 export class SuiIconComponent {
-  public name: InputSignal<string> = input.required<string>();
-  public size: InputSignal<number> = input(20);
   private readonly _suiIconService: SuiIconService = inject(SuiIconService);
+  public name: InputSignal<string> = input.required<string>();
+  public size: InputSignal<number> = input<number>(20);
 
   constructor() {
     this._suiIconService.ensureSpriteInjected();
