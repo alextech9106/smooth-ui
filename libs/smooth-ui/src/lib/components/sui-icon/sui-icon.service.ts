@@ -1,6 +1,6 @@
-import { inject, PLATFORM_ID, Service } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { SUI_ICON } from './sui-icon';
+import { inject, PLATFORM_ID, Service } from '@angular/core';
+import { SUI_ICON } from '../../constants/sui-icon';
 
 @Service()
 export class SuiIconService {
