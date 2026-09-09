@@ -15,28 +15,28 @@
   <h1>Smooth UI Button</h1>
 
   <div style="display: flex; align-items: center; gap: 1rem;">
-    <sui-button name="Prueba" />
-    <sui-button name="Prueba" variant="secondary" />
-    <sui-button name="Prueba" variant="tonal" />
-    <sui-button name="Prueba" variant="outline" />
-    <sui-button name="Prueba" variant="ghost" />
-    <sui-button name="Prueba" variant="danger" />
-    <sui-button name="Prueba" state="focus" />
-    <sui-button name="Prueba" state="disabled" />
-    <sui-button [selected]="true" name="Prueba" />
-    <sui-button icon="check" name="Prueba" />
-    <sui-button [iconEnd]="true" icon="check" name="Prueba" />
-    <sui-button icon="check" name="Prueba" shape="flat" variant="outline" />
-    <sui-button icon="check" name="Prueba" shape="rounded" variant="outline" />
-    <sui-button icon="check" name="Prueba" shape="pill" variant="outline" />
-    <sui-button [loading]="true" name="Prueba" />
-    <sui-button name="Prueba" size="sm" variant="primary" />
-    <sui-button name="Prueba" variant="primary" />
-    <sui-button name="Prueba" size="lg" variant="primary" />
+    <sui-button name="Button" />
+    <sui-button name="Button" variant="secondary" />
+    <sui-button name="Button" variant="tonal" />
+    <sui-button name="Button" variant="outline" />
+    <sui-button name="Button" variant="ghost" />
+    <sui-button name="Button" variant="danger" />
+    <sui-button name="Button" state="focus" />
+    <sui-button name="Button" state="disabled" />
+    <sui-button [selected]="true" name="Button" />
+    <sui-button icon="check" name="Button" />
+    <sui-button [iconEnd]="true" icon="check" name="Button" />
+    <sui-button icon="check" name="Button" shape="flat" variant="outline" />
+    <sui-button icon="check" name="Button" shape="rounded" variant="outline" />
+    <sui-button icon="check" name="Button" shape="pill" variant="outline" />
+    <sui-button [loading]="true" name="Button" />
+    <sui-button name="Button" size="sm" variant="primary" />
+    <sui-button name="Button" variant="primary" />
+    <sui-button name="Button" size="lg" variant="primary" />
   </div>
 
   <div style="width: 500px">
-    <sui-button [fullWidth]="true" name="Prueba" />
+    <sui-button [fullWidth]="true" name="Button" />
   </div>
 </div>
 
@@ -94,14 +94,6 @@
   <h1>Smooth UI Button Split</h1>
 
   <div style="display: flex; align-items: center; gap: 1rem;">
-    <!--    <sui-button-split icon="more-vertical" mode="icon" shape="flat" size="sm" />-->
-    <!--    <sui-button-split icon="more-vertical" mode="icon" shape="rounded" />-->
-    <!--    <sui-button-split icon="more-vertical" mode="icon" shape="pill" size="lg" />-->
-
-    <!--    <sui-button-split icon="more-vertical" mode="icon" shape="flat" size="sm" variant="primary" />-->
-    <!--    <sui-button-split icon="more-vertical" mode="icon" shape="rounded" variant="primary" />-->
-    <!--    <sui-button-split icon="more-vertical" mode="icon" shape="pill" size="lg" variant="primary" />-->
-
     <sui-button-split [menuItems]="menuItems" name="Save" shape="flat" size="sm" />
     <sui-button-split [menuItems]="menuItems" name="Save" shape="rounded" />
     <sui-button-split [menuItems]="menuItems" name="Save" shape="pill" size="lg" />
@@ -109,5 +101,18 @@
     <sui-button-split [menuItems]="menuItems" name="Save" shape="flat" size="sm" variant="primary" />
     <sui-button-split [menuItems]="menuItems" name="Save" shape="rounded" variant="primary" />
     <sui-button-split [menuItems]="menuItems" name="Save" shape="pill" size="lg" variant="primary" />
+  </div>
+</div>
+
+<div>
+  <h1>Smooth UI Link</h1>
+
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <sui-link title="Default Link" url="#" />
+    <sui-link [external]="true" title="External Link" url="https://angular.dev/" />
+    <sui-link state="focus" title="Focus" url="#" />
+    <sui-link [underline]="true" title="Underline" url="#" />
+    <sui-link title="Neutral Link" url="#" variant="muted" />
+    <sui-link state="disabled" title="Disabled" url="#" />
   </div>
 </div>

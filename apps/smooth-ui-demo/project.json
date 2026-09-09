@@ -21,7 +21,7 @@
             "input": "apps/smooth-ui-demo/public"
           }
         ],
-        "styles": ["apps/smooth-ui-demo/src/styles.scss"]
+        "styles": ["libs/smooth-ui/theme/theme.scss"]
       },
       "configurations": {
         "production": {

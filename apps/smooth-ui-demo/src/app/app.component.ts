@@ -4,9 +4,9 @@ import {
   SuiButtonComponent,
   SuiButtonGroupComponent,
   SuiButtonSplitComponent,
-  SuiIconButton,
   SuiIconButtonComponent,
   SuiIconComponent,
+  SuiLinkComponent,
 } from '@alextech9106/smooth-ui';
 import { Component } from '@angular/core';
 
@@ -18,8 +18,10 @@ import { Component } from '@angular/core';
     SuiIconButtonComponent,
     SuiButtonGroupComponent,
     SuiButtonSplitComponent,
+    SuiLinkComponent,
   ],
   templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   public icons: string[] = [
@@ -73,12 +75,6 @@ export class AppComponent {
     { name: 'Button 1', icon: 'check', selected: true },
     { name: 'Button 2', icon: 'x', selected: false },
     { name: 'Button 3', icon: 'star', selected: false },
-  ];
-
-  public iconsGroup: SuiIconButton[] = [
-    { icon: 'check', selected: false },
-    { icon: 'x', selected: true },
-    { icon: 'star', selected: false },
   ];
 
   public menuItems: MenuItem[] = [
