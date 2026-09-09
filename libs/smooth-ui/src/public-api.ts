@@ -4,7 +4,6 @@
 
 /* SUI Icon */
 export * from './lib/components/sui-icon/sui-icon.component';
-export * from './lib/components/sui-icon/sui-icon.service';
 
 /* SUI Button */
 export * from './lib/components/sui-button/sui-button.component';
@@ -29,12 +28,19 @@ export * from './lib/components/sui-button-split/type/sui-button-split-variant.t
 export * from './lib/components/sui-link/sui-link.component';
 export * from './lib/components/sui-link/type/sui-link-variant.type';
 
+/* Consts */
+export * from './lib/constants/locastorage';
+
 /* Interfaces */
 export * from './lib/interfaces/menu-item.interface';
 export * from './lib/interfaces/sui-button.interface';
 export * from './lib/interfaces/sui-icon-button.interface';
 
+/* Services */
+export * from './lib/services/theme.service';
+
 /* Types */
 export * from './lib/types/sui-button-size.type';
 export * from './lib/types/sui-button-shape.type';
 export * from './lib/types/sui-button-state.type';
+export * from './lib/types/sui-theme.type';

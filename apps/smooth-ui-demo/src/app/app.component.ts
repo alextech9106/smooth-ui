@@ -9,6 +9,7 @@ import {
   SuiLinkComponent,
 } from '@alextech9106/smooth-ui';
 import { Component } from '@angular/core';
+import { SuiThemeToggleComponent } from '../../../../libs/smooth-ui/src/lib/components/sui-theme-toggle/sui-theme-toggle.component';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import { Component } from '@angular/core';
     SuiButtonGroupComponent,
     SuiButtonSplitComponent,
     SuiLinkComponent,
+    SuiThemeToggleComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
@@ -70,13 +72,11 @@ export class AppComponent {
     'clock',
     'help',
   ];
-
   public buttonsGroup: SuiButton[] = [
     { name: 'Button 1', icon: 'check', selected: true },
     { name: 'Button 2', icon: 'x', selected: false },
     { name: 'Button 3', icon: 'star', selected: false },
   ];
-
   public menuItems: MenuItem[] = [
     { title: 'Item 1', icon: { name: 'check', size: 16 } },
     { title: 'Item 2', icon: { name: 'x', size: 16 }, separatorAfter: true },
