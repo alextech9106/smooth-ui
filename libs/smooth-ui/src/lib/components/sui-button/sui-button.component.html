@@ -1,6 +1,6 @@
 <button (click)="trigger.emit()" [class]="classes()" [ngClass]="{ 'sui-spacing-8': name() === ''}" type="button">
   @if (loading()) {
-    <span aria-hidden="true" class="sui-button--spinner"></span>
+    <span aria-hidden="true" class="sui-button-spinner"></span>
   } @else {
     @if (showIconStart()) {
       <sui-icon [name]="icon()" [size]="computedIconSize()" />
