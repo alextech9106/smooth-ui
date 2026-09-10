@@ -148,6 +148,14 @@
   /* Typography */
   --sui-font-sans: 'Inter', 'Inter var', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --sui-font-mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Breakpoints (min-width). Cannot be used inside @media conditions —
+     read from JS or mirror the value as a literal in media queries. */
+  --sui-breakpoint-sm: 640px;
+  --sui-breakpoint-md: 768px;
+  --sui-breakpoint-lg: 1024px;
+  --sui-breakpoint-xl: 1280px;
+  --sui-breakpoint-2xl: 1920px;
 }
 
 /* ============ SEMANTIC · LIGHT ============ */

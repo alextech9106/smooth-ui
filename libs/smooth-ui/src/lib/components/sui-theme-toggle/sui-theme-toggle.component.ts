@@ -1,6 +1,6 @@
-import { SuiIconButtonComponent } from '@alextech9106/smooth-ui';
 import { Component, inject } from '@angular/core';
 import { ThemeService } from '../../services/theme.service';
+import { SuiIconButtonComponent } from '../sui-icon-button/sui-icon-button.component';
 
 @Component({
   selector: 'sui-theme-toggle',

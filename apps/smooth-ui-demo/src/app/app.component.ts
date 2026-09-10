@@ -1,12 +1,15 @@
-import { MenuItem, SuiButton } from '@alextech9106/smooth-ui';
+import {
+  MenuItem,
+  SuiButton,
+  SuiButtonComponent,
+  SuiButtonGroupComponent,
+  SuiButtonSplitComponent,
+  SuiIconButtonComponent,
+  SuiIconComponent,
+  SuiLinkComponent,
+  SuiThemeToggleComponent,
+} from '@alextech9106/smooth-ui';
 import { Component } from '@angular/core';
-import { SuiButtonGroupComponent } from '../../../../libs/smooth-ui/src/lib/components/sui-button-group/sui-button-group.component';
-import { SuiButtonSplitComponent } from '../../../../libs/smooth-ui/src/lib/components/sui-button-split/sui-button-split.component';
-import { SuiButtonComponent } from '../../../../libs/smooth-ui/src/lib/components/sui-button/sui-button.component';
-import { SuiIconButtonComponent } from '../../../../libs/smooth-ui/src/lib/components/sui-icon-button/sui-icon-button.component';
-import { SuiIconComponent } from '../../../../libs/smooth-ui/src/lib/components/sui-icon/sui-icon.component';
-import { SuiLinkComponent } from '../../../../libs/smooth-ui/src/lib/components/sui-link/sui-link.component';
-import { SuiThemeToggleComponent } from '../../../../libs/smooth-ui/src/lib/components/sui-theme-toggle/sui-theme-toggle.component';
 
 @Component({
   selector: 'app-root',

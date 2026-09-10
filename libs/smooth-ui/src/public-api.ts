@@ -2,6 +2,9 @@
  * Public API Surface of smooth-ui
  */
 
+/* SUI Theme Toggle*/
+export * from './lib/components/sui-theme-toggle/sui-theme-toggle.component';
+
 /* SUI Icon */
 export * from './lib/components/sui-icon/sui-icon.component';
 
@@ -37,6 +40,7 @@ export * from './lib/interfaces/sui-button.interface';
 export * from './lib/interfaces/sui-icon-button.interface';
 
 /* Services */
+export * from './lib/services/breakpoint.service';
 export * from './lib/services/theme.service';
 
 /* Types */
