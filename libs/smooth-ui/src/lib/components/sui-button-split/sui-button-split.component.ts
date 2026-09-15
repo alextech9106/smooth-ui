@@ -15,8 +15,8 @@ import {
 } from '@angular/core';
 import { MenuItem } from '../../interfaces/menu-item.interface';
 import { SuiButton } from '../../interfaces/sui-button.interface';
-import { SUI_BUTTON_SHAPE } from '../../types/sui-button-shape.type';
-import { SUI_BUTTON_SIZE } from '../../types/sui-button-size.type';
+import { SUI_SHAPE } from '../../types/sui-shape.type';
+import { SUI_SIZE } from '../../types/sui-size.type';
 import { SuiButtonGroupComponent } from '../sui-button-group/sui-button-group.component';
 import { SuiIconComponent } from '../sui-icon/sui-icon.component';
 import { SUI_BUTTON_SPLIT_MODE } from './type/sui-button-split-mode.type';
@@ -39,8 +39,8 @@ export class SuiButtonSplitComponent {
   public name: InputSignal<string> = input<string>('');
   public menuItems: InputSignal<MenuItem[]> = input<MenuItem[]>([]);
   public mode: InputSignal<SUI_BUTTON_SPLIT_MODE> = input<SUI_BUTTON_SPLIT_MODE>('default');
-  public shape: InputSignal<SUI_BUTTON_SHAPE> = input<SUI_BUTTON_SHAPE>('flat');
-  public size: InputSignal<SUI_BUTTON_SIZE> = input<SUI_BUTTON_SIZE>('md');
+  public shape: InputSignal<SUI_SHAPE> = input<SUI_SHAPE>('flat');
+  public size: InputSignal<SUI_SIZE> = input<SUI_SIZE>('md');
   public variant: InputSignal<SUI_BUTTON_SPLIT_VARIANT> = input<SUI_BUTTON_SPLIT_VARIANT>('ghost');
 
   protected readonly menuOpen: WritableSignal<boolean> = signal<boolean>(false);
