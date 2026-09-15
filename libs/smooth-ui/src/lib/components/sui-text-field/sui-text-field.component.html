@@ -1,0 +1,64 @@
+<div class="sui-text-field">
+  <label [for]="inputId()" class="sui-label">{{ label() }} {{ required() ? '*' : optionalText() }}</label>
+
+  <div [class]="classes()" class="sui-input">
+    @switch (type()) {
+      @case ('email') {
+        <sui-icon class="sui-input-icon" name="mail" />
+      }
+      @case ('password') {
+        <sui-icon class="sui-input-icon" name="lock" />
+      }
+      @case ('search') {
+        <sui-icon class="sui-input-icon" name="search" />
+      }
+      @case ('tel') {
+        <sui-icon class="sui-input-icon" name="phone" />
+      }
+      @case ('url') {
+        <sui-icon class="sui-input-icon" name="globe" />
+      }
+      @default {
+        @if (iconStart() !== '') {
+          <sui-icon [name]="iconStart()" class="sui-input-icon" />
+        }
+        @if (prefix() !== '') {
+          <span [class]="classes()" class="sui-input-affix">{{ prefix() }}</span> />
+        }
+      }
+    }
+
+    <input (blur)="touch.emit()" (input)="rawValue.set($any($event.target).value)" (invalid)="$event.preventDefault()"
+           [class]="classes()" [disabled]="disabled()" [id]="inputId()" [placeholder]="placeholder()"
+           [readonly]="readonly()" [required]="required()" [type]="isPasswordHide() ? type() : 'text'"
+           [value]="rawValue()">
+
+    @switch (type()) {
+      @case ('password') {
+        <sui-icon (click)="showPassword()" [name]="isPasswordHide() ? 'eye' : 'eye-off'"
+                  class="sui-input-icon sui-input-pointer" />
+      }
+      @case ('search') {
+        <sui-icon (click)="clearSearch()" class="sui-input-icon sui-input-pointer" name="x" />
+      }
+      @default {
+        @if (iconEnd() !== '') {
+          <sui-icon [name]="iconEnd()" class="sui-input-icon" />
+        }
+        @if (suffix() !== '') {
+          <span [class]="classes()" class="sui-input-affix">{{ suffix() }}</span> />
+        }
+      }
+    }
+  </div>
+
+  @if (hint() && !showError()) {
+    <span class="sui-hint">{{ hint() }}</span>
+  }
+
+  @if (showError()) {
+    @for (error of errors(); track error.message) {
+      <sui-error [error]="showCustomError() ? getCustomMessage(error.kind) : error.message" [inputId]="inputId()" />
+    }
+  }
+</div>
