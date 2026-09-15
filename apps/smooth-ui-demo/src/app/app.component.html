@@ -25,21 +25,21 @@
       <sui-button name="Button" variant="ghost" />
       <sui-button name="Button" variant="danger" />
       <sui-button name="Button" state="focus" />
-      <sui-button name="Button" state="disabled" />
-      <sui-button [selected]="true" name="Button" />
+      <sui-button disabled name="Button" />
+      <sui-button name="Button" selected />
       <sui-button icon="check" name="Button" />
-      <sui-button [iconEnd]="true" icon="check" name="Button" />
+      <sui-button icon="check" iconEnd name="Button" />
       <sui-button icon="check" name="Button" shape="flat" variant="outline" />
       <sui-button icon="check" name="Button" shape="rounded" variant="outline" />
       <sui-button icon="check" name="Button" shape="pill" variant="outline" />
-      <sui-button [loading]="true" name="Button" />
+      <sui-button loading name="Button" />
       <sui-button name="Button" size="sm" variant="primary" />
       <sui-button name="Button" variant="primary" />
       <sui-button name="Button" size="lg" variant="primary" />
     </div>
 
     <div style="width: min(500px, 100%)">
-      <sui-button [fullWidth]="true" name="Button" />
+      <sui-button fullWidth name="Button" />
     </div>
   </div>
 
@@ -54,8 +54,8 @@
       <sui-icon-button icon="sun" variant="outline" />
       <sui-icon-button icon="sun" shape="pill" variant="outline" />
       <sui-icon-button icon="sun" state="focus" variant="primary" />
-      <sui-icon-button icon="sun" state="disabled" variant="primary" />
-      <sui-icon-button [selected]="true" icon="sun" variant="primary" />
+      <sui-icon-button disabled icon="sun" variant="primary" />
+      <sui-icon-button icon="sun" selected variant="primary" />
       <sui-icon-button icon="sun" size="sm" variant="primary" />
       <sui-icon-button icon="sun" size="md" variant="primary" />
       <sui-icon-button icon="sun" size="lg" variant="primary" />
@@ -112,11 +112,11 @@
 
     <div class="row">
       <sui-link title="Default Link" url="#" />
-      <sui-link [external]="true" title="External Link" url="https://angular.dev/" />
+      <sui-link external title="External Link" url="https://angular.dev/" />
       <sui-link state="focus" title="Focus" url="#" />
-      <sui-link [underline]="true" title="Underline" url="#" />
+      <sui-link title="Underline" underline url="#" />
       <sui-link title="Neutral Link" url="#" variant="muted" />
-      <sui-link state="disabled" title="Disabled" url="#" />
+      <sui-link disabled title="Disabled" url="#" />
     </div>
   </div>
 

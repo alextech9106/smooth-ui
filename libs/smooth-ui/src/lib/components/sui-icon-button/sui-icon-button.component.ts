@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
+import { booleanAttribute, Component, computed, input, InputSignal, InputSignalWithTransform, output, OutputEmitterRef, Signal } from '@angular/core';
 import { SUI_SHAPE } from '../../types/sui-shape.type';
 import { SUI_SIZE } from '../../types/sui-size.type';
 import { SUI_STATE } from '../../types/sui-state.type';
@@ -14,13 +14,15 @@ import { SUI_ICON_BUTTON_VARIANT } from './type/sui-icon-button-variant.type';
 })
 export class SuiIconButtonComponent {
   public icon: InputSignal<string> = input.required<string>();
-  public selected: InputSignal<boolean> = input<boolean>(false);
   public badge: InputSignal<number> = input<number>(0);
   public iconSize: InputSignal<number> = input<number>(20);
   public shape: InputSignal<SUI_SHAPE> = input<SUI_SHAPE>('rounded');
   public size: InputSignal<SUI_SIZE> = input<SUI_SIZE>('md');
   public state: InputSignal<SUI_STATE> = input<SUI_STATE>('default');
   public variant: InputSignal<SUI_ICON_BUTTON_VARIANT> = input<SUI_ICON_BUTTON_VARIANT>('ghost');
+
+  public disabled: InputSignalWithTransform<boolean, unknown> = input<boolean, unknown>(false, { transform: booleanAttribute });
+  public selected: InputSignalWithTransform<boolean, unknown> = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   public trigger: OutputEmitterRef<void> = output<void>();
 
@@ -36,6 +38,13 @@ export class SuiIconButtonComponent {
   });
   protected readonly classes: Signal<string> = computed(
     () =>
-      `sui-icon-button sui-icon-button-${this.variant()} sui-icon-button-${this.size()} sui-icon-button-${this.state()} sui-icon-button-${this.shape()} ${this.selected() ? 'sui-icon-button-selected' : ''}`,
+      `sui-icon-button
+      sui-icon-button-${this.variant()}
+      sui-icon-button-${this.size()}
+      sui-icon-button-${this.state()}
+      sui-icon-button-${this.shape()}
+      ${this.disabled() ? 'sui-icon-button-disabled' : ''},
+      ${this.selected() ? 'sui-icon-button-selected' : ''}
+    `,
   );
 }

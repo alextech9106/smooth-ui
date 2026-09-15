@@ -74,10 +74,10 @@ export class SuiTextFieldComponent<TValue extends string | number | null = strin
       `
         sui-input-affix-${this.size()}
         sui-input-${this.size()}
-        ${this.touched() && this.errors().length ? 'sui-input-error' : ''}
-        ${this.state() !== 'default' ? 'sui-input-' + this.state() : ''}
         ${this.disabled() ? 'sui-input-disabled' : ''}
         ${this.readonly() ? 'sui-input-readonly' : ''}
+        ${this.state() !== 'default' ? 'sui-input-' + this.state() : ''}
+        ${this.touched() && this.errors().length ? 'sui-input-error' : ''}
         ${this.variant() !== 'outlined' ? 'sui-input-' + this.variant() : ''}
       `,
   );

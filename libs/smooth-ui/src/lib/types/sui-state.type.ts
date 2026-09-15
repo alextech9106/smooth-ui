@@ -1,1 +1,1 @@
-export type SUI_STATE = 'default' | 'focus' | 'disabled';
+export type SUI_STATE = 'default' | 'focus';

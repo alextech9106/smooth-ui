@@ -15,12 +15,18 @@ import { SUI_BUTTON_GROUP_VARIANT } from './type/sui-button-group-variant.type';
 })
 export class SuiButtonGroupComponent {
   public buttons: InputSignal<SuiButton[]> = input.required<SuiButton[]>();
+
   public shape: InputSignal<SUI_SHAPE> = input<SUI_SHAPE>('flat');
   public size: InputSignal<SUI_SIZE> = input<SUI_SIZE>('md');
   public type: InputSignal<SUI_BUTTON_GROUP_TYPE> = input<SUI_BUTTON_GROUP_TYPE>('button');
   public variant: InputSignal<SUI_BUTTON_GROUP_VARIANT> = input<SUI_BUTTON_GROUP_VARIANT>('ghost');
 
   protected readonly classes: Signal<string> = computed(
-    () => `sui-button-group sui-button-group-${this.shape()} sui-button-group-${this.size()} sui-button-group-${this.variant()}`,
+    () => `
+      sui-button-group
+      sui-button-group-${this.shape()}
+      sui-button-group-${this.size()}
+      sui-button-group-${this.variant()}
+    `,
   );
 }

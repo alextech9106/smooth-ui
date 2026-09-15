@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, input, InputSignal, output, OutputEmitterRef, Signal } from '@angular/core';
+import { booleanAttribute, Component, computed, input, InputSignal, InputSignalWithTransform, output, OutputEmitterRef, Signal } from '@angular/core';
 import { SUI_SHAPE } from '../../types/sui-shape.type';
 import { SUI_SIZE } from '../../types/sui-size.type';
 import { SUI_STATE } from '../../types/sui-state.type';
@@ -15,10 +15,6 @@ import { SUI_BUTTON_VARIANT } from './type/sui-button-variant.type';
 })
 export class SuiButtonComponent {
   public name: InputSignal<string> = input.required<string>();
-  public fullWidth: InputSignal<boolean> = input<boolean>(false);
-  public iconEnd: InputSignal<boolean> = input<boolean>(false);
-  public loading: InputSignal<boolean> = input<boolean>(false);
-  public selected: InputSignal<boolean> = input<boolean>(false);
   public iconSize: InputSignal<number> = input<number>(20);
   public icon: InputSignal<string> = input<string>('');
   public shape: InputSignal<SUI_SHAPE> = input<SUI_SHAPE>('rounded');
@@ -26,6 +22,12 @@ export class SuiButtonComponent {
   public state: InputSignal<SUI_STATE> = input<SUI_STATE>('default');
   public type: InputSignal<SUI_BUTTON_TYPE> = input<SUI_BUTTON_TYPE>('button');
   public variant: InputSignal<SUI_BUTTON_VARIANT> = input<SUI_BUTTON_VARIANT>('primary');
+
+  public disabled: InputSignalWithTransform<boolean, unknown> = input<boolean, unknown>(false, { transform: booleanAttribute });
+  public fullWidth: InputSignalWithTransform<boolean, unknown> = input<boolean, unknown>(false, { transform: booleanAttribute });
+  public iconEnd: InputSignalWithTransform<boolean, unknown> = input<boolean, unknown>(false, { transform: booleanAttribute });
+  public loading: InputSignalWithTransform<boolean, unknown> = input<boolean, unknown>(false, { transform: booleanAttribute });
+  public selected: InputSignalWithTransform<boolean, unknown> = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   public trigger: OutputEmitterRef<void> = output<void>();
 
@@ -42,7 +44,14 @@ export class SuiButtonComponent {
     }
   });
   protected readonly classes: Signal<string> = computed(
-    () =>
-      `sui-button sui-button-${this.variant()} sui-button-${this.size()} ${this.state() !== 'default' ? 'sui-button-' + this.state() : ''} sui-button-${this.shape()} ${this.fullWidth() ? 'sui-button-full-width' : ''} ${this.selected() ? 'sui-button-selected' : ''}`,
+    () => `
+      sui-button
+      sui-button-${this.shape()} ${this.fullWidth() ? 'sui-button-full-width' : ''}
+      sui-button-${this.size()}
+      sui-button-${this.variant()}
+      ${this.disabled() ? 'sui-button-disabled' : ''}
+      ${this.state() !== 'default' ? 'sui-button-' + this.state() : ''}
+      ${this.selected() ? 'sui-button-selected' : ''}
+    `,
   );
 }
