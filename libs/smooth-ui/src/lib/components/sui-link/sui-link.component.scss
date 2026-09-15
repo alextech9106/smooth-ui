@@ -38,4 +38,9 @@
   &:hover {
     text-decoration: underline;
   }
+
+  &:focus {
+    outline: none;
+    box-shadow: var(--sui-focus-ring);
+  }
 }
