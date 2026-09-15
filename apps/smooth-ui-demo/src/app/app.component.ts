@@ -7,9 +7,22 @@ import {
   SuiIconButtonComponent,
   SuiIconComponent,
   SuiLinkComponent,
+  SuiTextFieldComponent,
   SuiThemeToggleComponent,
 } from '@alextech9106/smooth-ui';
-import { Component } from '@angular/core';
+import { Component, signal, WritableSignal } from '@angular/core';
+import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { disabled, form, FormField, max, maxLength, min, minLength, pattern, readonly, required } from '@angular/forms/signals';
+
+interface TextFieldsModel {
+  text: string;
+  email: string;
+  password: string;
+  search: string;
+  tel: string;
+  url: string;
+  number: number | null;
+}
 
 @Component({
   selector: 'app-root',
@@ -21,6 +34,9 @@ import { Component } from '@angular/core';
     SuiButtonSplitComponent,
     SuiLinkComponent,
     SuiThemeToggleComponent,
+    SuiTextFieldComponent,
+    ReactiveFormsModule,
+    FormField,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
@@ -117,4 +133,108 @@ export class AppComponent {
     { title: 'Item 2', icon: { name: 'x', size: 16 }, separatorAfter: true },
     { title: 'Item 3', icon: { name: 'star', size: 16 } },
   ];
+
+  protected readonly formGroup: UntypedFormGroup = new UntypedFormGroup({
+    text: new UntypedFormControl({ value: null, disabled: false }, [Validators.required, Validators.minLength(2), Validators.maxLength(10)]),
+    email: new UntypedFormControl({ value: null, disabled: false }, [
+      Validators.required,
+      Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,4}$/),
+    ]),
+    password: new UntypedFormControl({ value: null, disabled: false }, [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.pattern(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`])/),
+    ]),
+    search: new UntypedFormControl({ value: null, disabled: true }, [Validators.max(100)]),
+    tel: new UntypedFormControl({ value: null, disabled: false }, [Validators.required, Validators.pattern(/^\+?[0-9\s-]{7,15}$/)]),
+    url: new UntypedFormControl({ value: null, disabled: false }, [Validators.required, Validators.pattern(/^https?:\/\/.+\..+/)]),
+    number: new UntypedFormControl({ value: 35, disabled: false }, [Validators.required, Validators.min(0), Validators.max(999)]),
+  });
+
+  protected readonly formGroupErrors = {
+    text: [
+      { type: 'required', message: 'Required field' },
+      { type: 'minlength', message: 'Minimum 2 characters' },
+      { type: 'maxlength', message: 'Maximum 10 characters' },
+    ],
+    email: [
+      { type: 'required', message: 'Email address is required' },
+      { type: 'pattern', message: 'Please enter a valid email address' },
+    ],
+    password: [
+      { type: 'required', message: 'Password is required' },
+      { type: 'minlength', message: 'Minimum 8 characters' },
+      { type: 'pattern', message: 'Must include uppercase letters, lowercase letters, a number and a special character' },
+    ],
+    search: [{ type: 'maxlength', message: 'Maximum 100 characters' }],
+    tel: [
+      { type: 'required', message: 'Phone number is required' },
+      { type: 'pattern', message: 'Please enter a valid phone number' },
+    ],
+    url: [
+      { type: 'required', message: 'URL is required' },
+      { type: 'pattern', message: 'Please enter a valid URL (https://… or http://…)' },
+    ],
+    number: [
+      { type: 'required', message: 'Required field' },
+      { type: 'min', message: 'Must be ≥ 0' },
+      { type: 'max', message: 'Must be ≤ 999' },
+    ],
+  };
+
+  protected readonly signalFormModel: WritableSignal<TextFieldsModel> = signal<TextFieldsModel>({
+    text: '',
+    email: '',
+    password: '',
+    search: '',
+    tel: '',
+    url: '',
+    number: 35,
+  });
+
+  protected readonly textFieldsForm = form(this.signalFormModel, (schemaPath) => {
+    required(schemaPath.text, { message: 'Required field' });
+    minLength(schemaPath.text, 2, { message: 'Minimum 2 characters' });
+    maxLength(schemaPath.text, 10, { message: 'Maximum 10 characters' });
+
+    required(schemaPath.email, { message: 'Email address is required' });
+    pattern(schemaPath.email, /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,4}$/, {
+      message: 'Please enter a valid email address',
+    });
+
+    required(schemaPath.password, { message: 'Password is required' });
+    minLength(schemaPath.password, 8, { message: 'Minimum 8 characters' });
+    pattern(schemaPath.password, /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`])/, {
+      message: 'Must include uppercase letters, lowercase letters, a number and a special character',
+    });
+
+    maxLength(schemaPath.search, 100, { message: 'Maximum 100 characters' });
+    disabled(schemaPath.search);
+
+    required(schemaPath.tel, { message: 'Phone number is required' });
+    pattern(schemaPath.tel, /^\+?[0-9\s-]{7,15}$/, { message: 'Please enter a valid phone number' });
+
+    required(schemaPath.url, { message: 'URL is required' });
+    pattern(schemaPath.url, /^https?:\/\/.+\..+/, { message: 'Please enter a valid URL (https://… or http://…)' });
+
+    required(schemaPath.number, { message: 'Required field' });
+    min(schemaPath.number, 0, { message: 'Must be ≥ 0' });
+    max(schemaPath.number, 999, { message: 'Must be ≤ 999' });
+    readonly(schemaPath.number);
+  });
+
+  protected onSubmitFormGroup(): void {
+    if (this.formGroup.invalid) {
+      this.formGroup.markAsTouched();
+      return;
+    }
+  }
+
+  protected onSubmitSignalForm(event?: SubmitEvent): void {
+    event?.preventDefault();
+    if (this.textFieldsForm().invalid()) {
+      this.textFieldsForm().markAsTouched();
+      return;
+    }
+  }
 }

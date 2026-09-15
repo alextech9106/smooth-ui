@@ -1,5 +1,5 @@
 <div class="container">
-  <sui-theme-toggle />
+  <sui-theme-toggle class="theme-toggle" />
 
   <div class="col">
     <h1>Smooth UI Icons</h1>
@@ -118,5 +118,55 @@
       <sui-link title="Neutral Link" url="#" variant="muted" />
       <sui-link state="disabled" title="Disabled" url="#" />
     </div>
+  </div>
+
+  <div class="col">
+    <h1>Smooth UI Text Field</h1>
+
+    <h2>Default Form Group With Form Controls</h2>
+
+    <form [formGroup]="formGroup" class="row row-start">
+      <sui-text-field [customErrors]="formGroupErrors.text" formControlName="text"
+                      hint="This is a hint for default text field" iconStart="info" label="Default Text Field"
+                      placeholder="Default Text Field" size="sm" />
+      <sui-text-field [customErrors]="formGroupErrors.email" formControlName="email" label="Email Text Field"
+                      placeholder="Email Text Field" size="md" type="email" variant="filled" />
+      <sui-text-field [customErrors]="formGroupErrors.password" formControlName="password" label="Password Text Field"
+                      placeholder="Password Text Field" size="lg" type="password" variant="underline" />
+      <sui-text-field [customErrors]="formGroupErrors.search" formControlName="search" label="Search Text Field"
+                      placeholder="Search Text Field" type="search" />
+      <sui-text-field [customErrors]="formGroupErrors.tel" formControlName="tel" label="Phone Text Field"
+                      placeholder="Phone Text Field" size="lg" type="tel" />
+      <sui-text-field [customErrors]="formGroupErrors.url" formControlName="url" label="Url Text Field"
+                      placeholder="Url Text Field" size="md" type="url" variant="filled" />
+      <sui-text-field [customErrors]="formGroupErrors.number" formControlName="number" iconEnd="info"
+                      label="Number Text Field" placeholder="Number Text Field" readonly size="sm" type="number"
+                      variant="underline" />
+
+      <sui-button (click)="onSubmitFormGroup()" name="Submit Data" type="submit" />
+      <sui-button name="Reset" type="reset" variant="outline" />
+    </form>
+
+    <h2>Signal Form</h2>
+
+    <form (submit)="onSubmitSignalForm($event)" class="row row-start" novalidate>
+      <sui-text-field [formField]="textFieldsForm.text" hint="This is a hint for default text field"
+                      iconStart="info" label="Default Text Field" placeholder="Default Text Field" size="sm" />
+      <sui-text-field [formField]="textFieldsForm.email" label="Email Text Field" placeholder="Email Text Field"
+                      size="md" type="email" variant="filled" />
+      <sui-text-field [formField]="textFieldsForm.password" label="Password Text Field"
+                      placeholder="Password Text Field" size="lg" type="password" variant="underline" />
+      <sui-text-field [formField]="textFieldsForm.search" label="Search Text Field"
+                      placeholder="Search Text Field" type="search" />
+      <sui-text-field [formField]="textFieldsForm.tel" label="Phone Text Field" placeholder="Phone Text Field"
+                      size="lg" type="tel" />
+      <sui-text-field [formField]="textFieldsForm.url" label="Url Text Field" placeholder="Url Text Field"
+                      size="md" type="url" variant="filled" />
+      <sui-text-field [formField]="textFieldsForm.number" iconEnd="info" label="Number Text Field"
+                      placeholder="Number Text Field" size="sm" type="number" variant="underline" />
+
+      <sui-button name="Submit Data" type="submit" />
+      <sui-button name="Reset" type="reset" variant="outline" />
+    </form>
   </div>
 </div>
