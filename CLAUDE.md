@@ -1,7 +1,7 @@
 <!-- nx configuration start-->
 <!-- Leave the start & end comments to automatically receive updates. -->
 
-# General Guidelines for working with Nx
+## General Guidelines for working with Nx
 
 - For navigating/exploring the workspace, invoke the `nx-workspace` skill first - it has patterns for querying projects,
   targets, and dependencies
@@ -49,7 +49,7 @@ These three rules override any default habit you have. They apply to every singl
 
 - **Never edit, create, delete, move, or run anything without explicit approval in this turn.** Not even "obvious"
   fixes, formatting, imports, or renames.
-- The correct move is always: *propose → wait → act*. Show the diff or snippet, then ask one short question ("Apply this
+- The correct move is always: _propose → wait → act_. Show the diff or snippet, then ask one short question ("Apply this
   to `user-list.ts`?").
 - Ask before: installing packages, running `ng generate`, changing config (`angular.json`, `tsconfig`,
   `../package.json`), touching more than one file, refactoring, upgrading anything, running git commands.
@@ -148,9 +148,7 @@ export class UserCard {
   readonly expanded = model(false);
   readonly select = output<string>();
 
-  protected readonly fullName = computed(
-    () => `${this.user().firstName} ${this.user().lastName}`,
-  );
+  protected readonly fullName = computed(() => `${this.user().firstName} ${this.user().lastName}`);
 }
 ```
 
@@ -212,19 +210,23 @@ export const UserStore = signalStore(
   withState<UserState>({ filter: '', selectedId: null }),
   withEntities<User>(),
   withComputed(({ entities, filter }) => ({
-    visible: computed(() =>
-      entities().filter((u) => u.name.includes(filter())),
-    ),
+    visible: computed(() => entities().filter((u) => u.name.includes(filter()))),
   })),
   withMethods((store, api = inject(UserApi)) => ({
     setFilter(filter: string) {
       patchState(store, { filter });
     },
     load: rxMethod<void>(
-      pipe(switchMap(() => api.list().pipe(tapResponse({
-        next: (users) => patchState(store, setAllEntities(users)),
-        error: console.error,
-      })))),
+      pipe(
+        switchMap(() =>
+          api.list().pipe(
+            tapResponse({
+              next: (users) => patchState(store, setAllEntities(users)),
+              error: console.error,
+            }),
+          ),
+        ),
+      ),
     ),
   })),
 );
@@ -295,13 +297,12 @@ loginForm = form(this.model, (path) => {
 
 <form (submit)="onSubmit($event)">
   <label for="email">Email</label>
-  <input id="email" type="email" [formField]="loginForm.email"
-         [attr.aria-invalid]="loginForm.email().invalid()" />
+  <input id="email" type="email" [formField]="loginForm.email" [attr.aria-invalid]="loginForm.email().invalid()" />
 
   @if (loginForm.email().touched() && loginForm.email().invalid()) {
-  @for (err of loginForm.email().errors(); track err.kind) {
-  <p class="text-sm text-red-600">{{ err.message }}</p>
-  }
+    @for (err of loginForm.email().errors(); track err.kind) {
+      <p class="text-sm text-red-600">{{ err.message }}</p>
+    }
   }
 
   <button type="submit" [disabled]="loginForm().invalid()">Sign in</button>

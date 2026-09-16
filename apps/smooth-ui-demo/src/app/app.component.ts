@@ -7,6 +7,7 @@ import {
   SuiIconButtonComponent,
   SuiIconComponent,
   SuiLinkComponent,
+  SuiTextareaComponent,
   SuiTextFieldComponent,
   SuiThemeToggleComponent,
 } from '@alextech9106/smooth-ui';
@@ -22,6 +23,11 @@ interface TextFieldsModel {
   tel: string;
   url: string;
   number: number | null;
+  textarea: string;
+  filledTextarea: string;
+  underlineTextarea: string;
+  disabledTextarea: string;
+  readonlyTextarea: string;
 }
 
 @Component({
@@ -37,6 +43,7 @@ interface TextFieldsModel {
     SuiTextFieldComponent,
     ReactiveFormsModule,
     FormField,
+    SuiTextareaComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
@@ -149,6 +156,12 @@ export class AppComponent {
     tel: new UntypedFormControl({ value: null, disabled: false }, [Validators.required, Validators.pattern(/^\+?[0-9\s-]{7,15}$/)]),
     url: new UntypedFormControl({ value: null, disabled: false }, [Validators.required, Validators.pattern(/^https?:\/\/.+\..+/)]),
     number: new UntypedFormControl({ value: 35, disabled: false }, [Validators.required, Validators.min(0), Validators.max(999)]),
+
+    textarea: new UntypedFormControl({ value: null, disabled: false }, [Validators.required]),
+    filledTextarea: new UntypedFormControl({ value: null, disabled: false }, [Validators.required]),
+    underlineTextarea: new UntypedFormControl({ value: null, disabled: false }, [Validators.required]),
+    disabledTextarea: new UntypedFormControl({ value: null, disabled: true }),
+    readonlyTextarea: new UntypedFormControl({ value: 'Readonly textarea', disabled: false }, [Validators.required]),
   });
 
   protected readonly formGroupErrors = {
@@ -180,6 +193,10 @@ export class AppComponent {
       { type: 'min', message: 'Must be ≥ 0' },
       { type: 'max', message: 'Must be ≤ 999' },
     ],
+    textarea: [{ type: 'required', message: 'Textarea is required' }],
+    filledTextarea: [{ type: 'required', message: 'Filled textarea is required' }],
+    underlineTextarea: [{ type: 'required', message: 'Underline textarea is required' }],
+    readonlyTextarea: [{ type: 'required', message: 'Readonly textarea is required' }],
   };
 
   protected readonly signalFormModel: WritableSignal<TextFieldsModel> = signal<TextFieldsModel>({
@@ -190,6 +207,11 @@ export class AppComponent {
     tel: '',
     url: '',
     number: 35,
+    textarea: '',
+    filledTextarea: '',
+    underlineTextarea: '',
+    disabledTextarea: '',
+    readonlyTextarea: 'Readonly textarea',
   });
 
   protected readonly textFieldsForm = form(this.signalFormModel, (schemaPath) => {
@@ -221,11 +243,21 @@ export class AppComponent {
     min(schemaPath.number, 0, { message: 'Must be ≥ 0' });
     max(schemaPath.number, 999, { message: 'Must be ≤ 999' });
     readonly(schemaPath.number);
+
+    required(schemaPath.textarea, { message: 'Textarea is required' });
+
+    required(schemaPath.filledTextarea, { message: 'Filled textarea is required' });
+
+    required(schemaPath.underlineTextarea, { message: 'Underline textarea is required' });
+
+    disabled(schemaPath.disabledTextarea);
+
+    readonly(schemaPath.readonlyTextarea);
   });
 
   protected onSubmitFormGroup(): void {
     if (this.formGroup.invalid) {
-      this.formGroup.markAsTouched();
+      this.formGroup.markAllAsTouched();
       return;
     }
   }

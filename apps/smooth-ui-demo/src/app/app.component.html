@@ -169,4 +169,36 @@
       <sui-button name="Reset" type="reset" variant="outline" />
     </form>
   </div>
+
+  <div class="col">
+    <h1>Smooth UI Textarea</h1>
+
+    <h2>Default Form Group With Form Controls</h2>
+
+    <form [formGroup]="formGroup" class="row row-start">
+      <sui-textarea [customErrors]="formGroupErrors.textarea" formControlName="textarea" label="Textarea"
+                    placeholder="Textarea" />
+      <sui-textarea [customErrors]="formGroupErrors.filledTextarea" formControlName="filledTextarea"
+                    label="Filled Textarea" placeholder="Filled Textarea" variant="filled" />
+      <sui-textarea [customErrors]="formGroupErrors.underlineTextarea" formControlName="underlineTextarea"
+                    label="Underline Textarea" placeholder="Underline Textarea" variant="underline" />
+      <sui-textarea formControlName="disabledTextarea" label="Disabled Textarea" placeholder="Disabled Textarea" />
+      <sui-textarea [customErrors]="formGroupErrors.readonlyTextarea" formControlName="readonlyTextarea"
+                    label="Readonly Textarea" placeholder="Readonly Textarea" readonly />
+    </form>
+
+    <h2>Signal Form</h2>
+
+    <form class="row row-start">
+      <sui-textarea [formField]="textFieldsForm.textarea" label="Textarea" placeholder="Textarea" />
+      <sui-textarea [formField]="textFieldsForm.filledTextarea" label="Filled Textarea" placeholder="Filled Textarea"
+                    variant="filled" />
+      <sui-textarea [formField]="textFieldsForm.underlineTextarea" label="Underline Textarea"
+                    placeholder="Underline Textarea" variant="underline" />
+      <sui-textarea [formField]="textFieldsForm.disabledTextarea" label="Disabled Textarea"
+                    placeholder="Disabled Textarea" />
+      <sui-textarea [formField]="textFieldsForm.readonlyTextarea" label="Readonly Textarea"
+                    placeholder="Readonly Textarea" />
+    </form>
+  </div>
 </div>
