@@ -35,7 +35,9 @@ export * from './lib/components/sui-link/type/sui-link-variant.type';
 /* SUI Text Field */
 export * from './lib/components/sui-text-field/sui-text-field.component';
 export * from './lib/components/sui-text-field/type/sui-text-field-type.type';
-export * from './lib/components/sui-text-field/type/sui-text-field-variant.type';
+
+/* SUI Text Area */
+export * from './lib/components/sui-textarea/sui-textarea.component';
 
 /* SUI Error */
 export * from './lib/components/sui-error/sui-error.component';
@@ -55,6 +57,7 @@ export * from './lib/services/breakpoint.service';
 export * from './lib/services/theme.service';
 
 /* Types */
+export * from './lib/types/sui-input-variant.type';
 export * from './lib/types/sui-size.type';
 export * from './lib/types/sui-shape.type';
 export * from './lib/types/sui-state.type';

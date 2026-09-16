@@ -15,12 +15,12 @@ import {
 } from '@angular/core';
 import { FormValueControl, ParseResult, transformedValue, TransformedValueSignal, ValidationError } from '@angular/forms/signals';
 import { CustomError } from '../../interfaces/custom-error.interface';
+import { SUI_INPUT_VARIANT } from '../../types/sui-input-variant.type';
 import { SUI_SIZE } from '../../types/sui-size.type';
 import { SUI_STATE } from '../../types/sui-state.type';
 import { SuiErrorComponent } from '../sui-error/sui-error.component';
 import { SuiIconComponent } from '../sui-icon/sui-icon.component';
 import { SUI_TEXT_FIELD_TYPE } from './type/sui-text-field-type.type';
-import { SUI_TEXT_FIELD_VARIANT } from './type/sui-text-field-variant.type';
 
 @Component({
   selector: 'sui-text-field',
@@ -48,7 +48,7 @@ export class SuiTextFieldComponent<TValue extends string | number | null = strin
   public state: InputSignal<SUI_STATE> = input<SUI_STATE>('default');
   public size: InputSignal<SUI_SIZE> = input<SUI_SIZE>('md');
   public type: InputSignal<SUI_TEXT_FIELD_TYPE> = input<SUI_TEXT_FIELD_TYPE>('text');
-  public variant: InputSignal<SUI_TEXT_FIELD_VARIANT> = input<SUI_TEXT_FIELD_VARIANT>('outlined');
+  public variant: InputSignal<SUI_INPUT_VARIANT> = input<SUI_INPUT_VARIANT>('outlined');
 
   public disabled: InputSignalWithTransform<boolean, unknown> = input<boolean, unknown>(false, { transform: booleanAttribute });
   public readonly: InputSignalWithTransform<boolean, unknown> = input<boolean, unknown>(false, { transform: booleanAttribute });
