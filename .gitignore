@@ -45,11 +45,5 @@ Thumbs.db
 .nx
 
 # Agents
-.agents
 .claude
-.codex
-.cursor
-.gemini
-.github
-.opencode
 .verdaccio

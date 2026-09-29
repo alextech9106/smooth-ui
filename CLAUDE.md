@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 <!-- nx configuration start-->
 <!-- Leave the start & end comments to automatically receive updates. -->
 
@@ -75,7 +79,7 @@ These three rules override any default habit you have. They apply to every singl
 
 ```ts
 // src/app/users/user-list.ts
-readonly
+readonly;
 users = httpResource<User[]>(() => '/api/users');
 ```
 
@@ -85,29 +89,32 @@ Then one line: what it does or what it replaces. Then: "Want me to apply it?"
 
 ## 2. Project baseline
 
-| Item             | Value                                                                         |
-|------------------|-------------------------------------------------------------------------------|
-| Angular          | v22 (latest stable)                                                           |
-| TypeScript       | 6.x, `strict: true`                                                           |
-| Change detection | Zoneless (default since v21) — `zone.js` must not be a dependency             |
-| Components       | Standalone, `OnPush` by default (v22 default — do not write it explicitly)    |
-| Builder          | `@angular/build` application builder (Webpack builders are deprecated in v22) |
-| Forms            | Signal Forms (`@angular/forms/signals`)                                       |
-| Test runner      | Vitest (`ng test`)                                                            |
-| E2E              | Playwright                                                                    |
-| Shared state     | NgRx SignalStore                                                              |
-| Styling          | Tailwind CSS + Angular Material / Angular Aria                                |
+Nx 23 + pnpm workspace, Angular 22.1, TypeScript 6.0 (`strict`), zoneless, Vitest 4. Styling is SCSS + CSS custom
+properties — Tailwind, NgRx, Angular Material and Playwright are **not** installed; don't suggest them without asking.
 
-Verify these against the repo before relying on them. If `angular.json` or `../package.json` disagrees with this table,
-tell the user in one line and ask which wins.
+- `libs/smooth-ui` — publishable library `@alextech9106/smooth-ui` (ng-packagr via `@nx/angular:package`, output
+  `dist/libs/smooth-ui`, released with `nx release` using git tags). Everything consumers can use must be exported from
+  `src/public-api.ts`.
+- `apps/smooth-ui-demo` — showcase app. It imports the library through the `tsconfig.base.json` path alias, which points
+  at the lib's **source**, so lib changes show up without a rebuild. It demos every component with both Signal Forms and
+  Reactive Forms.
+- Library layout: `src/lib/components/sui-<name>/` (`.component.ts/html/scss/spec.ts` + a `type/` folder for
+  per-component union types), plus shared `types/`, `interfaces/`, `services/`, `constants/`.
+- Theming: `libs/smooth-ui/theme/theme.scss` defines the `--sui-*` design tokens and is shipped as a package asset. Dark
+  mode switches on `[data-theme]` on `<html>`, set by `ThemeService`. Icons are an inline SVG sprite
+  (`constants/sui-icon.ts`) that `SuiIconService` injects into `<body>`.
+- Form controls (`sui-text-field`, `sui-textarea`) implement Signal Forms' `FormValueControl<T>` (`value` model +
+  `touched`/`errors`/`disabled` inputs, `touch` output). Don't add a `ControlValueAccessor`.
 
 ---
 
 ## 3. TypeScript rules
 
-- `strict: true`, `noUncheckedIndexedAccess: true`. Never weaken compiler options to make code pass.
+- `strict: true`, `noImplicitReturns`, `noUnusedLocals`, `noImplicitOverride` (see `tsconfig.base.json`). Never weaken
+  compiler options to make code pass.
 - **No `any`.** Use `unknown` and narrow, or write the real type.
-- Let inference work. Annotate public APIs (exported functions, service methods, models), not obvious locals.
+- Library code annotates class fields explicitly, including signals (`public size: InputSignal<SUI_SIZE> = input<SUI_SIZE>('md');`),
+  with explicit `public`/`protected`/`private` modifiers and a `_` prefix on private members. Follow that style.
 - No non-null assertions (`!`) except after a guard you can point to.
 - Model domain types as `interface` for object shapes, `type` for unions and mapped types.
 - Prefer `readonly` on class fields that never get reassigned — signals almost always qualify.
@@ -123,8 +130,8 @@ tell the user in one line and ask which wins.
 - One responsibility per component. If a template passes ~80 lines or the class holds two unrelated concerns, propose a
   split.
 - Inline templates for anything under ~20 lines; external `.html` beyond that, referenced by relative path.
-- Naming: file `user-card.ts`, class `UserCard`, selector `app-user-card`. No `.component` suffix in filenames (v20+
-  convention).
+- Naming (library): file `sui-button.component.ts`, class `SuiButtonComponent`, selector `sui-button`. Union types are
+  `SUI_*` (e.g. `SUI_SIZE`) in `*.type.ts`. The demo app uses the `app-` prefix. The examples below use generic names.
 
 **Signal-based API — always:**
 
@@ -190,11 +197,11 @@ export class UserCard {
 **Local component state → signals.**
 
 ```ts
-readonly
+readonly;
 query = signal('');
-readonly
+readonly;
 page = signal(1);
-readonly
+readonly;
 results = computed(() => filter(this.all(), this.query()));
 ```
 
@@ -247,9 +254,9 @@ Default to the resource APIs, not manual subscriptions.
 
 ```ts
 // src/app/users/user-detail.ts
-readonly
+readonly;
 userId = input.required<string>();
-readonly
+readonly;
 user = httpResource<User>(() => `/api/users/${this.userId()}`);
 ```
 
@@ -282,9 +289,9 @@ Signal Forms for anything new. Reactive Forms only in files that already use the
 // src/app/auth/login.ts
 import { form, FormField, email, minLength, required } from '@angular/forms/signals';
 
-readonly
+readonly;
 model = signal({ email: '', password: '' });
-readonly
+readonly;
 loginForm = form(this.model, (path) => {
   required(path.email, { message: 'Email is required' });
   email(path.email, { message: 'Enter a valid email' });
@@ -294,16 +301,13 @@ loginForm = form(this.model, (path) => {
 ```
 
 ```html
-
 <form (submit)="onSubmit($event)">
   <label for="email">Email</label>
   <input id="email" type="email" [formField]="loginForm.email" [attr.aria-invalid]="loginForm.email().invalid()" />
 
-  @if (loginForm.email().touched() && loginForm.email().invalid()) {
-    @for (err of loginForm.email().errors(); track err.kind) {
-      <p class="text-sm text-red-600">{{ err.message }}</p>
-    }
-  }
+  @if (loginForm.email().touched() && loginForm.email().invalid()) { @for (err of loginForm.email().errors(); track err.kind) {
+  <p class="text-sm text-red-600">{{ err.message }}</p>
+  } }
 
   <button type="submit" [disabled]="loginForm().invalid()">Sign in</button>
 </form>
@@ -355,14 +359,11 @@ export class UserApi {
 
 ## 11. Styling & UI
 
-- Tailwind utilities in templates for layout and spacing. Component styles only for what utilities can't express.
-- No `::ng-deep`. Style third-party internals via their documented CSS custom properties or a global layer.
-- Angular Material for complex widgets; **Angular Aria** (stable in v22) for headless accessible primitives you want to
-  style yourself.
-- Design tokens as CSS custom properties on `:root` and a `[data-theme]` / `.dark` selector — never hard-coded hex
-  values in components.
-- Keep Tailwind class lists readable: group by layout → spacing → color → state. Extract to a `computed()` string when a
-  list gets long or conditional.
+- One `.scss` file per component (`styleUrl`), using the `--sui-*` tokens from `theme/theme.scss` — never hard-coded hex
+  values in components. New tokens go in `theme.scss` for both light and `[data-theme='dark']`.
+- No `::ng-deep`.
+- Conditional class lists are built in a `computed()` string (see `SuiTextFieldComponent.classes`).
+- Respect the `anyComponentStyle` budget in the demo (warn 4kb / error 8kb).
 
 ---
 
@@ -380,14 +381,12 @@ export class UserApi {
 
 ## 13. Testing
 
-- `ng test` runs **Vitest**. Component tests use `TestBed` + `ComponentFixture`.
+- `pnpm nx test smooth-ui` runs **Vitest**. Specs sit next to each component (`*.component.spec.ts`) and use `TestBed` +
+  `ComponentFixture`; set required inputs with `fixture.componentRef.setInput()`.
 - Test behavior through the DOM, not private methods. Query by role and accessible name.
-- Use Angular Material / Aria **test harnesses** rather than CSS selectors for those components.
 - Mock at the HTTP boundary with `provideHttpClientTesting()` and `HttpTestingController` — don't stub your own services
   when the real one is cheap.
-- For SignalStore, assert on the store's computed signals after calling its methods.
 - Zoneless: no `fakeAsync`/`tick` for signal updates — `await fixture.whenStable()` after a change.
-- Playwright for e2e: one spec per user journey, no unit-test-shaped e2e.
 - New behavior ships with a test. Bug fixes ship with a regression test that fails before the fix.
 
 ---
@@ -407,7 +406,7 @@ export class UserApi {
 ## 15. Legacy — do not write these
 
 | Don't                                 | Do                                             |
-|---------------------------------------|------------------------------------------------|
+| ------------------------------------- | ---------------------------------------------- |
 | `NgModule`                            | Standalone components                          |
 | `standalone: true`                    | Omit it (default)                              |
 | `changeDetection: OnPush`             | Omit it (default in v22)                       |
@@ -432,17 +431,18 @@ If you find these in existing code: **mention it, show the replacement, do not m
 ## 16. Commands
 
 ```bash
-ng serve                 # dev server
-ng build                 # production build
-ng test                  # Vitest
-ng test --coverage       # coverage
-npx playwright test      # e2e
-ng lint                  # lint
-npx tsc --noEmit         # type check only
-ng update                # dependency upgrades — ASK FIRST
+pnpm nx serve smooth-ui-demo
+pnpm nx build smooth-ui                               # ng-packagr build
+pnpm nx test smooth-ui                                # Vitest (@nx/angular:unit-test)
+pnpm nx test smooth-ui --include=**/sui-button/**     # single spec
+pnpm nx test smooth-ui --filter="SuiButtonComponent"  # by test name
+pnpm nx lint smooth-ui
+pnpm nx typecheck smooth-ui
+pnpm nx run-many -t lint test build typecheck         # what CI runs
+pnpm nx release --dry-run                             # version from git tag, publish from dist
 ```
 
-Never run `ng update`, `npm install`, or any git command without approval.
+Never run `nx release`, `pnpm install`, `ng update` or any git command without approval.
 
 ---
 
@@ -450,9 +450,10 @@ Never run `ng update`, `npm install`, or any git command without approval.
 
 Before you call a change complete:
 
-- [ ] `npx tsc --noEmit` clean, no new `any`
-- [ ] `ng lint` clean
-- [ ] `ng test` green, new behavior covered
+- [ ] `pnpm nx typecheck smooth-ui` clean, no new `any`
+- [ ] `pnpm nx lint smooth-ui` clean
+- [ ] `pnpm nx test smooth-ui` green, new behavior covered
+- [ ] New public API exported from `public-api.ts`
 - [ ] Zero AXE violations on touched UI
 - [ ] Nothing from §15 introduced
 - [ ] Bundle budgets respected
