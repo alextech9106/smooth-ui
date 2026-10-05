@@ -6,6 +6,8 @@ describe('SuiThemeToggleComponent', () => {
   let fixture: ComponentFixture<SuiThemeToggleComponent>;
 
   beforeEach(async () => {
+    vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
+
     await TestBed.configureTestingModule({
       imports: [SuiThemeToggleComponent],
     }).compileComponents();
@@ -13,6 +15,10 @@ describe('SuiThemeToggleComponent', () => {
     fixture = TestBed.createComponent(SuiThemeToggleComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   it('should create', () => {
