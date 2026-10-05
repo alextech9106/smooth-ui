@@ -1,67 +1,27 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "production": ["default"],
-    "sharedGlobals": []
-  },
+  "namedInputs": { "default": ["{projectRoot}/**/*", "sharedGlobals"], "production": ["default"], "sharedGlobals": [] },
   "plugins": [
     {
       "plugin": "@nx/js/typescript",
       "options": {
-        "typecheck": {
-          "targetName": "typecheck"
-        },
-        "build": {
-          "targetName": "build",
-          "configName": "tsconfig.lib.json",
-          "buildDepsName": "build-deps",
-          "watchDepsName": "watch-deps"
-        }
+        "typecheck": { "targetName": "typecheck" },
+        "build": { "targetName": "build", "configName": "tsconfig.lib.json", "buildDepsName": "build-deps", "watchDepsName": "watch-deps" }
       }
     },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    }
+    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } }
   ],
   "analytics": false,
   "targetDefaults": {
-    "@angular/build:application": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
-    },
-    "@nx/angular:package": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
-    },
-    "@nx/angular:unit-test": {
-      "cache": true,
-      "inputs": ["default", "^production"]
-    }
+    "@angular/build:application": { "cache": true, "dependsOn": ["^build"], "inputs": ["production", "^production"] },
+    "@nx/angular:package": { "cache": true, "dependsOn": ["^build"], "inputs": ["production", "^production"] },
+    "@nx/angular:unit-test": { "cache": true, "inputs": ["default", "^production"] }
   },
   "generators": {
-    "@nx/angular:application": {
-      "e2eTestRunner": "none",
-      "style": "scss",
-      "unitTestRunner": "none"
-    },
-    "@nx/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "vitest-angular"
-    },
-    "@nx/angular:component": {
-      "style": "scss",
-      "type": "component"
-    }
+    "@nx/angular:application": { "e2eTestRunner": "none", "style": "scss", "unitTestRunner": "none" },
+    "@nx/angular:library": { "linter": "eslint", "unitTestRunner": "vitest-angular" },
+    "@nx/angular:component": { "style": "scss", "type": "component" }
   },
-  "release": {
-    "version": {
-      "preVersionCommand": "pnpm dlx nx run-many -t build"
-    }
-  }
+  "release": { "version": { "preVersionCommand": "pnpm dlx nx run-many -t build" } },
+  "nxCloudId": "6ac3c949f2e20fc909e18883"
 }
