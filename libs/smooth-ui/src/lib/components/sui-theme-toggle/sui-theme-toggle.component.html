@@ -1,1 +1,5 @@
-<sui-icon-button (click)="theme.toggle()" [icon]="theme.theme() === 'dark' ? 'sun' : 'moon'" />
+<sui-icon-button
+  (click)="theme.toggle()"
+  [icon]="theme.theme() === 'dark' ? 'sun' : 'moon'"
+  [label]="theme.theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+/>

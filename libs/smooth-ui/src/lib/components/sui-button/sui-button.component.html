@@ -1,4 +1,14 @@
-<button (click)="trigger.emit()" [class]="classes()" [ngClass]="{ 'sui-spacing-8': name() === ''}" [type]="type()">
+<button
+  (click)="trigger.emit()"
+  [aria-busy]="loading() || null"
+  [aria-expanded]="expanded() ?? null"
+  [aria-haspopup]="expanded() === undefined ? null : 'menu'"
+  [aria-label]="label() !== '' || loading() || name() === '' ? accessibleName() : null"
+  [class]="classes()"
+  [class.sui-spacing-8]="name() === ''"
+  [disabled]="disabled() || loading()"
+  [type]="type()"
+>
   @if (loading()) {
     <span aria-hidden="true" class="sui-button-spinner"></span>
   } @else {

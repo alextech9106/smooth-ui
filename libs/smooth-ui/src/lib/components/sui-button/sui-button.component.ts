@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { booleanAttribute, Component, computed, input, InputSignal, InputSignalWithTransform, output, OutputEmitterRef, Signal } from '@angular/core';
 import { SUI_SHAPE } from '../../types/sui-shape.type';
 import { SUI_SIZE } from '../../types/sui-size.type';
@@ -8,7 +7,7 @@ import { SUI_BUTTON_TYPE } from './type/sui-button-type.type';
 import { SUI_BUTTON_VARIANT } from './type/sui-button-variant.type';
 
 @Component({
-  imports: [SuiIconComponent, NgClass],
+  imports: [SuiIconComponent],
   selector: 'sui-button',
   styleUrl: './sui-button.component.scss',
   templateUrl: './sui-button.component.html',
@@ -17,6 +16,8 @@ export class SuiButtonComponent {
   public name: InputSignal<string> = input.required<string>();
   public iconSize: InputSignal<number> = input<number>(20);
   public icon: InputSignal<string> = input<string>('');
+  public label: InputSignal<string> = input<string>('');
+  public expanded: InputSignal<boolean | undefined> = input<boolean | undefined>(undefined);
   public shape: InputSignal<SUI_SHAPE> = input<SUI_SHAPE>('rounded');
   public size: InputSignal<SUI_SIZE> = input<SUI_SIZE>('md');
   public state: InputSignal<SUI_STATE> = input<SUI_STATE>('default');
@@ -31,6 +32,7 @@ export class SuiButtonComponent {
 
   public trigger: OutputEmitterRef<void> = output<void>();
 
+  protected readonly accessibleName: Signal<string> = computed(() => this.label() || this.name() || this.icon());
   protected readonly showIconStart: Signal<boolean> = computed(() => this.icon() !== '' && !this.iconEnd());
   protected readonly showIconEnd: Signal<boolean> = computed(() => this.icon() !== '' && this.iconEnd());
   protected readonly computedIconSize: Signal<number> = computed(() => {

@@ -1,13 +1,14 @@
 <div [class]="classes()">
   @if (type() === 'button') {
-    @for (button of buttons(); track button.name) {
-      <sui-button (trigger)="button.callback?.()" [icon]="button.icon ?? ''" [name]="button.name"
-                  [selected]="button.selected ?? false" [shape]="'flat'" [size]="size()" [variant]="variant()" />
+    @for (button of buttons(); track button.label ?? button.name) {
+      <sui-button (trigger)="button.callback?.()" [expanded]="button.expanded" [icon]="button.icon ?? ''"
+                  [label]="button.label ?? ''" [name]="button.name" [selected]="button.selected ?? false"
+                  [shape]="'flat'" [size]="size()" [variant]="variant()" />
     }
   } @else {
-    @for (button of buttons(); track button.name) {
-      <sui-icon-button (trigger)="button.callback?.()" [icon]="button.icon ?? ''" [selected]="button.selected ?? false"
-                       [shape]="'flat'" [size]="size()" [variant]="variant()" />
+    @for (button of buttons(); track button.label ?? button.name) {
+      <sui-icon-button (trigger)="button.callback?.()" [icon]="button.icon ?? ''" [label]="button.label ?? button.name"
+                       [selected]="button.selected ?? false" [shape]="'flat'" [size]="size()" [variant]="variant()" />
     }
   }
 </div>

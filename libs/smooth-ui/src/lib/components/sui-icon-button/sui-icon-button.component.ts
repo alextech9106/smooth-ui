@@ -16,6 +16,7 @@ export class SuiIconButtonComponent {
   public icon: InputSignal<string> = input.required<string>();
   public badge: InputSignal<number> = input<number>(0);
   public iconSize: InputSignal<number> = input<number>(20);
+  public label: InputSignal<string> = input<string>('');
   public shape: InputSignal<SUI_SHAPE> = input<SUI_SHAPE>('rounded');
   public size: InputSignal<SUI_SIZE> = input<SUI_SIZE>('md');
   public state: InputSignal<SUI_STATE> = input<SUI_STATE>('default');
@@ -26,6 +27,7 @@ export class SuiIconButtonComponent {
 
   public trigger: OutputEmitterRef<void> = output<void>();
 
+  protected readonly accessibleName: Signal<string> = computed(() => this.label() || this.icon());
   protected readonly computedIconSize: Signal<number> = computed(() => {
     switch (this.size()) {
       case 'sm':
@@ -43,7 +45,7 @@ export class SuiIconButtonComponent {
       sui-icon-button-${this.size()}
       sui-icon-button-${this.state()}
       sui-icon-button-${this.shape()}
-      ${this.disabled() ? 'sui-icon-button-disabled' : ''},
+      ${this.disabled() ? 'sui-icon-button-disabled' : ''}
       ${this.selected() ? 'sui-icon-button-selected' : ''}
     `,
   );

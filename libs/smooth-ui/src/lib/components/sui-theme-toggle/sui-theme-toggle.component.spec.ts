@@ -19,9 +19,20 @@ describe('SuiThemeToggleComponent', () => {
 
   afterEach(() => {
     vi.unstubAllGlobals();
+    localStorage.clear();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('names the button after the theme it switches to', async () => {
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+    expect(button.getAttribute('aria-label')).toBe('Switch to dark theme');
+
+    button.click();
+    await fixture.whenStable();
+
+    expect(button.getAttribute('aria-label')).toBe('Switch to light theme');
   });
 });

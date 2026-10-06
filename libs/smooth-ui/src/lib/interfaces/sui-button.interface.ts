@@ -5,10 +5,12 @@ import { SUI_STATE } from '../types/sui-state.type';
 
 export interface SuiButton {
   name: string;
+  expanded?: boolean;
   fullWidth?: boolean;
   icon?: string;
   iconEnd?: boolean;
   iconSize?: number;
+  label?: string;
   loading?: boolean;
   selected?: boolean;
   shape?: SUI_SHAPE;
