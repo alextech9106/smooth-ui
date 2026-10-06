@@ -1,7 +1,7 @@
 .sui-input {
   display: flex;
   flex-direction: column;
-  width: 420px;
+  width: min(420px, 100%);
   gap: var(--sui-spacing-6);
   font-family: var(--sui-font-sans), sans-serif;
 
@@ -95,5 +95,9 @@
         color: var(--sui-color-text-placeholder);
       }
     }
+  }
+
+  .sui-messages:empty {
+    margin-top: calc(-1 * var(--sui-spacing-6));
   }
 }

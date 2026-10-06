@@ -3,17 +3,20 @@
 
   <div [class]="classes()" class="sui-textarea">
     <textarea (blur)="touch.emit()" (input)="value.set($any($event.target).value)" (invalid)="$event.preventDefault()"
+              [aria-describedby]="describedBy()" [aria-invalid]="showError() || null"
               [disabled]="disabled()" [id]="inputId()" [placeholder]="placeholder()" [readonly]="readonly()"
               [required]="required()" [value]="value()"></textarea>
   </div>
 
   @if (hint() && !showError()) {
-    <span class="sui-hint">{{ hint() }}</span>
+    <span [id]="inputId() + '-hint'" class="sui-hint">{{ hint() }}</span>
   }
 
-  @if (showError()) {
-    @for (error of errors(); track error.message) {
-      <sui-error [error]="showCustomError() ? getCustomMessage(error.kind) : error.message" [inputId]="inputId()" />
+  <div [id]="inputId() + '-error'" aria-live="polite" class="sui-messages">
+    @if (showError()) {
+      @for (error of errors(); track error.kind) {
+        <sui-error [error]="showCustomError() ? getCustomMessage(error) : error.message" />
+      }
     }
-  }
+  </div>
 </div>

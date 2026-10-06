@@ -3,7 +3,7 @@
   flex-direction: column;
   align-content: center;
   gap: var(--sui-spacing-6);
-  width: 420px;
+  width: min(420px, 100%);
   font-family: var(--sui-font-sans), sans-serif;
 
   .sui-label {
@@ -41,8 +41,23 @@
       color: var(--sui-color-text-tertiary);
     }
 
-    &-pointer {
+    &-action {
+      display: inline-flex;
+      padding: 0;
+      border: 0;
+      border-radius: var(--sui-radius-xs);
+      background: transparent;
+      color: inherit;
       cursor: pointer;
+
+      &:focus-visible {
+        outline: none;
+        box-shadow: var(--sui-focus-ring);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+      }
     }
 
     &-affix {
@@ -161,5 +176,9 @@
     line-height: 18px;
     color: var(--sui-color-text-tertiary);
     padding-left: var(--sui-spacing-6);
+  }
+
+  .sui-messages:empty {
+    margin-top: calc(-1 * var(--sui-spacing-6));
   }
 }

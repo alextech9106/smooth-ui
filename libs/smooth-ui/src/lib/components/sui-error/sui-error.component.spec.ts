@@ -18,4 +18,11 @@ describe('SuiErrorComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('renders the error message', async () => {
+    fixture.componentRef.setInput('error', 'Required field');
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.sui-error').textContent).toBe('Required field');
+  });
 });

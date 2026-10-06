@@ -57,8 +57,13 @@ export class SuiTextareaComponent<TValue> implements FormValueControl<TValue> {
   );
   protected readonly showError: Signal<boolean> = computed(() => this.touched() && this.errors().length > 0);
   protected readonly showCustomError: Signal<boolean> = computed(() => this.touched() && this.errors().length > 0 && this.customErrors().length > 0);
+  protected readonly describedBy: Signal<string | null> = computed(() => {
+    if (this.showError()) return `${this.inputId()}-error`;
 
-  public getCustomMessage(errorType: string): string {
-    return this.customErrors().find((error: CustomError) => error.type === errorType)?.message ?? '';
+    return this.hint() ? `${this.inputId()}-hint` : null;
+  });
+
+  public getCustomMessage(error: ValidationError.WithOptionalFieldTree): string {
+    return this.customErrors().find((custom: CustomError) => custom.type === error.kind)?.message ?? error.message ?? '';
   }
 }

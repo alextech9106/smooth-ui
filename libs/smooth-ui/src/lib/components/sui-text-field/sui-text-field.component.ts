@@ -83,6 +83,11 @@ export class SuiTextFieldComponent<TValue extends string | number | null = strin
   );
   protected readonly showError: Signal<boolean> = computed(() => this.touched() && this.errors().length > 0);
   protected readonly showCustomError: Signal<boolean> = computed(() => this.touched() && this.errors().length > 0 && this.customErrors().length > 0);
+  protected readonly describedBy: Signal<string | null> = computed(() => {
+    if (this.showError()) return `${this.inputId()}-error`;
+
+    return this.hint() ? `${this.inputId()}-hint` : null;
+  });
 
   public showPassword() {
     this.isPasswordHide.set(!this.isPasswordHide());
@@ -92,7 +97,7 @@ export class SuiTextFieldComponent<TValue extends string | number | null = strin
     this.rawValue.set('');
   }
 
-  public getCustomMessage(errorType: string): string {
-    return this.customErrors().find((error: CustomError) => error.type === errorType)?.message ?? '';
+  public getCustomMessage(error: ValidationError.WithOptionalFieldTree): string {
+    return this.customErrors().find((custom: CustomError) => custom.type === error.kind)?.message ?? error.message ?? '';
   }
 }
