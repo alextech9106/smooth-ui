@@ -6,15 +6,16 @@
   }
 
   @if (menuOpen() && menuItems().length) {
-    <div #menu [ngClass]="{'split-menu-top': placement() === 'top'}" class="split-menu">
-      @for (menuItem of menuItems(); track menuItem.title) {
-        <div class="split-menu-item">
+    <div #menu (keydown)="onMenuKeydown($event)" [aria-label]="name() || 'Options'"
+         [class.split-menu-top]="placement() === 'top'" class="split-menu" role="menu" tabindex="-1">
+      @for (menuItem of menuItems(); track menuItem.id) {
+        <button (click)="selectItem(menuItem)" class="split-menu-item" role="menuitem" type="button">
           <sui-icon [name]="menuItem.icon.name" [size]="menuItem.icon.size" />
-          <p>{{ menuItem.title }}</p>
-        </div>
+          <span>{{ menuItem.title }}</span>
+        </button>
 
         @if (menuItem.separatorAfter) {
-          <div class="split-separator"></div>
+          <div class="split-separator" role="separator"></div>
         }
       }
     </div>

@@ -1,5 +1,6 @@
 export interface MenuItem {
-  title?: string;
+  id: string;
+  title: string;
   icon: {
     name: string;
     size: number;

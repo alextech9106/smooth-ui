@@ -130,15 +130,17 @@ export class AppComponent {
     'log-out',
     'log-in',
   ];
+
   public buttonsGroup: SuiButton[] = [
     { name: 'Button 1', icon: 'check', selected: true },
     { name: 'Button 2', icon: 'x', selected: false },
     { name: 'Button 3', icon: 'star', selected: false },
   ];
+
   public menuItems: MenuItem[] = [
-    { title: 'Item 1', icon: { name: 'check', size: 16 } },
-    { title: 'Item 2', icon: { name: 'x', size: 16 }, separatorAfter: true },
-    { title: 'Item 3', icon: { name: 'star', size: 16 } },
+    { id: 'item-1', title: 'Item 1', icon: { name: 'check', size: 16 } },
+    { id: 'item-2', title: 'Item 2', icon: { name: 'x', size: 16 }, separatorAfter: true },
+    { id: 'item-3', title: 'Item 3', icon: { name: 'star', size: 16 } },
   ];
 
   protected readonly formGroup: UntypedFormGroup = new UntypedFormGroup({
