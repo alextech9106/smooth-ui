@@ -184,6 +184,10 @@
     border-top-color: transparent;
     animation: sui-spin .7s linear infinite;
     color: var(--sui-color-accent-on-solid);
+
+    @media (prefers-reduced-motion: reduce) {
+      animation-duration: 2s;
+    }
   }
 
   &-sm {

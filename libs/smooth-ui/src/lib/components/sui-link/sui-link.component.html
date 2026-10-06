@@ -1,8 +1,10 @@
 @if (external()) {
-  <a [class]="classes()" [href]="url()" class="sui-link sui-link-external" target="_blank">
+  <a [aria-disabled]="disabled() || null" [attr.href]="disabled() ? null : url()" [class]="classes()"
+     rel="noopener noreferrer" target="_blank">
     {{ title() }}
     <sui-icon [size]="16" name="external-link" />
+    <span class="sui-link-sr-only">(opens in a new tab)</span>
   </a>
 } @else {
-  <a [class]="classes()" [routerLink]="url()" class="sui-link">{{ title() }}</a>
+  <a [aria-disabled]="disabled() || null" [class]="classes()" [routerLink]="disabled() ? null : url()">{{ title() }}</a>
 }

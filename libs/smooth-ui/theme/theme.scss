@@ -296,3 +296,11 @@
   --sui-focus-ring-danger: 0 0 0 3px rgba(238, 113, 128, .42);
   color-scheme: dark;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --sui-duration-fast: 0ms;
+    --sui-duration-base: 0ms;
+    --sui-duration-slow: 0ms;
+  }
+}

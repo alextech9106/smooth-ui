@@ -19,4 +19,10 @@ describe('SuiIconComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('hides the decorative svg from assistive technology', () => {
+    const svg: SVGElement = fixture.nativeElement.querySelector('svg');
+    expect(svg.getAttribute('aria-hidden')).toBe('true');
+    expect(svg.getAttribute('focusable')).toBe('false');
+  });
 });
