@@ -11,7 +11,12 @@
   font-family: var(--sui-font-sans), sans-serif;
   font-size: var(--sui-font-size-sm);
   cursor: pointer;
-  transition: background-color var(--sui-duration-base) var(--sui-ease-smooth), border-color var(--sui-duration-fast) var(--sui-ease-smooth), color var(--sui-duration-fast) var(--sui-ease-smooth), box-shadow var(--sui-duration-fast) var(--sui-ease-smooth), transform var(--sui-duration-fast) var(--sui-ease-smooth);
+  transition:
+    background-color var(--sui-duration-base) var(--sui-ease-smooth),
+    border-color var(--sui-duration-fast) var(--sui-ease-smooth),
+    color var(--sui-duration-fast) var(--sui-ease-smooth),
+    box-shadow var(--sui-duration-fast) var(--sui-ease-smooth),
+    transform var(--sui-duration-fast) var(--sui-ease-smooth);
 
   &-primary {
     background: var(--sui-color-accent-solid);
@@ -182,7 +187,7 @@
     border: var(--sui-border-width-thick) solid currentColor;
     border-radius: var(--sui-radius-full);
     border-top-color: transparent;
-    animation: sui-spin .7s linear infinite;
+    animation: sui-spin 0.7s linear infinite;
     color: var(--sui-color-accent-on-solid);
 
     @media (prefers-reduced-motion: reduce) {

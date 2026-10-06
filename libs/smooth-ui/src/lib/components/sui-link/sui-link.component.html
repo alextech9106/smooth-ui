@@ -1,6 +1,5 @@
 @if (external()) {
-  <a [aria-disabled]="disabled() || null" [attr.href]="disabled() ? null : url()" [class]="classes()"
-     rel="noopener noreferrer" target="_blank">
+  <a [aria-disabled]="disabled() || null" [attr.href]="disabled() ? null : url()" [class]="classes()" rel="noopener noreferrer" target="_blank">
     {{ title() }}
     <sui-icon [size]="16" name="external-link" />
     <span class="sui-link-sr-only">(opens in a new tab)</span>

@@ -2,10 +2,19 @@
   <label [for]="inputId()" class="sui-label">{{ label() }} {{ required() ? '*' : optionalText() }}</label>
 
   <div [class]="classes()" class="sui-textarea">
-    <textarea (blur)="touch.emit()" (input)="value.set($any($event.target).value)" (invalid)="$event.preventDefault()"
-              [aria-describedby]="describedBy()" [aria-invalid]="showError() || null"
-              [disabled]="disabled()" [id]="inputId()" [placeholder]="placeholder()" [readonly]="readonly()"
-              [required]="required()" [value]="value()"></textarea>
+    <textarea
+      (blur)="touch.emit()"
+      (input)="value.set($any($event.target).value)"
+      (invalid)="$event.preventDefault()"
+      [aria-describedby]="describedBy()"
+      [aria-invalid]="showError() || null"
+      [disabled]="disabled()"
+      [id]="inputId()"
+      [placeholder]="placeholder()"
+      [readonly]="readonly()"
+      [required]="required()"
+      [value]="value()"
+    ></textarea>
   </div>
 
   @if (hint() && !showError()) {

@@ -28,22 +28,37 @@
       }
     }
 
-    <input (blur)="touch.emit()" (input)="rawValue.set($any($event.target).value)" (invalid)="$event.preventDefault()"
-           [aria-describedby]="describedBy()" [aria-invalid]="showError() || null"
-           [class]="classes()" [disabled]="disabled()" [id]="inputId()" [placeholder]="placeholder()"
-           [readonly]="readonly()" [required]="required()" [type]="isPasswordHide() ? type() : 'text'"
-           [value]="rawValue()">
+    <input
+      (blur)="touch.emit()"
+      (input)="rawValue.set($any($event.target).value)"
+      (invalid)="$event.preventDefault()"
+      [aria-describedby]="describedBy()"
+      [aria-invalid]="showError() || null"
+      [class]="classes()"
+      [disabled]="disabled()"
+      [id]="inputId()"
+      [placeholder]="placeholder()"
+      [readonly]="readonly()"
+      [required]="required()"
+      [type]="isPasswordHide() ? type() : 'text'"
+      [value]="rawValue()"
+    />
 
     @switch (type()) {
       @case ('password') {
-        <button (click)="showPassword()" [aria-label]="isPasswordHide() ? 'Show password' : 'Hide password'"
-                [aria-pressed]="!isPasswordHide()" [disabled]="disabled()" class="sui-input-action" type="button">
+        <button
+          (click)="showPassword()"
+          [aria-label]="isPasswordHide() ? 'Show password' : 'Hide password'"
+          [aria-pressed]="!isPasswordHide()"
+          [disabled]="disabled()"
+          class="sui-input-action"
+          type="button"
+        >
           <sui-icon [name]="isPasswordHide() ? 'eye' : 'eye-off'" class="sui-input-icon" />
         </button>
       }
       @case ('search') {
-        <button (click)="clearSearch()" [disabled]="disabled()" aria-label="Clear search" class="sui-input-action"
-                type="button">
+        <button (click)="clearSearch()" [disabled]="disabled()" aria-label="Clear search" class="sui-input-action" type="button">
           <sui-icon class="sui-input-icon" name="x" />
         </button>
       }

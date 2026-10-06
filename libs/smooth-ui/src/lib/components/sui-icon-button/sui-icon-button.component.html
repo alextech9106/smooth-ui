@@ -1,4 +1,4 @@
-<span [ngClass]="{'badge-anchor': badge()}">
+<span [ngClass]="{ 'badge-anchor': badge() }">
   <button (click)="trigger.emit()" [aria-label]="accessibleName()" [class]="classes()" [disabled]="disabled()" type="button">
     <sui-icon [name]="icon()" [size]="computedIconSize()" />
   </button>

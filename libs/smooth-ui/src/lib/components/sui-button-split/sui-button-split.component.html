@@ -6,8 +6,15 @@
   }
 
   @if (menuOpen() && menuItems().length) {
-    <div #menu (keydown)="onMenuKeydown($event)" [aria-label]="name() || 'Options'"
-         [class.split-menu-top]="placement() === 'top'" class="split-menu" role="menu" tabindex="-1">
+    <div
+      #menu
+      (keydown)="onMenuKeydown($event)"
+      [aria-label]="name() || 'Options'"
+      [class.split-menu-top]="placement() === 'top'"
+      class="split-menu"
+      role="menu"
+      tabindex="-1"
+    >
       @for (menuItem of menuItems(); track menuItem.id) {
         <button (click)="selectItem(menuItem)" class="split-menu-item" role="menuitem" type="button">
           <sui-icon [name]="menuItem.icon.name" [size]="menuItem.icon.size" />
