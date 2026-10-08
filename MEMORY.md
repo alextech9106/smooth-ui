@@ -14,6 +14,8 @@ Project memory across sessions. Max ~50 lines: summarize or remove what no longe
   private members.
 - Agent skills live in `.claude/skills/`: `format-code`, `web-design-guidelines`, `frontend-design`.
 - Project MCP servers are declared in `.mcp.json`: `angular` (`pnpm exec ng mcp`) and `nx` (`pnpm exec nx mcp`).
+- SDD subagents live in `.claude/agents/` (coordinator, planner, implementer, reviewer), in Claude Code format; start
+  the flow with `claude --agent coordinator`. Not yet tried in a real run.
 
 ## Decisions (and why)
 
