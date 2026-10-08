@@ -14,7 +14,6 @@ import { SUI_BUTTON_VARIANT } from './type/sui-button-variant.type';
 })
 export class SuiButtonComponent {
   public name: InputSignal<string> = input.required<string>();
-  public iconSize: InputSignal<number> = input<number>(20);
   public icon: InputSignal<string> = input<string>('');
   public label: InputSignal<string> = input<string>('');
   public expanded: InputSignal<boolean | undefined> = input<boolean | undefined>(undefined);
