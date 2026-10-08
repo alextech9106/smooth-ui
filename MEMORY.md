@@ -36,7 +36,7 @@ Project memory across sessions. Max ~50 lines: summarize or remove what no longe
   `plan.md` (same day) changes no production code and only adds tests; all 7 tasks in `tasks.md` are done (24 icon
   tests, 69 in the library; format, lint, test, build and typecheck green); `/sdd-validate` (2026-10-08) found it
   fulfilled. Not run: FR-3's exception (a name that is another element's identifier) and a real server render. Seen on
-  the way: at 375 px the demo scrolls sideways because of `sui-text- field`. A 241-line earlier draft was deleted for
+  the way: at 375 px the demo scrolls sideways because of `sui-text-field`. A 241-line earlier draft was deleted for
   being too long, and the sdd skill now sets a spec at about 100 lines. Restricting icon names to the built-in set would
   be a later spec.
 - `transition: all` in text-field, textarea and icon-button is kept on purpose (owner's decision).
