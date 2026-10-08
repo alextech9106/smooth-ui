@@ -43,3 +43,6 @@ Thumbs.db
 
 # Nx
 .nx
+
+.claude/worktrees
+.claude/settings.local.json
