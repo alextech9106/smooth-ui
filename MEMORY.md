@@ -34,6 +34,7 @@ Project memory across sessions. Max ~50 lines: summarize or remove what no longe
 - `docs/constitution.md` (2026-10-07) holds the six non-negotiable principles. Principle 2 was amended the same day
   (owner-approved) to name `specs/NNN-<name>/spec.md` as source of truth, the layout the sdd skill and the `/sdd-*`
   commands expect.
+- Constitution amended 2026-10-15 (owner-approved): principle 7, SOLID design, makes it seven principles.
 - `specs/001-sui-icon/spec.md` (implemented 2026-10-08) records how `sui-icon` behaves today and proposes no change.
   `plan.md` (same day) changes no production code and only adds tests; all 7 tasks in `tasks.md` are done (24 icon
   tests, 69 in the library; format, lint, test, build and typecheck green); `/sdd-validate` (2026-10-08) found it

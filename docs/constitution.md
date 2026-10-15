@@ -1,6 +1,6 @@
 # Smooth UI Constitution
 
-Six non-negotiable principles. A change that breaks one is wrong, unless this file is amended first.
+Seven non-negotiable principles. A change that breaks one is wrong, unless this file is amended first.
 
 1. **Simple stack.** Angular, RxJS and tslib are the only runtime dependencies. Check: no `package.json` gains an entry
    without owner approval.
@@ -14,5 +14,9 @@ Six non-negotiable principles. A change that breaks one is wrong, unless this fi
    persisted. Check: `localStorage` appears only in `theme.service.ts`.
 6. **English everywhere.** Code, comments, commits, docs and default texts are in English. Check: every user-visible
    string is an input or can be overridden by one.
+7. **SOLID design.** Each component, service or function has one reason to change; behaviour is extended through
+   inputs, content projection or new types, not by editing existing branches; dependencies arrive via `inject()` and
+   `InjectionToken`, never hard-coded instances. Check: no class mixes UI and domain logic, no `switch`/`if` chain grows
+   to support a new variant, and every service can be swapped in a spec through providers.
 
 Amendments need the owner's explicit approval and a note in `MEMORY.md`.
