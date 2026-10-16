@@ -61,7 +61,7 @@ Project memory across sessions. Max ~50 lines: summarize or remove what no longe
 ## Next steps
 
 - Unreleased breaking changes since 0.5.0: `MenuItem.id` required, `sui-error` lost `inputId`, `getCustomMessage` takes
-  the error object.
+  the error object, icon names typed as `SUI_ICON_NAME` (2026-10-16, spec 001 amended).
 - Open accessibility items: `name`/`autocomplete` on fields, badge text, `role="group"` on button-group, demo headings
   and icon-button labels.
 - Suspected defect, untested: the way the icon drawings are added to the page may be blocked by a strict content

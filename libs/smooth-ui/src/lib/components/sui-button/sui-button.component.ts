@@ -3,6 +3,7 @@ import { SUI_SHAPE } from '../../types/sui-shape.type';
 import { SUI_SIZE } from '../../types/sui-size.type';
 import { SUI_STATE } from '../../types/sui-state.type';
 import { SuiIconComponent } from '../sui-icon/sui-icon.component';
+import { SUI_ICON_NAME } from '../sui-icon/type/sui-icon-name.type';
 import { SUI_BUTTON_TYPE } from './type/sui-button-type.type';
 import { SUI_BUTTON_VARIANT } from './type/sui-button-variant.type';
 
@@ -14,7 +15,7 @@ import { SUI_BUTTON_VARIANT } from './type/sui-button-variant.type';
 })
 export class SuiButtonComponent {
   public name: InputSignal<string> = input.required<string>();
-  public icon: InputSignal<string> = input<string>('');
+  public icon: InputSignal<SUI_ICON_NAME> = input<SUI_ICON_NAME>('');
   public label: InputSignal<string> = input<string>('');
   public expanded: InputSignal<boolean | undefined> = input<boolean | undefined>(undefined);
   public shape: InputSignal<SUI_SHAPE> = input<SUI_SHAPE>('rounded');

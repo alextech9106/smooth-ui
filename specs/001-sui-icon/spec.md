@@ -8,8 +8,8 @@ Applications built with the library need small pictures (icons) inside buttons, 
 importing them one by one in every application is repetitive and makes them look different from each other.
 
 `sui-icon` displays one icon from a set that ships with the library, chosen by its name, at the size the developer asks
-for and in the colour of the text around it. This spec records how `sui-icon` behaves today. It proposes no change to
-that behaviour; the only work it asks for is the tests that are missing.
+for and in the colour of the text around it. This spec records how `sui-icon` behaves today. It was amended on
+2026-10-16 so that a name outside the built-in set is rejected at build time (FR-3, FR-11, FR-12).
 
 ## Users
 
@@ -48,9 +48,8 @@ that behaviour; the only work it asks for is the tests that are missing.
 
 - FR-1: IF a developer uses `sui-icon` without giving it a name, THEN THE SYSTEM reports an error at build time.
 - FR-2: WHEN `sui-icon` receives the name of an icon of the built-in set, THE SYSTEM displays that icon.
-- FR-3: IF `sui-icon` receives a name that is not in the built-in set, THEN THE SYSTEM raises no error, writes nothing
-  to the browser console and displays an empty space of the requested size, unless the name is the identifier of another
-  element of the page.
+- FR-3: IF a developer gives `sui-icon` a name that is neither in the built-in set nor empty, THEN THE SYSTEM reports an
+  error at build time.
 - FR-4: WHEN no size is given, THE SYSTEM uses a size of 20.
 - FR-5: WHEN a size of N is given, N being a number greater than zero, THE SYSTEM draws the icon inside a square area N
   px wide and N px high, keeping the icon's proportions, and centres that area in the width given to the icon by the
@@ -63,6 +62,10 @@ that behaviour; the only work it asks for is the tests that are missing.
 - FR-9: WHILE a page runs in a browser, THE SYSTEM adds to it exactly one copy of the built-in set's drawings for each
   application that displays an icon, however many icons that application displays, and never removes it.
 - FR-10: WHILE a page is rendered outside a browser, THE SYSTEM adds no copy of the drawings and raises no error.
+- FR-11: WHEN `sui-icon` receives an empty name, THE SYSTEM raises no error, writes nothing to the browser console and
+  displays an empty space of the requested size.
+- FR-12: THE SYSTEM offers the list of valid names as a type that consumers can import, and every library input or data
+  shape that takes an icon name accepts only those names.
 
 ## Non-functional requirements
 
@@ -72,8 +75,10 @@ that behaviour; the only work it asks for is the tests that are missing.
 
 ## Edge cases
 
-- **Name that is empty, has different letter case or has spaces around it** (`""`, `Check`, `" check"`): it is not in
-  the built-in set, so FR-3 applies.
+- **Name with different letter case or spaces around it** (`Check`, `" check"`): it is not in the built-in set, so it
+  is rejected at build time (FR-3). An empty name is accepted (FR-11).
+- **Name only known while the application runs** (for example read from a server): build-time checks cannot see it;
+  the consumer must convert it to a valid name before giving it to `sui-icon`.
 - **Size that is not a number greater than zero**: text instead of a number is rejected at build time; zero or less is
   accepted, the icon is not visible or is drawn incorrectly, and nothing is reported.
 - **Copies of the drawings**: several applications on one page, or one that is destroyed and created again, each add
@@ -88,7 +93,7 @@ that behaviour; the only work it asks for is the tests that are missing.
 
 ## Out of scope
 
-- Checking icon names at build time, and reporting or replacing an unknown name while the application runs.
+- Reporting or replacing an unknown name while the application runs.
 - Giving an icon an accessible name of its own.
 - Letting consumers add their own icons, and listing the available names while the application runs.
 - How other components of the library (buttons, fields, links) choose and place their icons.
@@ -97,11 +102,12 @@ that behaviour; the only work it asks for is the tests that are missing.
 
 ## Completion criteria
 
-- Every FR from FR-2 to FR-10 is covered by at least one automated test of what the icon declares (the drawing it points
+- Every FR from FR-2 to FR-11, except FR-3, is covered by at least one automated test of what the icon declares (the drawing it points
   at, the size it asks for, that it is hidden from assistive technology, the copy of the drawings), and all of them
   pass.
 - What only a real browser, a build or a reading can show is checked once, during validation: that the icon is seen with
-  the right size, position and colour (FR-2, FR-5, FR-6), that a `sui-icon` without a name does not build (FR-1), the
+  the right size, position and colour (FR-2, FR-5, FR-6), that a `sui-icon` without a name or with a name outside the built-in set does not build (FR-1, FR-3), that consumers
+  can import the type of valid names (FR-12), the
   audit of NFR-2, that the names listed under "Built-in set" are exactly the icons that exist in the library, and that
   the demo application displays all of them.
 - All the automatic checks the project runs on every change pass.

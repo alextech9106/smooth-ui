@@ -1,10 +1,11 @@
+import { SUI_ICON_NAME } from '../components/sui-icon/type/sui-icon-name.type';
 import { SUI_ICON_BUTTON_VARIANT } from '../components/sui-icon-button/type/sui-icon-button-variant.type';
 import { SUI_SHAPE } from '../types/sui-shape.type';
 import { SUI_SIZE } from '../types/sui-size.type';
 import { SUI_STATE } from '../types/sui-state.type';
 
 export interface SuiIconButton {
-  icon: string;
+  icon: SUI_ICON_NAME;
   badge?: number;
   iconSize?: number;
   selected?: boolean;

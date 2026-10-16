@@ -10,6 +10,7 @@ import {
   SuiTextareaComponent,
   SuiTextFieldComponent,
   SuiThemeToggleComponent,
+  SUI_ICON_NAME,
 } from '@alextech9106/smooth-ui';
 import { Component, signal, WritableSignal } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
@@ -49,7 +50,7 @@ interface TextFieldsModel {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  public icons: string[] = [
+  public icons: SUI_ICON_NAME[] = [
     'check',
     'x',
     'chevron-down',

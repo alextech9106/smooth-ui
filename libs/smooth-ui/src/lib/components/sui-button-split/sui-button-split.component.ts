@@ -20,6 +20,7 @@ import { SUI_SHAPE } from '../../types/sui-shape.type';
 import { SUI_SIZE } from '../../types/sui-size.type';
 import { SuiButtonGroupComponent } from '../sui-button-group/sui-button-group.component';
 import { SuiIconComponent } from '../sui-icon/sui-icon.component';
+import { SUI_ICON_NAME } from '../sui-icon/type/sui-icon-name.type';
 import { SUI_BUTTON_SPLIT_MODE } from './type/sui-button-split-mode.type';
 import { SUI_BUTTON_SPLIT_PLACEMENT } from './type/sui-button-split-placement.type';
 import { SUI_BUTTON_SPLIT_VARIANT } from './type/sui-button-split-variant.type';
@@ -36,7 +37,7 @@ export class SuiButtonSplitComponent {
   private readonly _hostEl: ElementRef<HTMLElement> = inject(ElementRef);
   private readonly _menuElement: Signal<ElementRef<HTMLElement> | undefined> = viewChild('menu');
 
-  public icon: InputSignal<string> = input<string>('');
+  public icon: InputSignal<SUI_ICON_NAME> = input<SUI_ICON_NAME>('');
   public name: InputSignal<string> = input<string>('');
   public menuItems: InputSignal<MenuItem[]> = input<MenuItem[]>([]);
   public mode: InputSignal<SUI_BUTTON_SPLIT_MODE> = input<SUI_BUTTON_SPLIT_MODE>('default');

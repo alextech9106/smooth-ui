@@ -4,6 +4,7 @@ import { SUI_SHAPE } from '../../types/sui-shape.type';
 import { SUI_SIZE } from '../../types/sui-size.type';
 import { SUI_STATE } from '../../types/sui-state.type';
 import { SuiIconComponent } from '../sui-icon/sui-icon.component';
+import { SUI_ICON_NAME } from '../sui-icon/type/sui-icon-name.type';
 import { SUI_ICON_BUTTON_VARIANT } from './type/sui-icon-button-variant.type';
 
 @Component({
@@ -13,7 +14,7 @@ import { SUI_ICON_BUTTON_VARIANT } from './type/sui-icon-button-variant.type';
   templateUrl: './sui-icon-button.component.html',
 })
 export class SuiIconButtonComponent {
-  public icon: InputSignal<string> = input.required<string>();
+  public icon: InputSignal<SUI_ICON_NAME> = input.required<SUI_ICON_NAME>();
   public badge: InputSignal<number> = input<number>(0);
   public iconSize: InputSignal<number> = input<number>(20);
   public label: InputSignal<string> = input<string>('');

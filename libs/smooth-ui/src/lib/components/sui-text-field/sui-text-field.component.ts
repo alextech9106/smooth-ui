@@ -20,6 +20,7 @@ import { SUI_SIZE } from '../../types/sui-size.type';
 import { SUI_STATE } from '../../types/sui-state.type';
 import { SuiErrorComponent } from '../sui-error/sui-error.component';
 import { SuiIconComponent } from '../sui-icon/sui-icon.component';
+import { SUI_ICON_NAME } from '../sui-icon/type/sui-icon-name.type';
 import { SUI_TEXT_FIELD_TYPE } from './type/sui-text-field-type.type';
 
 @Component({
@@ -38,8 +39,8 @@ export class SuiTextFieldComponent<TValue extends string | number | null = strin
 
   public label: InputSignal<string> = input.required<string>();
   public hint: InputSignal<string> = input<string>('');
-  public iconEnd: InputSignal<string> = input<string>('');
-  public iconStart: InputSignal<string> = input<string>('');
+  public iconEnd: InputSignal<SUI_ICON_NAME> = input<SUI_ICON_NAME>('');
+  public iconStart: InputSignal<SUI_ICON_NAME> = input<SUI_ICON_NAME>('');
   public optionalText: InputSignal<string> = input<string>('(optional)');
   public placeholder: InputSignal<string> = input<string>('');
   public prefix: InputSignal<string> = input<string>('');
