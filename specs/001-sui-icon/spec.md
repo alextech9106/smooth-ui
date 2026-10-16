@@ -8,7 +8,7 @@ Applications built with the library need small pictures (icons) inside buttons, 
 importing them one by one in every application is repetitive and makes them look different from each other.
 
 `sui-icon` displays one icon from a set that ships with the library, chosen by its name, at the size the developer asks
-for and in the colour of the text around it. This spec records how `sui-icon` behaves today. It was amended on
+for and in the colour of the surrounding text. This spec records how `sui-icon` behaves today. It was amended on
 2026-10-16 so that a name outside the built-in set is rejected at build time (FR-3, FR-11, FR-12).
 
 ## Users
@@ -102,14 +102,14 @@ for and in the colour of the text around it. This spec records how `sui-icon` be
 
 ## Completion criteria
 
-- Every FR from FR-2 to FR-11, except FR-3, is covered by at least one automated test of what the icon declares (the drawing it points
-  at, the size it asks for, that it is hidden from assistive technology, the copy of the drawings), and all of them
-  pass.
+- Every FR from FR-2 to FR-11, except FR-3, is covered by at least one automated test of what the icon declares (the
+  drawing it points at, the size it asks for, that it is hidden from assistive technology, the copy of the drawings),
+  and all of them pass.
 - What only a real browser, a build or a reading can show is checked once, during validation: that the icon is seen with
-  the right size, position and colour (FR-2, FR-5, FR-6), that a `sui-icon` without a name or with a name outside the built-in set does not build (FR-1, FR-3), that consumers
-  can import the type of valid names (FR-12), the
-  audit of NFR-2, that the names listed under "Built-in set" are exactly the icons that exist in the library, and that
-  the demo application displays all of them.
+  the right size, position and colour (FR-2, FR-5, FR-6), that a `sui-icon` without a name or with a name outside the
+  built-in set does not build (FR-1, FR-3), that consumers can import the type of valid names (FR-12), the audit of
+  NFR-2, that the names listed under "Built-in set" are exactly the icons that exist in the library, and that the demo
+  application displays all of them.
 - All the automatic checks the project runs on every change pass.
 
 ## Open questions

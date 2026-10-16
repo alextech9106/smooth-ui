@@ -92,7 +92,7 @@ Run with `pnpm nx run smooth-ui:test`. Each test sets inputs with `fixture.compo
 Checked once, in `/sdd-validate`, with the Chrome DevTools MCP on the demo application or by building:
 
 - **FR-1**: a `sui-icon` without a name in a demo template makes `pnpm nx run smooth-ui-demo:build` fail. The line is
-  removed afterwards.
+  removed afterward.
 - **FR-2, FR-5, FR-6**: an icon is seen; its measured box is N by N px and centred; its colour equals the colour of the
   text beside it, in the light and dark themes.
 - **NFR-1**: no `package.json` has changed.
