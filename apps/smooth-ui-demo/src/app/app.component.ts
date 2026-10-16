@@ -10,11 +10,23 @@ import {
   SuiTextareaComponent,
   SuiTextFieldComponent,
   SuiThemeToggleComponent,
+  SUI_BUTTON_VARIANT,
   SUI_ICON_NAME,
+  SUI_SIZE,
+  SUI_STATE,
 } from '@alextech9106/smooth-ui';
 import { Component, signal, WritableSignal } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { disabled, form, FormField, max, maxLength, min, minLength, pattern, readonly, required } from '@angular/forms/signals';
+
+interface DemoButtonState {
+  id: string;
+  text: string;
+  selected: boolean;
+  loading: boolean;
+  disabled: boolean;
+  state: SUI_STATE;
+}
 
 interface TextFieldsModel {
   text: string;
@@ -142,6 +154,21 @@ export class AppComponent {
     { id: 'item-1', title: 'Item 1', icon: { name: 'check', size: 16 } },
     { id: 'item-2', title: 'Item 2', icon: { name: 'x', size: 16 }, separatorAfter: true },
     { id: 'item-3', title: 'Item 3', icon: { name: 'star', size: 16 } },
+  ];
+
+  protected readonly buttonVariants: SUI_BUTTON_VARIANT[] = ['primary', 'secondary', 'tonal', 'outline', 'ghost', 'danger'];
+
+  protected readonly buttonSizes: SUI_SIZE[] = ['sm', 'md', 'lg'];
+
+  protected readonly buttonStates: DemoButtonState[] = [
+    { id: 'default', text: 'Default', selected: false, loading: false, disabled: false, state: 'default' },
+    { id: 'selected', text: 'Selected', selected: true, loading: false, disabled: false, state: 'default' },
+    { id: 'loading', text: 'Loading', selected: false, loading: true, disabled: false, state: 'default' },
+    { id: 'disabled', text: 'Disabled', selected: false, loading: false, disabled: true, state: 'default' },
+    { id: 'focus', text: 'Focus', selected: false, loading: false, disabled: false, state: 'focus' },
+    { id: 'selected-loading', text: 'Selected loading', selected: true, loading: true, disabled: false, state: 'default' },
+    { id: 'focus-loading', text: 'Focus loading', selected: false, loading: true, disabled: false, state: 'focus' },
+    { id: 'disabled-loading', text: 'Disabled loading', selected: false, loading: true, disabled: true, state: 'default' },
   ];
 
   protected readonly formGroup: UntypedFormGroup = new UntypedFormGroup({

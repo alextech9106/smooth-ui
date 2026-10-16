@@ -10,7 +10,6 @@ export interface SuiButton {
   fullWidth?: boolean;
   icon?: SUI_ICON_NAME;
   iconEnd?: boolean;
-  iconSize?: number;
   label?: string;
   loading?: boolean;
   selected?: boolean;

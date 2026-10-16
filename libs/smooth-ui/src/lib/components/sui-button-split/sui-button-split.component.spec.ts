@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockInstance } from 'vitest';
 import { MenuItem } from '../../interfaces/menu-item.interface';
 import { SuiButtonSplitComponent } from './sui-button-split.component';
+import { SUI_BUTTON_SPLIT_MODE } from './type/sui-button-split-mode.type';
 
 describe('SuiButtonSplitComponent', () => {
   let component: SuiButtonSplitComponent;
@@ -102,5 +104,34 @@ describe('SuiButtonSplitComponent', () => {
 
     expect(host.querySelector('[role="menu"]')).toBeNull();
     expect(document.activeElement).toBe(trigger());
+  });
+
+  it('reports a failure when created without a name', () => {
+    const unnamed: ComponentFixture<SuiButtonSplitComponent> = TestBed.createComponent(SuiButtonSplitComponent);
+
+    expect(() => unnamed.detectChanges()).toThrow(/NG0950/);
+  });
+
+  describe('whitespace-only name', () => {
+    const modes: SUI_BUTTON_SPLIT_MODE[] = ['default', 'icon'];
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it.each(modes)('renders in %s mode and reports nothing', async (mode: SUI_BUTTON_SPLIT_MODE) => {
+      const error: MockInstance<typeof console.error> = vi.spyOn(console, 'error');
+      const warn: MockInstance<typeof console.warn> = vi.spyOn(console, 'warn');
+
+      fixture.componentRef.setInput('name', '  ');
+      fixture.componentRef.setInput('icon', 'check');
+      fixture.componentRef.setInput('mode', mode);
+      await fixture.whenStable();
+
+      expect(host.querySelectorAll('sui-button-group button')).toHaveLength(2);
+      expect(trigger().getAttribute('aria-label')).toBe('More options');
+      expect(error).not.toHaveBeenCalled();
+      expect(warn).not.toHaveBeenCalled();
+    });
   });
 });

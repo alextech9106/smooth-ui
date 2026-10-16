@@ -32,7 +32,7 @@ export class SuiButtonComponent {
 
   public trigger: OutputEmitterRef<void> = output<void>();
 
-  protected readonly accessibleName: Signal<string> = computed(() => this.label() || this.name() || this.icon());
+  protected readonly accessibleName: Signal<string> = computed(() => (this.label().trim() ? this.label() : this.name()));
   protected readonly showIconStart: Signal<boolean> = computed(() => this.icon() !== '' && !this.iconEnd());
   protected readonly showIconEnd: Signal<boolean> = computed(() => this.icon() !== '' && this.iconEnd());
   protected readonly computedIconSize: Signal<number> = computed(() => {

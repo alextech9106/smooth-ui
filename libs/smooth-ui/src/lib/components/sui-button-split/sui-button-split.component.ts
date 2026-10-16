@@ -37,8 +37,8 @@ export class SuiButtonSplitComponent {
   private readonly _hostEl: ElementRef<HTMLElement> = inject(ElementRef);
   private readonly _menuElement: Signal<ElementRef<HTMLElement> | undefined> = viewChild('menu');
 
+  public name: InputSignal<string> = input.required<string>();
   public icon: InputSignal<SUI_ICON_NAME> = input<SUI_ICON_NAME>('');
-  public name: InputSignal<string> = input<string>('');
   public menuItems: InputSignal<MenuItem[]> = input<MenuItem[]>([]);
   public mode: InputSignal<SUI_BUTTON_SPLIT_MODE> = input<SUI_BUTTON_SPLIT_MODE>('default');
   public shape: InputSignal<SUI_SHAPE> = input<SUI_SHAPE>('flat');

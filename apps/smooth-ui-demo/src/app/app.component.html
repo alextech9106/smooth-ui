@@ -18,28 +18,52 @@
     <h1>Smooth UI Button</h1>
 
     <div class="row">
-      <sui-button name="Button" />
-      <sui-button name="Button" variant="secondary" />
-      <sui-button name="Button" variant="tonal" />
-      <sui-button name="Button" variant="outline" />
-      <sui-button name="Button" variant="ghost" />
-      <sui-button name="Button" variant="danger" />
-      <sui-button name="Button" state="focus" />
-      <sui-button disabled name="Button" />
-      <sui-button name="Button" selected />
       <sui-button icon="check" name="Button" />
       <sui-button icon="check" iconEnd name="Button" />
       <sui-button icon="check" name="Button" shape="flat" variant="outline" />
       <sui-button icon="check" name="Button" shape="rounded" variant="outline" />
       <sui-button icon="check" name="Button" shape="pill" variant="outline" />
-      <sui-button loading name="Button" />
-      <sui-button name="Button" size="sm" variant="primary" />
-      <sui-button name="Button" variant="primary" />
-      <sui-button name="Button" size="lg" variant="primary" />
     </div>
 
     <div style="width: min(500px, 100%)">
       <sui-button fullWidth name="Button" />
+    </div>
+
+    <div class="row">
+      <sui-button icon="check" label="Confirm" name="" />
+      <sui-button label="Save draft" name="Save" />
+      <sui-button [expanded]="false" icon="chevron-down" iconEnd name="Options" variant="outline" />
+      <sui-button [expanded]="true" icon="chevron-down" iconEnd name="Options" variant="outline" />
+    </div>
+
+    <div id="button-matrix">
+      @defer (on viewport) {
+        @for (variant of buttonVariants; track variant) {
+          <div class="col">
+            <h2>{{ variant }}</h2>
+
+            @for (size of buttonSizes; track size) {
+              <div class="row">
+                @for (buttonState of buttonStates; track buttonState.id) {
+                  <sui-button
+                    [disabled]="buttonState.disabled"
+                    [loading]="buttonState.loading"
+                    [name]="buttonState.text"
+                    [selected]="buttonState.selected"
+                    [size]="size"
+                    [state]="buttonState.state"
+                    [variant]="variant"
+                  />
+                }
+              </div>
+            }
+          </div>
+        }
+      } @placeholder {
+        <p>Button matrix</p>
+      } @loading {
+        <p>Loading button matrix…</p>
+      }
     </div>
   </div>
 
@@ -189,7 +213,7 @@
         variant="underline"
       />
 
-      <sui-button (click)="onSubmitFormGroup()" name="Submit Data" type="submit" />
+      <sui-button (trigger)="onSubmitFormGroup()" name="Submit Data" type="submit" />
       <sui-button name="Reset" type="reset" variant="outline" />
     </form>
 
