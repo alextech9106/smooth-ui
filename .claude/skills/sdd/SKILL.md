@@ -15,9 +15,10 @@ Constitution → Spec → Clarification → Plan → Tasks → Implementation �
 - The spec rules: if something is not in the spec, it does not get implemented. If a decision is missing, stop and ask.
 - A requirements change is made first in the spec, then in the plan and the tasks, and last in the code.
 - Each spec lives in its own folder: `specs/NNN-name/` with `spec.md`, `plan.md` and `tasks.md`.
-- If the component already exists in `libs/smooth-ui/src/lib/components/`, the spec records how it behaves today and
-  proposes no change. Gaps against the request go only in "Open questions" as suggested changes, and the flow stops
-  after Clarification: no plan, tasks or code until the user asks for a change (`/sdd-change`).
+- If the component already exists in `libs/smooth-ui/src/lib/components/`, the spec records how it behaves today.
+  Gaps go in "Open questions" as suggested changes. After the spec is approved, ask the user which open questions to
+  resolve (each becomes an FR change) and whether to cover untested FRs; with that answer the flow continues through
+  Plan, Tasks, Implementation and Validation. If the user picks none, the flow stops after Clarification.
 - When each phase is finished, update `MEMORY.md`.
 
 ## Spec template (spec.md)

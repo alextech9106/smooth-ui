@@ -21,7 +21,8 @@ may only write inside specs/ and, when asked to, in MEMORY.md: never create or e
 
 ## If you are asked for the plan
 
-- Start from the approved spec. If its `Status` is not `approved` or it has open questions, stop and say so.
+- Start from the approved spec. If its `Status` is not `approved`, or an open question the user chose to resolve is
+  still in it, stop and say so. Open questions the user left for later do not block the plan.
 - Generate plan.md with the sections from the sdd skill: files and the responsibility of each one, public API (inputs,
   outputs, exported types), state and what derives from it, where browser side effects live, template and accessibility,
   decisions with their discarded alternative, and the test strategy with Vitest and TestBed, including what is left for
