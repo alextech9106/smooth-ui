@@ -107,7 +107,7 @@ fails WCAG AA contrast there (about 3.8:1 instead of 4.5:1).
 - FR-5 in every name edge case: the name is the `label` as given if not blank, else the visible text (also for a
   whitespace-only `label`), never the icon id, and nothing is reported; FR-6 (`true`/`false`/unset) and FR-9 hold; no icon size field.
 - The demo shows all 6 variants × 3 sizes × 4 states and the three `loading` combinations of NFR-4, a `label`-only
-  button, a `label` containing its text and `expanded` `true`/`false`, and reacts to activation only through `trigger`;
+  button and a `label` containing its text, and reacts to activation only through `trigger`;
   there FR-7, FR-8, FR-10, NFR-3 and NFR-4 (WCAG 2.2 AA) hold in light and dark theme.
 - NFR-4 contrast: `primary` and `danger` text reaches 4.5:1 at rest, on hover and on press in both themes; the demo page
   paints the theme's canvas background behind all its content in both themes, and NFR-4 holds against it.
