@@ -11,6 +11,7 @@ import {
   SuiTextFieldComponent,
   SuiThemeToggleComponent,
   SUI_BUTTON_VARIANT,
+  SUI_ICON_BUTTON_VARIANT,
   SUI_ICON_NAME,
   SUI_SIZE,
   SUI_STATE,
@@ -28,6 +29,31 @@ interface DemoButtonState {
   state: SUI_STATE;
 }
 
+interface DemoIconButtonState {
+  id: string;
+  action: string;
+  icon: SUI_ICON_NAME;
+  selected: boolean;
+  disabled: boolean;
+  state: SUI_STATE;
+  badge: number;
+}
+
+interface DemoIconButton extends DemoIconButtonState {
+  label: string;
+}
+
+interface DemoIconButtonRow {
+  id: string;
+  size: SUI_SIZE;
+  buttons: DemoIconButton[];
+}
+
+interface DemoIconButtonVariantGroup {
+  variant: SUI_ICON_BUTTON_VARIANT;
+  rows: DemoIconButtonRow[];
+}
+
 interface TextFieldsModel {
   text: string;
   email: string;
@@ -41,6 +67,25 @@ interface TextFieldsModel {
   underlineTextarea: string;
   disabledTextarea: string;
   readonlyTextarea: string;
+}
+
+function buildIconButtonMatrix(
+  variants: readonly SUI_ICON_BUTTON_VARIANT[],
+  sizes: readonly SUI_SIZE[],
+  states: readonly DemoIconButtonState[],
+): DemoIconButtonVariantGroup[] {
+  return variants.map((variant: SUI_ICON_BUTTON_VARIANT): DemoIconButtonVariantGroup => ({
+    variant,
+    rows: sizes.map((size: SUI_SIZE): DemoIconButtonRow => ({
+      id: `${variant}-${size}`,
+      size,
+      buttons: states.map((state: DemoIconButtonState): DemoIconButton => ({
+        ...state,
+        id: `${variant}-${size}-${state.id}`,
+        label: `${state.action} (${variant}, ${size})`,
+      })),
+    })),
+  }));
 }
 
 @Component({
@@ -170,6 +215,21 @@ export class AppComponent {
     { id: 'focus-loading', text: 'Focus loading', selected: false, loading: true, disabled: false, state: 'focus' },
     { id: 'disabled-loading', text: 'Disabled loading', selected: false, loading: true, disabled: true, state: 'default' },
   ];
+
+  protected readonly iconButtonVariants: SUI_ICON_BUTTON_VARIANT[] = ['ghost', 'outline', 'primary'];
+
+  protected readonly iconButtonStates: DemoIconButtonState[] = [
+    { id: 'selected', action: 'Add to favourites', icon: 'star', selected: true, disabled: false, state: 'default', badge: 0 },
+    { id: 'disabled', action: 'Delete', icon: 'trash', selected: false, disabled: true, state: 'default', badge: 0 },
+    { id: 'focus', action: 'Open settings', icon: 'settings', selected: false, disabled: false, state: 'focus', badge: 0 },
+    { id: 'badge', action: 'Show notifications', icon: 'bell', selected: false, disabled: false, state: 'default', badge: 3 },
+  ];
+
+  protected readonly iconButtonMatrix: DemoIconButtonVariantGroup[] = buildIconButtonMatrix(
+    this.iconButtonVariants,
+    this.buttonSizes,
+    this.iconButtonStates,
+  );
 
   protected readonly formGroup: UntypedFormGroup = new UntypedFormGroup({
     text: new UntypedFormControl({ value: null, disabled: false }, [Validators.required, Validators.minLength(2), Validators.maxLength(10)]),

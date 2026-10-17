@@ -69,19 +69,40 @@
     <h1>Smooth UI Icon Button</h1>
 
     <div class="row">
-      <sui-icon-button icon="sun" variant="ghost" />
-      <sui-icon-button icon="sun" variant="outline" />
-      <sui-icon-button icon="sun" variant="primary" />
-      <sui-icon-button icon="sun" shape="flat" variant="outline" />
-      <sui-icon-button icon="sun" variant="outline" />
-      <sui-icon-button icon="sun" shape="pill" variant="outline" />
-      <sui-icon-button icon="sun" state="focus" variant="primary" />
-      <sui-icon-button disabled icon="sun" variant="primary" />
-      <sui-icon-button icon="sun" selected variant="primary" />
-      <sui-icon-button icon="sun" size="sm" variant="primary" />
-      <sui-icon-button icon="sun" size="md" variant="primary" />
-      <sui-icon-button icon="sun" size="lg" variant="primary" />
-      <sui-icon-button [badge]="10" icon="sun" variant="primary" />
+      <sui-icon-button icon="edit" label="Edit (flat)" shape="flat" variant="outline" />
+      <sui-icon-button icon="edit" label="Edit (rounded)" shape="rounded" variant="outline" />
+      <sui-icon-button icon="edit" label="Edit (pill)" shape="pill" variant="outline" />
+    </div>
+
+    <div id="icon-button-matrix">
+      @defer (on viewport) {
+        @for (group of iconButtonMatrix; track group.variant) {
+          <div class="col">
+            <h2>{{ group.variant }}</h2>
+
+            @for (row of group.rows; track row.id) {
+              <div class="row">
+                @for (button of row.buttons; track button.id) {
+                  <sui-icon-button
+                    [badge]="button.badge"
+                    [disabled]="button.disabled"
+                    [icon]="button.icon"
+                    [label]="button.label"
+                    [selected]="button.selected"
+                    [size]="row.size"
+                    [state]="button.state"
+                    [variant]="group.variant"
+                  />
+                }
+              </div>
+            }
+          </div>
+        }
+      } @placeholder {
+        <p>Icon button matrix</p>
+      } @loading {
+        <p>Loading icon button matrix…</p>
+      }
     </div>
   </div>
 

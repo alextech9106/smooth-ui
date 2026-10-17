@@ -7,7 +7,6 @@ import { SUI_STATE } from '../types/sui-state.type';
 export interface SuiIconButton {
   icon: SUI_ICON_NAME;
   badge?: number;
-  iconSize?: number;
   selected?: boolean;
   shape?: SUI_SHAPE;
   size?: SUI_SIZE;

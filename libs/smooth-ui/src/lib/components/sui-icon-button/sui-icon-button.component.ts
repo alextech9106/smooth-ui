@@ -16,7 +16,6 @@ import { SUI_ICON_BUTTON_VARIANT } from './type/sui-icon-button-variant.type';
 export class SuiIconButtonComponent {
   public icon: InputSignal<SUI_ICON_NAME> = input.required<SUI_ICON_NAME>();
   public badge: InputSignal<number> = input<number>(0);
-  public iconSize: InputSignal<number> = input<number>(20);
   public label: InputSignal<string> = input<string>('');
   public shape: InputSignal<SUI_SHAPE> = input<SUI_SHAPE>('rounded');
   public size: InputSignal<SUI_SIZE> = input<SUI_SIZE>('md');
@@ -28,7 +27,7 @@ export class SuiIconButtonComponent {
 
   public trigger: OutputEmitterRef<void> = output<void>();
 
-  protected readonly accessibleName: Signal<string> = computed(() => this.label() || this.icon());
+  protected readonly accessibleName: Signal<string | null> = computed(() => (this.label().trim() ? this.label() : null));
   protected readonly computedIconSize: Signal<number> = computed(() => {
     switch (this.size()) {
       case 'sm':
