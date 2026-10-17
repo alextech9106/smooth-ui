@@ -4,6 +4,7 @@
   [aria-expanded]="expanded() ?? null"
   [aria-haspopup]="expanded() === undefined ? null : 'menu'"
   [aria-label]="label() !== '' || loading() || name() === '' ? accessibleName() : null"
+  [aria-pressed]="pressed() ?? null"
   [class]="classes()"
   [class.sui-spacing-8]="name() === ''"
   [disabled]="disabled() || loading()"

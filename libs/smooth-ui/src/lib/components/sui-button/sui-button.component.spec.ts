@@ -195,6 +195,64 @@ describe('SuiButtonComponent', () => {
     expect(button.getAttribute('aria-haspopup')).toBe('menu');
   });
 
+  describe('pressed state', () => {
+    const queryButton: () => HTMLButtonElement = (): HTMLButtonElement => fixture.nativeElement.querySelector('button');
+
+    it('announces a pressed state when pressed is true', async () => {
+      fixture.componentRef.setInput('pressed', true);
+      await fixture.whenStable();
+
+      expect(queryButton().getAttribute('aria-pressed')).toBe('true');
+    });
+
+    it('announces a not pressed state when pressed is false', async () => {
+      fixture.componentRef.setInput('pressed', false);
+      await fixture.whenStable();
+
+      expect(queryButton().getAttribute('aria-pressed')).toBe('false');
+    });
+
+    it('announces no pressed state when pressed is unset', () => {
+      expect(queryButton().hasAttribute('aria-pressed')).toBe(false);
+    });
+
+    it('announces no pressed state when pressed is explicitly undefined', async () => {
+      fixture.componentRef.setInput('pressed', true);
+      await fixture.whenStable();
+      fixture.componentRef.setInput('pressed', undefined);
+      await fixture.whenStable();
+
+      expect(queryButton().hasAttribute('aria-pressed')).toBe(false);
+    });
+
+    it('announces the pressed, expanded and menu states together', async () => {
+      fixture.componentRef.setInput('pressed', true);
+      fixture.componentRef.setInput('expanded', false);
+      await fixture.whenStable();
+
+      const button: HTMLButtonElement = queryButton();
+      expect(button.getAttribute('aria-pressed')).toBe('true');
+      expect(button.getAttribute('aria-expanded')).toBe('false');
+      expect(button.getAttribute('aria-haspopup')).toBe('menu');
+    });
+
+    it('keeps the pressed state while disabled', async () => {
+      fixture.componentRef.setInput('pressed', true);
+      fixture.componentRef.setInput('disabled', true);
+      await fixture.whenStable();
+
+      expect(queryButton().getAttribute('aria-pressed')).toBe('true');
+    });
+
+    it('keeps the pressed state while loading', async () => {
+      fixture.componentRef.setInput('pressed', false);
+      fixture.componentRef.setInput('loading', true);
+      await fixture.whenStable();
+
+      expect(queryButton().getAttribute('aria-pressed')).toBe('false');
+    });
+  });
+
   describe('while disabled or loading', () => {
     const unavailableCases: { title: string; loading: boolean }[] = [
       { title: 'disabled alone', loading: false },

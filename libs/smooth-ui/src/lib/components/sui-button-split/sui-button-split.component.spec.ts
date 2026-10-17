@@ -134,4 +134,32 @@ describe('SuiButtonSplitComponent', () => {
       expect(warn).not.toHaveBeenCalled();
     });
   });
+
+  describe.each<SUI_BUTTON_SPLIT_MODE>(['default', 'icon'])('inner group in %s mode', (mode: SUI_BUTTON_SPLIT_MODE) => {
+    const group = (): HTMLElement | null => host.querySelector('sui-button-group');
+    const segments = (): HTMLButtonElement[] => Array.from(host.querySelectorAll<HTMLButtonElement>('sui-button-group button'));
+
+    beforeEach(async () => {
+      fixture.componentRef.setInput('icon', 'check');
+      fixture.componentRef.setInput('mode', mode);
+      await fixture.whenStable();
+    });
+
+    it('is an unnamed group whose segments announce no pressed state', () => {
+      expect(group()?.getAttribute('role')).toBe('group');
+      expect(group()?.hasAttribute('aria-label')).toBe(false);
+      expect(segments()).toHaveLength(2);
+      segments().forEach((segment) => expect(segment.hasAttribute('aria-pressed')).toBe(false));
+    });
+
+    it('stays an unnamed group without pressed state after opening the menu', async () => {
+      await openMenu();
+
+      expect(host.querySelector('[role="menu"]')).not.toBeNull();
+      expect(group()?.getAttribute('role')).toBe('group');
+      expect(group()?.hasAttribute('aria-label')).toBe(false);
+      segments().forEach((segment) => expect(segment.hasAttribute('aria-pressed')).toBe(false));
+      expect(trigger().getAttribute('aria-expanded')).toBe('true');
+    });
+  });
 });

@@ -192,8 +192,10 @@ export class AppComponent {
   public buttonsGroup: SuiButton[] = [
     { name: 'Button 1', icon: 'check', selected: true },
     { name: 'Button 2', icon: 'x', selected: false },
-    { name: 'Button 3', icon: 'star', selected: false },
+    { name: 'Button 3', icon: 'star' },
   ];
+
+  public singleButtonGroup: SuiButton[] = [{ name: 'Single action', icon: 'star' }];
 
   public menuItems: MenuItem[] = [
     { id: 'item-1', title: 'Item 1', icon: { name: 'check', size: 16 } },

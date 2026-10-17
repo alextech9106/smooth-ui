@@ -18,6 +18,7 @@ export class SuiButtonComponent {
   public icon: InputSignal<SUI_ICON_NAME> = input<SUI_ICON_NAME>('');
   public label: InputSignal<string> = input<string>('');
   public expanded: InputSignal<boolean | undefined> = input<boolean | undefined>(undefined);
+  public pressed: InputSignal<boolean | undefined> = input<boolean | undefined>(undefined);
   public shape: InputSignal<SUI_SHAPE> = input<SUI_SHAPE>('rounded');
   public size: InputSignal<SUI_SIZE> = input<SUI_SIZE>('md');
   public state: InputSignal<SUI_STATE> = input<SUI_STATE>('default');

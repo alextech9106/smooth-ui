@@ -111,27 +111,31 @@
 
     <div class="col">
       <div class="row">
-        <sui-button-group [buttons]="buttonsGroup" shape="flat" size="sm" type="button" />
-        <sui-button-group [buttons]="buttonsGroup" shape="rounded" type="button" />
-        <sui-button-group [buttons]="buttonsGroup" shape="pill" size="lg" type="button" />
+        <sui-button-group [buttons]="buttonsGroup" label="Button group (ghost, flat, sm)" shape="flat" size="sm" type="button" />
+        <sui-button-group [buttons]="buttonsGroup" label="Button group (ghost, rounded, md)" shape="rounded" type="button" />
+        <sui-button-group [buttons]="buttonsGroup" label="Button group (ghost, pill, lg)" shape="pill" size="lg" type="button" />
       </div>
 
       <div class="row">
-        <sui-button-group [buttons]="buttonsGroup" shape="flat" size="sm" type="button" variant="primary" />
-        <sui-button-group [buttons]="buttonsGroup" shape="rounded" type="button" variant="primary" />
-        <sui-button-group [buttons]="buttonsGroup" shape="pill" size="lg" type="button" variant="primary" />
+        <sui-button-group [buttons]="buttonsGroup" label="Button group (primary, flat, sm)" shape="flat" size="sm" type="button" variant="primary" />
+        <sui-button-group [buttons]="buttonsGroup" label="Button group (primary, rounded, md)" shape="rounded" type="button" variant="primary" />
+        <sui-button-group [buttons]="buttonsGroup" label="Button group (primary, pill, lg)" shape="pill" size="lg" type="button" variant="primary" />
       </div>
 
       <div class="row">
-        <sui-button-group [buttons]="buttonsGroup" shape="flat" size="sm" type="icon" />
-        <sui-button-group [buttons]="buttonsGroup" shape="rounded" type="icon" />
-        <sui-button-group [buttons]="buttonsGroup" shape="pill" size="lg" type="icon" />
+        <sui-button-group [buttons]="buttonsGroup" label="Icon group (ghost, flat, sm)" shape="flat" size="sm" type="icon" />
+        <sui-button-group [buttons]="buttonsGroup" label="Icon group (ghost, rounded, md)" shape="rounded" type="icon" />
+        <sui-button-group [buttons]="buttonsGroup" label="Icon group (ghost, pill, lg)" shape="pill" size="lg" type="icon" />
       </div>
 
       <div class="row">
-        <sui-button-group [buttons]="buttonsGroup" shape="flat" size="sm" type="icon" variant="primary" />
-        <sui-button-group [buttons]="buttonsGroup" shape="rounded" type="icon" variant="primary" />
-        <sui-button-group [buttons]="buttonsGroup" shape="pill" size="lg" type="icon" variant="primary" />
+        <sui-button-group [buttons]="buttonsGroup" label="Icon group (primary, flat, sm)" shape="flat" size="sm" type="icon" variant="primary" />
+        <sui-button-group [buttons]="buttonsGroup" label="Icon group (primary, rounded, md)" shape="rounded" type="icon" variant="primary" />
+        <sui-button-group [buttons]="buttonsGroup" label="Icon group (primary, pill, lg)" shape="pill" size="lg" type="icon" variant="primary" />
+      </div>
+
+      <div class="row">
+        <sui-button-group [buttons]="singleButtonGroup" label="Single action group" />
       </div>
     </div>
   </div>

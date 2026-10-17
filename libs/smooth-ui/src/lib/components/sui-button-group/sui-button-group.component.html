@@ -7,6 +7,7 @@
         [icon]="button.icon ?? ''"
         [label]="button.label ?? ''"
         [name]="button.name"
+        [pressed]="button.selected"
         [selected]="button.selected ?? false"
         [shape]="'flat'"
         [size]="size()"
@@ -18,7 +19,8 @@
       <sui-icon-button
         (trigger)="button.callback?.()"
         [icon]="button.icon ?? ''"
-        [label]="button.label ?? button.name"
+        [label]="iconLabels()[$index]"
+        [pressed]="button.selected"
         [selected]="button.selected ?? false"
         [shape]="'flat'"
         [size]="size()"

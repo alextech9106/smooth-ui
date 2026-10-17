@@ -1,6 +1,9 @@
 # Spec 002 — sui-button
 
-Status: implemented (2026-10-16)
+Status: implemented (2026-10-16); FR-7 amended for spec 004, approved and implemented 2026-10-17
+
+**Amendment (spec 004, approved 2026-10-17; implemented 2026-10-17).** FR-7 adds the `pressed` input and its
+announcement; "Out of scope" narrows the toggle-button exclusion; tests cover `pressed` `true`, `false` and unset.
 
 ## Context and goal
 
@@ -52,7 +55,9 @@ fails WCAG AA contrast there (about 3.8:1 instead of 4.5:1).
   text, never the icon. The documented rule, not checked at runtime, is a non-blank `label` that contains the visible text.
 - FR-6: WHEN `expanded` is given, THE SYSTEM announces that it opens a menu and whether it is expanded; else neither.
 - FR-7: THE SYSTEM shows its variant look (`primary` by default); WHILE `selected` is set, THE SYSTEM shows the selected
-  background and accent text at rest, on hover and on pointer press (not on a Space press), without announcing it.
+  background and accent text at rest, on hover and on pointer press (not on a Space press), without announcing it;
+  WHEN `pressed` is `true` or `false`, THE SYSTEM announces it as pressed or not pressed; WHILE it is not set or
+  `undefined`, no pressed state.
 - FR-8: THE SYSTEM offers the defined sizes (`md` default) and shapes (`rounded` default) and, WHILE `fullWidth` is
   set, fills its container's width.
 - FR-9: WHEN an icon is given, THE SYSTEM shows it hidden from assistive technology, before the visible text or after it
@@ -85,11 +90,13 @@ fails WCAG AA contrast there (about 3.8:1 instead of 4.5:1).
   code is compiled; one passed through another type keeps the field, which is ignored.
 - **Loading or disabled**: without `fullWidth` it narrows to the indicator plus padding; with both, disabled wins.
   Loading keeps, at rest, the `selected` look (indicator in accent text colour) and the `state` `focus` ring.
+  **Pressed**: `pressed` and `selected` are independent; with `expanded` both are announced; disabled or loading keeps
+  the pressed state.
 
 ## Out of scope
 
-- Navigating to another page (`sui-link`), projected rich content, toggle buttons announcing a pressed state, colours
-  outside the theme, right-to-left pages and forced-colour modes.
+- Navigating to another page (`sui-link`), projected rich content, toggling by itself (the button never changes
+  `pressed` or `selected`), colours outside the theme, right-to-left pages and forced-colour modes.
 - `sui-icon-button`, groups and split buttons (except FR-1 and FR-5) and the rest of the button description (unused
   fields, no `disabled`, `size`/`variant` ignored by groups), left for a button-group spec.
 - Split's fixed texts "More options" and "Options" (not overridable, against principle 6): for a split or group spec.
@@ -105,7 +112,8 @@ fails WCAG AA contrast there (about 3.8:1 instead of 4.5:1).
 - FR-3, FR-4: disabled and loading emit nothing and leave the focus order; on entering `loading` focus is on the button
   or on no element, never on another one; the looks, indicator and cursor follow the FRs.
 - FR-5 in every name edge case: the name is the `label` as given if not blank, else the visible text (also for a
-  whitespace-only `label`), never the icon id, and nothing is reported; FR-6 (`true`/`false`/unset) and FR-9 hold; no icon size field.
+  whitespace-only `label`), never the icon id, and nothing is reported; FR-6 and FR-7 `pressed` (`true`/`false`/unset)
+  and FR-9 hold; no icon size field.
 - The demo shows all 6 variants × 3 sizes × 4 states and the three `loading` combinations of NFR-4, a `label`-only
   button and a `label` containing its text, and reacts to activation only through `trigger`;
   there FR-7, FR-8, FR-10, NFR-3 and NFR-4 (WCAG 2.2 AA) hold in light and dark theme.
@@ -116,7 +124,7 @@ fails WCAG AA contrast there (about 3.8:1 instead of 4.5:1).
 
 ## Open questions
 
-- [NEEDS CLARIFICATION] `selected` (FR-7): suggest announcing it as pressed (or leaving it to groups), kept on press.
+- [NEEDS CLARIFICATION] `selected` (FR-7): keep its look on a Space press (announced through `pressed` since spec 004)?
 - [NEEDS CLARIFICATION] `state="focus"` (FR-10) is demo-only and inconsistent: remove it or make it consistent?
 - [NEEDS CLARIFICATION] Loading (FR-4): suggest an indicator sized with the button and a kept width; decide look,
   cursor, focus.

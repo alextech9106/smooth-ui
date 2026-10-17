@@ -1,6 +1,10 @@
 # Spec 003 — sui-icon-button
 
-Status: implemented (2026-10-17)
+Status: implemented (2026-10-17); FR-7 amended for spec 004, approved and implemented 2026-10-17
+
+**Amendment (spec 004, approved 2026-10-17; implemented 2026-10-17).** FR-7 adds the `pressed` input and its
+announcement; the "Accessible name" note on icon groups follows spec 004 FR-5; tests cover `pressed` `true`, `false`
+and unset.
 
 ## Context and goal
 
@@ -57,7 +61,8 @@ run does not show it; SC 2.4.13 Focus Appearance is AAA and not the criterion he
 - FR-6: THE SYSTEM offers the defined sizes (`md` default) and shapes (`rounded` default), and the icon size follows
   `size` only; there is no icon size option on the component or in the exported icon button description (breaking).
 - FR-7: WHILE `selected` is set, THE SYSTEM shows the selected background and accent icon colour at rest, on hover and
-  on pointer press (not on a Space press), without announcing it.
+  on pointer press (not on a Space press), without announcing it; WHEN `pressed` is `true` or `false`, THE SYSTEM
+  announces it as pressed or not pressed; WHILE it is not set or `undefined`, no pressed state.
 - FR-8: WHEN focused by keyboard, and WHILE `state` is `focus` (also on hover, on press and while disabled), THE SYSTEM
   draws in every variant the shared theme focus ring in accent 300, whose painted colour reaches 3:1 against the canvas
   in both themes, except the accepted light-theme failure recorded in NFR-4.
@@ -81,9 +86,9 @@ run does not show it; SC 2.4.13 Focus Appearance is AAA and not the criterion he
 
 ## Edge cases
 
-- **Accessible name** (breaking): a blank or missing `label` gives no name (an unreported FR-4 violation), never the icon
-  name; `" Close "` keeps its spaces. Icon groups pass the entry's `label` if given, else its `name`, so a blank `label`,
-  or no `label` and a blank `name`, gives an unnamed button.
+- **Accessible name** (breaking): a blank or missing `label` gives no name (an unreported FR-4 violation), never
+  the icon name; `" Close "` keeps its spaces. Icon groups pass the entry's `label` as given if not blank, else its
+  `name` as given (spec 004 FR-5), so only a blank `label` with a blank `name` gives an unnamed button.
 - **No icon size** (breaking): a bound icon size fails to compile, a plain attribute is silently ignored and setting it
   programmatically fails at runtime; a description literal with it fails to compile, one passed through another type
   keeps the ignored field.
@@ -91,7 +96,7 @@ run does not show it; SC 2.4.13 Focus Appearance is AAA and not the criterion he
   numbers are not capped and widen the mark. It covers up to 12 × 14 px of the top-right corner (a large share of `sm`),
   where a click emits no `trigger`, may overlap neighbours and keeps its full danger colours while disabled.
 - **Disabled with other states**: the disabled look wins over `selected`; `outline` keeps its border; `state` `focus`
-  keeps its ring.
+  keeps its ring. **Pressed**: `pressed` and `selected` are independent; disabled keeps the pressed state.
 - **Activation API**: `trigger` is the activation event; click propagation is not stopped. A script-dispatched click on a
   disabled button still emits `trigger` (accepted, as in spec 002). The theme toggle listens to raw clicks instead, so a
   click on a badge would also reach it (it shows none today).
@@ -131,8 +136,8 @@ run does not show it; SC 2.4.13 Focus Appearance is AAA and not the criterion he
 - [NEEDS CLARIFICATION] Badge (FR-9, FR-10): suggest announcing it as part of the button (text overridable, principle 6);
   decide a cap (for example `99+`), what 0, `NaN`, negative or decimal values show, whether clicks on the mark activate
   the button (it covers part of `sm`) and whether it dims while disabled.
-- [NEEDS CLARIFICATION] `selected` (FR-7): suggest announcing it as pressed and keeping its look on a Space press, which
-  also removes the NFR-4 exception.
+- [NEEDS CLARIFICATION] `selected` (FR-7): keep its look on a Space press (announced through `pressed` since spec 004),
+  which also removes the NFR-4 exception?
 - [NEEDS CLARIFICATION] `state` `focus` (FR-8): demo-only and drawn while disabled; remove it or make it consistent?
 - [NEEDS CLARIFICATION] Parity with `sui-button`: `outline` here is neutral (accent there), default is `ghost` (`primary`
   there), no `danger` look, loading, menu (`expanded`), submit/reset or full width; align them, and should the theme

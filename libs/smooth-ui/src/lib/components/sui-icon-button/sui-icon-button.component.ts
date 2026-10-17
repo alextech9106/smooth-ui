@@ -21,6 +21,7 @@ export class SuiIconButtonComponent {
   public size: InputSignal<SUI_SIZE> = input<SUI_SIZE>('md');
   public state: InputSignal<SUI_STATE> = input<SUI_STATE>('default');
   public variant: InputSignal<SUI_ICON_BUTTON_VARIANT> = input<SUI_ICON_BUTTON_VARIANT>('ghost');
+  public pressed: InputSignal<boolean | undefined> = input<boolean | undefined>(undefined);
 
   public disabled: InputSignalWithTransform<boolean, unknown> = input<boolean, unknown>(false, { transform: booleanAttribute });
   public selected: InputSignalWithTransform<boolean, unknown> = input<boolean, unknown>(false, { transform: booleanAttribute });

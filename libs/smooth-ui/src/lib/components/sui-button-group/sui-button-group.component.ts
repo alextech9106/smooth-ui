@@ -8,6 +8,10 @@ import { SUI_BUTTON_GROUP_TYPE } from './type/sui-button-group-type.type';
 import { SUI_BUTTON_GROUP_VARIANT } from './type/sui-button-group-variant.type';
 
 @Component({
+  host: {
+    role: 'group',
+    '[aria-label]': 'groupName()',
+  },
   imports: [SuiButtonComponent, SuiIconButtonComponent],
   selector: 'sui-button-group',
   styleUrl: './sui-button-group.component.scss',
@@ -16,10 +20,17 @@ import { SUI_BUTTON_GROUP_VARIANT } from './type/sui-button-group-variant.type';
 export class SuiButtonGroupComponent {
   public buttons: InputSignal<SuiButton[]> = input.required<SuiButton[]>();
 
+  public label: InputSignal<string> = input<string>('');
+
   public shape: InputSignal<SUI_SHAPE> = input<SUI_SHAPE>('flat');
   public size: InputSignal<SUI_SIZE> = input<SUI_SIZE>('md');
   public type: InputSignal<SUI_BUTTON_GROUP_TYPE> = input<SUI_BUTTON_GROUP_TYPE>('button');
   public variant: InputSignal<SUI_BUTTON_GROUP_VARIANT> = input<SUI_BUTTON_GROUP_VARIANT>('ghost');
+
+  protected readonly groupName: Signal<string | null> = computed(() => (this.label().trim() ? this.label() : null));
+  protected readonly iconLabels: Signal<string[]> = computed(() =>
+    this.buttons().map((button: SuiButton) => (button.label?.trim() ? button.label : button.name)),
+  );
 
   protected readonly classes: Signal<string> = computed(
     () => `

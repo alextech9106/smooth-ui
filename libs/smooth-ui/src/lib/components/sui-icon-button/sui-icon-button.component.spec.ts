@@ -222,6 +222,45 @@ describe('SuiIconButtonComponent', () => {
     expect(button.hasAttribute('aria-pressed')).toBe(false);
   });
 
+  describe('pressed state', () => {
+    const queryButton: () => HTMLButtonElement = (): HTMLButtonElement => fixture.nativeElement.querySelector('button');
+
+    it('announces a pressed state when pressed is true', async () => {
+      fixture.componentRef.setInput('pressed', true);
+      await fixture.whenStable();
+
+      expect(queryButton().getAttribute('aria-pressed')).toBe('true');
+    });
+
+    it('announces a not pressed state when pressed is false', async () => {
+      fixture.componentRef.setInput('pressed', false);
+      await fixture.whenStable();
+
+      expect(queryButton().getAttribute('aria-pressed')).toBe('false');
+    });
+
+    it('announces no pressed state when pressed is unset', () => {
+      expect(queryButton().hasAttribute('aria-pressed')).toBe(false);
+    });
+
+    it('announces no pressed state when pressed is explicitly undefined', async () => {
+      fixture.componentRef.setInput('pressed', true);
+      await fixture.whenStable();
+      fixture.componentRef.setInput('pressed', undefined);
+      await fixture.whenStable();
+
+      expect(queryButton().hasAttribute('aria-pressed')).toBe(false);
+    });
+
+    it('keeps the pressed state while disabled', async () => {
+      fixture.componentRef.setInput('pressed', true);
+      fixture.componentRef.setInput('disabled', true);
+      await fixture.whenStable();
+
+      expect(queryButton().getAttribute('aria-pressed')).toBe('true');
+    });
+  });
+
   it('applies the focus state class, also while disabled', async () => {
     fixture.componentRef.setInput('state', 'focus');
     await fixture.whenStable();
