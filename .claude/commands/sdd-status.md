@@ -1,13 +1,13 @@
 ---
-description: SDD · Where we are - current phase and next step of a spec
+description: SDD · Dónde estamos - fase actual y siguiente paso de una spec
 agent: plan
 ---
 
-Read specs/$0/ (spec.md, plan.md and tasks.md, whichever exist) and MEMORY.md.
-Tell me in a few lines:
+Lee specs/$0/ (spec.md, plan.md y tasks.md, los que existan) y MEMORY.md.
+Dime en pocas líneas:
 
-1. Which phase of the SDD flow this spec is in and its status.
-2. Tasks done and pending (x of y).
-3. The exact next step, with the /sdd-* command I should run.
+1. En qué fase del flujo SDD está esta spec y cuál es su estado.
+2. Tareas hechas y pendientes (x de y).
+3. El siguiente paso exacto, con el comando /sdd-* que debo ejecutar.
 
-Do not modify any files.
+No modifiques ningún archivo.

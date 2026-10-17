@@ -2,36 +2,37 @@
 
 Status: implemented
 
-## Context and goal
+## Contexto y objetivo
 
-Applications built with the library need small pictures (icons) inside buttons, fields, links and text. Drawing or
-importing them one by one in every application is repetitive and makes them look different from each other.
+Las aplicaciones hechas con la librería necesitan imágenes pequeñas (iconos) dentro de botones, campos, enlaces y texto.
+Dibujarlas o importarlas una a una en cada aplicación es repetitivo y hace que se vean distintas entre sí.
 
-`sui-icon` displays one icon from a set that ships with the library, chosen by its name, at the size the developer asks
-for and in the colour of the surrounding text. This spec records how `sui-icon` behaves today. It was amended on
-2026-10-16 so that a name outside the built-in set is rejected at build time (FR-3, FR-11, FR-12).
+`sui-icon` muestra un icono de un conjunto que viene con la librería, elegido por su nombre, al tamaño que pide el
+desarrollador y en el color del texto que lo rodea. Esta spec recoge cómo se comporta `sui-icon` hoy. Se modificó el
+2026-10-16 para que un nombre fuera del conjunto incluido se rechace en tiempo de compilación (FR-3, FR-11, FR-12).
 
-## Users
+## Usuarios
 
-- **Consumer developers**: build applications with the library and choose icons by name.
-- **End users** of those applications, including people who use assistive technology.
-- **Library maintainers**: add icons to the set and build components that show icons.
+- **Desarrolladores consumidores**: crean aplicaciones con la librería y eligen los iconos por su nombre.
+- **Usuarios finales** de esas aplicaciones, incluidas las personas que usan tecnología de apoyo.
+- **Mantenedores de la librería**: añaden iconos al conjunto y crean componentes que muestran iconos.
 
-## User stories
+## Historias de usuario
 
-- US-1. As a consumer developer, I want to show an icon by its name so that I do not have to draw or import icons
-  myself.
-- US-2. As a consumer developer, I want to choose the size of an icon so that it fits the text or control next to it.
-- US-3. As a consumer developer, I want an icon to take the colour of the text around it so that it follows the theme
-  without extra work.
-- US-4. As an end user of assistive technology, I want icons to be skipped so that I only hear the text or accessible
-  name of the control they belong to.
-- US-5. As a library maintainer, I want the drawings of all icons to be loaded once per application so that showing many
-  icons costs no more than showing one.
+- US-1. Como desarrollador consumidor, quiero mostrar un icono por su nombre para no tener que dibujar ni importar
+  iconos yo mismo.
+- US-2. Como desarrollador consumidor, quiero elegir el tamaño de un icono para que encaje con el texto o el control que
+  tiene al lado.
+- US-3. Como desarrollador consumidor, quiero que un icono tome el color del texto que lo rodea para que siga el tema sin
+  trabajo extra.
+- US-4. Como usuario final de tecnología de apoyo, quiero que los iconos se omitan para oír solo el texto o el nombre
+  accesible del control al que pertenecen.
+- US-5. Como mantenedor de la librería, quiero que los dibujos de todos los iconos se carguen una vez por aplicación
+  para que mostrar muchos iconos no cueste más que mostrar uno.
 
-## Definitions
+## Definiciones
 
-- **Built-in set**: the 79 icons whose drawing ships with the library. Their names are:
+- **Conjunto incluido**: los 79 iconos cuyo dibujo viene con la librería. Sus nombres son:
   `check`, `x`, `chevron-down`, `chevron-up`, `chevron-right`, `chevron-left`, `arrow-right`, `arrow-left`, `arrow-up`,
   `arrow-down`, `plus`, `minus`, `plus-circle`, `minus-circle`, `search`, `info`, `alert-triangle`, `alert-circle`,
   `check-circle`, `x-circle`, `star`, `heart`, `thumbs-up`, `thumbs-down`, `user`, `settings`, `bell`, `calendar`,
@@ -40,78 +41,84 @@ for and in the colour of the surrounding text. This spec records how `sui-icon` 
   `share`, `copy`, `sun`, `moon`, `menu`, `list`, `home`, `image`, `camera`, `play`, `pause`, `file`, `folder`,
   `bookmark`, `tag`, `credit-card`, `shopping-cart`, `gift`, `map-pin`, `globe`, `grid`, `circle`, `square`, `maximize`,
   `minimize`, `clock`, `help`, `log-out`, `log-in`.
-- **Build time**: the moment the consumer's application is checked and compiled, before it runs.
-- **Application**: one running instance of a consumer's program that uses the library. One page can host several.
-- **Decorative icon**: an icon that adds no information beyond the text or accessible name of what surrounds it.
+- **Tiempo de compilación**: el momento en que se comprueba y compila la aplicación del consumidor, antes de ejecutarse.
+- **Aplicación**: una instancia en ejecución del programa de un consumidor que usa la librería. Una página puede
+  albergar varias.
+- **Icono decorativo**: un icono que no aporta información más allá del texto o del nombre accesible de lo que lo rodea.
 
-## Functional requirements
+## Requisitos funcionales
 
-- FR-1: IF a developer uses `sui-icon` without giving it a name, THEN THE SYSTEM reports an error at build time.
-- FR-2: WHEN `sui-icon` receives the name of an icon of the built-in set, THE SYSTEM displays that icon.
-- FR-3: IF a developer gives `sui-icon` a name that is neither in the built-in set nor empty, THEN THE SYSTEM reports an
-  error at build time.
-- FR-4: WHEN no size is given, THE SYSTEM uses a size of 20.
-- FR-5: WHEN a size of N is given, N being a number greater than zero, THE SYSTEM draws the icon inside a square area N
-  px wide and N px high, keeping the icon's proportions, and centres that area in the width given to the icon by the
-  element that contains it.
-- FR-6: THE SYSTEM draws the icon in the colour that text placed at the same point of the page would have, and WHEN that
-  colour changes, the icon changes with it.
-- FR-7: THE SYSTEM treats every icon as decorative: it hides the icon from assistive technology and keeps it out of the
-  keyboard focus order.
-- FR-8: WHEN the name or the size of a displayed icon changes, THE SYSTEM updates the displayed icon to match.
-- FR-9: WHILE a page runs in a browser, THE SYSTEM adds to it exactly one copy of the built-in set's drawings for each
-  application that displays an icon, however many icons that application displays, and never removes it.
-- FR-10: WHILE a page is rendered outside a browser, THE SYSTEM adds no copy of the drawings and raises no error.
-- FR-11: WHEN `sui-icon` receives an empty name, THE SYSTEM raises no error, writes nothing to the browser console and
-  displays an empty space of the requested size.
-- FR-12: THE SYSTEM offers the list of valid names as a type that consumers can import, and every library input or data
-  shape that takes an icon name accepts only those names.
+- FR-1: SI un desarrollador usa `sui-icon` sin darle un nombre, ENTONCES EL SISTEMA informa de un error en tiempo de
+  compilación.
+- FR-2: CUANDO `sui-icon` recibe el nombre de un icono del conjunto incluido, EL SISTEMA muestra ese icono.
+- FR-3: SI un desarrollador da a `sui-icon` un nombre que no está en el conjunto incluido ni está vacío, ENTONCES EL
+  SISTEMA informa de un error en tiempo de compilación.
+- FR-4: CUANDO no se da un tamaño, EL SISTEMA usa un tamaño de 20.
+- FR-5: CUANDO se da un tamaño N, siendo N un número mayor que cero, EL SISTEMA dibuja el icono dentro de un área
+  cuadrada de N px de ancho y N px de alto, manteniendo las proporciones del icono, y centra esa área en el ancho que el
+  elemento que lo contiene da al icono.
+- FR-6: EL SISTEMA dibuja el icono en el color que tendría un texto colocado en ese mismo punto de la página, y CUANDO
+  ese color cambia, el icono cambia con él.
+- FR-7: EL SISTEMA trata cada icono como decorativo: lo oculta a la tecnología de apoyo y lo deja fuera del orden de
+  foco del teclado.
+- FR-8: CUANDO cambian el nombre o el tamaño de un icono mostrado, EL SISTEMA actualiza el icono para que coincida.
+- FR-9: MIENTRAS una página se ejecuta en un navegador, EL SISTEMA le añade exactamente una copia de los dibujos del
+  conjunto incluido por cada aplicación que muestra un icono, muestre los iconos que muestre esa aplicación, y nunca la
+  quita.
+- FR-10: MIENTRAS una página se renderiza fuera de un navegador, EL SISTEMA no añade ninguna copia de los dibujos ni
+  lanza ningún error.
+- FR-11: CUANDO `sui-icon` recibe un nombre vacío, EL SISTEMA no lanza ningún error, no escribe nada en la consola del
+  navegador y muestra un espacio vacío del tamaño pedido.
+- FR-12: EL SISTEMA ofrece la lista de nombres válidos como un tipo que los consumidores pueden importar, y todo input o
+  estructura de datos de la librería que recibe un nombre de icono acepta solo esos nombres.
 
-## Non-functional requirements
+## Requisitos no funcionales
 
-- NFR-1: Displaying icons adds no dependency to any package of the project (constitution, principle 1).
-- NFR-2: An accessibility audit of a page that shows icons, run in a browser, reports no violation on an icon.
-- NFR-3: Icon names are in English (constitution, principle 6).
+- NFR-1: Mostrar iconos no añade ninguna dependencia a ningún paquete del proyecto (constitución, principio 1).
+- NFR-2: Una auditoría de accesibilidad de una página que muestra iconos, ejecutada en un navegador, no informa de
+  ninguna infracción en un icono.
+- NFR-3: Los nombres de los iconos están en inglés (constitución, principio 6).
 
-## Edge cases
+## Casos límite
 
-- **Name with different letter case or spaces around it** (`Check`, `" check"`): it is not in the built-in set, so it
-  is rejected at build time (FR-3). An empty name is accepted (FR-11).
-- **Name only known while the application runs** (for example read from a server): build-time checks cannot see it;
-  the consumer must convert it to a valid name before giving it to `sui-icon`.
-- **Size that is not a number greater than zero**: text instead of a number is rejected at build time; zero or less is
-  accepted, the icon is not visible or is drawn incorrectly, and nothing is reported.
-- **Copies of the drawings**: several applications on one page, or one that is destroyed and created again, each add
-  their own copy (FR-9), so copies add up and the icons are still displayed. If other code removes the copies from the
-  page, they are not added again and the icons stop being displayed.
-- **Identifier shared between the page and the drawings**: the drawings are identified on the page by their bare names
-  (`menu`, `search`, `user`…). A page element with one of those identifiers makes two elements share it, and a name
-  outside the set that is the identifier of a page element makes the icon point at that element.
-- **Icon that carries meaning on its own** (for example a status icon with no text beside it): it is never announced,
-  because of FR-7. The consumer must give that meaning as text or as the accessible name of the element that contains
-  the icon.
+- **Nombre con distintas mayúsculas o espacios alrededor** (`Check`, `" check"`): no está en el conjunto incluido, así
+  que se rechaza en tiempo de compilación (FR-3). Un nombre vacío se acepta (FR-11).
+- **Nombre que solo se conoce mientras la aplicación se ejecuta** (por ejemplo, leído de un servidor): las comprobaciones
+  de compilación no lo ven; el consumidor debe convertirlo en un nombre válido antes de dárselo a `sui-icon`.
+- **Tamaño que no es un número mayor que cero**: un texto en lugar de un número se rechaza en tiempo de compilación;
+  cero o menos se acepta, el icono no se ve o se dibuja mal, y no se informa de nada.
+- **Copias de los dibujos**: varias aplicaciones en una página, o una que se destruye y se vuelve a crear, añaden cada
+  una su propia copia (FR-9), así que las copias se acumulan y los iconos se siguen mostrando. Si otro código quita las
+  copias de la página, no se vuelven a añadir y los iconos dejan de mostrarse.
+- **Identificador compartido entre la página y los dibujos**: los dibujos se identifican en la página por sus nombres
+  sin más (`menu`, `search`, `user`…). Un elemento de la página con uno de esos identificadores hace que dos elementos lo
+  compartan, y un nombre fuera del conjunto que sea el identificador de un elemento de la página hace que el icono
+  apunte a ese elemento.
+- **Icono que tiene significado por sí mismo** (por ejemplo, un icono de estado sin texto al lado): nunca se anuncia, por
+  FR-7. El consumidor debe dar ese significado como texto o como nombre accesible del elemento que contiene el icono.
 
-## Out of scope
+## Fuera de alcance
 
-- Reporting or replacing an unknown name while the application runs.
-- Giving an icon an accessible name of its own.
-- Letting consumers add their own icons, and listing the available names while the application runs.
-- How other components of the library (buttons, fields, links) choose and place their icons.
-- Right-to-left pages, forced-colour modes, parts of a page isolated from the rest of it, and strict content security
-  policies.
+- Informar de un nombre desconocido o sustituirlo mientras la aplicación se ejecuta.
+- Dar a un icono un nombre accesible propio.
+- Dejar que los consumidores añadan sus propios iconos, y listar los nombres disponibles mientras la aplicación se
+  ejecuta.
+- Cómo eligen y colocan sus iconos otros componentes de la librería (botones, campos, enlaces).
+- Páginas de derecha a izquierda, modos de colores forzados, partes de una página aisladas del resto y políticas de
+  seguridad de contenido estrictas.
 
-## Completion criteria
+## Criterios de finalización
 
-- Every FR from FR-2 to FR-11, except FR-3, is covered by at least one automated test of what the icon declares (the
-  drawing it points at, the size it asks for, that it is hidden from assistive technology, the copy of the drawings),
-  and all of them pass.
-- What only a real browser, a build or a reading can show is checked once, during validation: that the icon is seen with
-  the right size, position and colour (FR-2, FR-5, FR-6), that a `sui-icon` without a name or with a name outside the
-  built-in set does not build (FR-1, FR-3), that consumers can import the type of valid names (FR-12), the audit of
-  NFR-2, that the names listed under "Built-in set" are exactly the icons that exist in the library, and that the demo
-  application displays all of them.
-- All the automatic checks the project runs on every change pass.
+- Cada FR de FR-2 a FR-11, salvo FR-3, está cubierto por al menos un test automático de lo que declara el icono (el
+  dibujo al que apunta, el tamaño que pide, que está oculto a la tecnología de apoyo, la copia de los dibujos), y todos
+  pasan.
+- Lo que solo puede mostrar un navegador real, una build o una lectura se comprueba una vez, durante la validación: que
+  el icono se ve con el tamaño, la posición y el color correctos (FR-2, FR-5, FR-6), que un `sui-icon` sin nombre o con
+  un nombre fuera del conjunto incluido no compila (FR-1, FR-3), que los consumidores pueden importar el tipo de nombres
+  válidos (FR-12), la auditoría de NFR-2, que los nombres listados en "Conjunto incluido" son exactamente los iconos que
+  existen en la librería, y que la aplicación demo los muestra todos.
+- Pasan todas las comprobaciones automáticas que el proyecto ejecuta en cada cambio.
 
-## Open questions
+## Preguntas abiertas
 
-None.
+Ninguna.

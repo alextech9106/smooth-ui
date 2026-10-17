@@ -1,14 +1,14 @@
 ---
-description: SDD · Propose the project constitution (non-negotiable principles)
+description: SDD · Propón la constitución del proyecto (principios innegociables)
 agent: plan
 ---
 
-We are going to create (or review, if it already exists) docs/constitution.md. Use the sdd skill.
-Before proposing anything, read AGENTS.md, MEMORY.md and the project code.
-Additional context: $ARGUMENTS
+Vamos a crear (o revisar, si ya existe) docs/constitution.md. Usa la skill sdd.
+Antes de proponer nada, lee AGENTS.md, MEMORY.md y el código del proyecto.
+Contexto adicional: $ARGUMENTS
 
-Propose 6 non-negotiable principles, short and verifiable, that cover: simplicity of the stack, relationship between
-spec and code, separation between logic and interface, testing policy, protection of user data, and the language of the
-code and the texts. Maximum 15 lines.
+Propón 6 principios innegociables, cortos y verificables, que cubran: sencillez del stack, relación entre la spec y el
+código, separación entre lógica e interfaz, política de tests, protección de los datos del usuario, y el idioma del
+código y de los textos. Máximo 15 líneas.
 
-Do not write the file yet: wait for my approval.
+No escribas el archivo todavía: espera mi aprobación.

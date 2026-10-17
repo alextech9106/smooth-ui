@@ -1,15 +1,15 @@
 ---
-description: SDD · Generate the technical plan for an approved spec
+description: SDD · Genera el plan técnico de una spec aprobada
 agent: plan
 ---
 
-Read docs/constitution.md, AGENTS.md and specs/$0/spec.md. Use the sdd skill.
-Do not write code.
+Lee docs/constitution.md, AGENTS.md y specs/$0/spec.md. Usa la skill sdd.
+No escribas código.
 
-Generate specs/$0/plan.md with: files that are created or modified and the responsibility of each one, the
-public API (inputs, outputs, exported types), the state and what derives from it, where browser side effects live, the
-template and its accessibility, justified technical decisions (with their discarded alternative) and the test strategy
-with Vitest and TestBed, including what is left for validation in a browser.
+Genera specs/$0/plan.md con: los archivos que se crean o modifican y la responsabilidad de cada uno, la
+API pública (inputs, outputs, tipos exportados), el estado y lo que se deriva de él, dónde viven los efectos secundarios
+del navegador, la plantilla y su accesibilidad, las decisiones técnicas justificadas (con su alternativa descartada) y la
+estrategia de tests con Vitest y TestBed, incluido lo que queda para validar en un navegador.
 
-Everything must respect the constitution and cover every FR. Mark which FR each part covers. If the spec is not approved
-or has open questions, stop and let me know.
+Todo debe respetar la constitución y cubrir cada FR. Marca qué FR cubre cada parte. Si la spec no está aprobada
+o tiene preguntas abiertas, para y avísame.

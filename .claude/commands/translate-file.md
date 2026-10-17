@@ -1,12 +1,12 @@
 ---
-description: Translate a file
+description: Traduce un archivo
 agent: accept edits
 ---
 
-Search for the file $ARGUMENTS in the repository and make sure the selected file is correct.
+Busca el archivo $ARGUMENTS en el repositorio y asegúrate de que el archivo seleccionado es el correcto.
 
-1. Read the file and identify its content.
-2. Select the target language (default: English).
-3. Translate the content, preserving YAML frontmatter structure.
-4. Present the translation for approval before writing.
-5. Do not modify any files until I approve the translation.
+1. Lee el archivo e identifica su contenido.
+2. Selecciona el idioma de destino (por defecto: español).
+3. Traduce el contenido, conservando la estructura del frontmatter YAML.
+4. Presenta la traducción para que la apruebe antes de escribirla.
+5. No modifiques ningún archivo hasta que apruebe la traducción.

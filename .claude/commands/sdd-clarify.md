@@ -1,14 +1,14 @@
 ---
-description: SDD · Review the spec like a QA (detect only, do not resolve)
+description: SDD · Revisa la spec como un QA (solo detectar, no resolver)
 agent: plan
 ---
 
-Review specs/$0/spec.md as if you were a very professional QA. Use the sdd skill.
-List:
+Revisa specs/$0/spec.md como si fueras un QA muy profesional. Usa la skill sdd.
+Enumera:
 
-1. Remaining ambiguities (requirements that cannot be verified).
-2. Contradictions between requirements.
-3. Edge cases not covered.
-4. Conflicts with docs/constitution.md.
+1. Ambigüedades que quedan (requisitos que no se pueden verificar).
+2. Contradicciones entre requisitos.
+3. Casos límite sin cubrir.
+4. Conflictos con docs/constitution.md.
 
-5. Do not propose solutions yet: only detect. Format: numbered list.
+5. No propongas soluciones todavía: solo detecta. Formato: lista numerada.

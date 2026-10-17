@@ -1,12 +1,12 @@
 ---
-description: SDD · New requirement - spec first, then the code
+description: SDD · Requisito nuevo - primero la spec, después el código
 agent: plan
 ---
 
-New requirement for the spec specs/$0/ (the folder name followed by the requirement): $ARGUMENTS
+Requisito nuevo para la spec specs/$0/ (el nombre de la carpeta seguido del requisito): $ARGUMENTS
 
-Do not touch code. Use the sdd skill.
+No toques código. Usa la skill sdd.
 
-1. Update specs/$0/spec.md: new FR (or a change to an existing one) in EARS, its edge cases and what stays out of scope.
-2. State which parts of plan.md and tasks.md would need to change afterwards.
-3. Show me the spec diff and wait for my approval.
+1. Actualiza specs/$0/spec.md: FR nuevo (o cambio en uno existente) en EARS, sus casos límite y lo que queda fuera de alcance.
+2. Indica qué partes de plan.md y tasks.md habría que cambiar después.
+3. Enséñame el diff de la spec y espera mi aprobación.

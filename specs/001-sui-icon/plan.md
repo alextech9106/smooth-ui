@@ -1,107 +1,108 @@
 # Plan 001 — sui-icon
 
-Spec: `specs/001-sui-icon/spec.md` (approved). The spec records today's behaviour and proposes no change to it, so this
-plan changes no production code. The only work is the missing tests and the checks left for validation.
+Spec: `specs/001-sui-icon/spec.md` (aprobada). La spec recoge el comportamiento de hoy y no propone ningún cambio, así
+que este plan no cambia código de producción. El único trabajo son los tests que faltan y las comprobaciones que quedan
+para la validación.
 
-## Files and responsibilities
+## Archivos y responsabilidades
 
-Modified:
+Modificado:
 
-- `libs/smooth-ui/src/lib/components/sui-icon/sui-icon.component.spec.ts` — gains the tests for FR-2 to FR-10. It is
-  the only file this plan changes.
+- `libs/smooth-ui/src/lib/components/sui-icon/sui-icon.component.spec.ts` — recibe los tests de FR-2 a FR-10. Es el
+  único archivo que cambia este plan.
 
-Read, not changed:
+Leídos, sin cambios:
 
-- `sui-icon.component.ts` — declares the two inputs and asks the service for the drawings when it is created. FR-1,
-  FR-4, FR-9.
-- `sui-icon.component.html` — the icon element: size, reference to the drawing, hidden from assistive technology.
+- `sui-icon.component.ts` — declara los dos inputs y pide los dibujos al servicio al crearse. FR-1, FR-4, FR-9.
+- `sui-icon.component.html` — el elemento del icono: tamaño, referencia al dibujo, oculto a la tecnología de apoyo.
   FR-2, FR-3, FR-5, FR-7, FR-8.
-- `sui-icon.component.scss` — centres the drawing area. FR-5.
-- `sui-icon.service.ts` — adds the copy of the drawings to the page, once per application and only in a browser. FR-9,
-  FR-10.
-- `constants/sui-icon.ts` — the 79 drawings; each one takes its colour from the surrounding text. FR-2, FR-6.
+- `sui-icon.component.scss` — centra el área del dibujo. FR-5.
+- `sui-icon.service.ts` — añade la copia de los dibujos a la página, una vez por aplicación y solo en un navegador.
+  FR-9, FR-10.
+- `constants/sui-icon.ts` — los 79 dibujos; cada uno toma su color del texto que lo rodea. FR-2, FR-6.
 
-## Public API
+## API pública
 
-Unchanged. `public-api.ts` exports `SuiIconComponent` only; the service and the drawings stay internal.
+Sin cambios. `public-api.ts` solo exporta `SuiIconComponent`; el servicio y los dibujos quedan internos.
 
 - Selector `sui-icon`.
-- Input `name: string`, required. FR-1, FR-2, FR-3.
-- Input `size: number`, default `20`. FR-4, FR-5.
-- No outputs and no exported types.
+- Input `name: string`, obligatorio. FR-1, FR-2, FR-3.
+- Input `size: number`, por defecto `20`. FR-4, FR-5.
+- Sin outputs ni tipos exportados.
 
-## State and what derives from it
+## Estado y lo que se deriva de él
 
-- The component holds no state of its own: the template reads `name()` and `size()` directly, so a change to either
-  input reaches the page without any derived value. FR-8.
-- The service holds one flag, "drawings already added". There is one service instance per application, which is what
-  makes the copy "one per application". FR-9.
+- El componente no tiene estado propio: la plantilla lee `name()` y `size()` directamente, así que un cambio en
+  cualquiera de los dos inputs llega a la página sin ningún valor derivado. FR-8.
+- El servicio guarda un indicador, "dibujos ya añadidos". Hay una instancia del servicio por aplicación, y eso es lo que
+  hace que la copia sea "una por aplicación". FR-9.
 
-## Where browser side effects live
+## Dónde viven los efectos secundarios del navegador
 
-Only in `SuiIconService.ensureSpriteInjected()` (constitution, principle 3). It does nothing outside a browser (FR-10)
-and nothing the second time it is called (FR-9); otherwise it puts the drawings at the start of the page body. The
-component touches no browser global.
+Solo en `SuiIconService.ensureSpriteInjected()` (constitución, principio 3). No hace nada fuera de un navegador (FR-10)
+ni la segunda vez que se llama (FR-9); en otro caso, pone los dibujos al principio del body de la página. El componente
+no toca ningún global del navegador.
 
-## Template and accessibility
+## Plantilla y accesibilidad
 
-- The drawing area is an `svg` whose `width` and `height` are the size (FR-4, FR-5), inside a wrapper that centres it
-  (FR-5).
-- The `svg` points at the drawing with a reference built from the name (FR-2). A name with no drawing leaves the area
-  empty, and a name that is the identifier of another page element points at that element (FR-3).
-- `aria-hidden="true"` and `focusable="false"` on the `svg`, and no `tabindex` anywhere (FR-7).
+- El área del dibujo es un `svg` cuyo `width` y `height` son el tamaño (FR-4, FR-5), dentro de un envoltorio que lo
+  centra (FR-5).
+- El `svg` apunta al dibujo con una referencia construida a partir del nombre (FR-2). Un nombre sin dibujo deja el área
+  vacía, y un nombre que es el identificador de otro elemento de la página apunta a ese elemento (FR-3).
+- `aria-hidden="true"` y `focusable="false"` en el `svg`, y ningún `tabindex` en ninguna parte (FR-7).
 
-## Decisions
+## Decisiones
 
-- **D1. No production code changes.** Discarded: fixing what the review found (free-text names, identifier clashes). The
-  spec puts all of it out of scope.
-- **D2. All new tests go in the existing component spec file.** Discarded: a separate spec file for the service. FR-9
-  and FR-10 can be observed through the component, and `AGENTS.md` asks before adding files.
-- **D3. Tests look at the page, not at the service.** The copy of the drawings is counted in `document.body`. Discarded:
-  reading the service's private flag, which tests the implementation instead of the behaviour.
-- **D4. Each test starts from a page with no copy of the drawings.** One `TestBed` is one application, and all tests in
-  the file share one page, so copies left by earlier tests are removed before each test. Discarded: counting the
-  difference before and after, which is harder to read.
-- **D5. "Outside a browser" is simulated by providing `PLATFORM_ID` as `'server'`.** Discarded: a real server render,
-  which needs tooling that is not installed (constitution, principles 1 and 4).
-- **D6. "Writes nothing to the console" is checked with spies on `console.error`, `console.warn` and `console.log`.**
-  Discarded: leaving FR-3's silence unverified.
-- **D7. The 79 names are not copied into a test.** They are compared with the spec during validation. Discarded: a test
-  holding a third copy of the list.
+- **D1. Sin cambios en el código de producción.** Descartado: arreglar lo que encontró la revisión (nombres de texto
+  libre, choques de identificadores). La spec lo deja todo fuera de alcance.
+- **D2. Todos los tests nuevos van en el archivo de spec existente del componente.** Descartado: un archivo de spec
+  aparte para el servicio. FR-9 y FR-10 se pueden observar a través del componente, y `AGENTS.md` pide preguntar antes
+  de añadir archivos.
+- **D3. Los tests miran la página, no el servicio.** La copia de los dibujos se cuenta en `document.body`. Descartado:
+  leer el indicador privado del servicio, que prueba la implementación en lugar del comportamiento.
+- **D4. Cada test empieza desde una página sin copia de los dibujos.** Un `TestBed` es una aplicación, y todos los tests
+  del archivo comparten una página, así que antes de cada test se quitan las copias que dejaron los anteriores.
+  Descartado: contar la diferencia antes y después, que es más difícil de leer.
+- **D5. "Fuera de un navegador" se simula dando `PLATFORM_ID` como `'server'`.** Descartado: un renderizado real en
+  servidor, que necesita herramientas que no están instaladas (constitución, principios 1 y 4).
+- **D6. "No escribe nada en la consola" se comprueba con espías en `console.error`, `console.warn` y `console.log`.**
+  Descartado: dejar sin verificar el silencio de FR-3.
+- **D7. Los 79 nombres no se copian en un test.** Se comparan con la spec durante la validación. Descartado: un test con
+  una tercera copia de la lista.
 
-## Test strategy (Vitest and TestBed)
+## Estrategia de tests (Vitest y TestBed)
 
-Run with `pnpm nx run smooth-ui:test`. Each test sets inputs with `fixture.componentRef.setInput()` and waits with
+Se ejecutan con `pnpm nx run smooth-ui:test`. Cada test da los inputs con `fixture.componentRef.setInput()` y espera con
 `await fixture.whenStable()`.
 
-- **FR-2**: with name `check`, the `svg` points at `#check`, and the page holds a drawing with that identifier.
-- **FR-3**: with a name outside the set, creating the icon does not throw, the three console spies are not called, the
-  `svg` keeps the requested size, and the page holds no element with that identifier. Repeated for `""`, `Check` and
-  `" check"` (edge case).
-- **FR-4**: with no size, `width` and `height` are `20`.
-- **FR-5**: with size `32`, `width` and `height` are `32`.
-- **FR-6**: the drawing that `check` points at takes its colour from the surrounding text (`currentColor`).
-- **FR-7**: `aria-hidden` and `focusable` (already tested), plus no `tabindex` on the icon or inside it.
-- **FR-8**: changing the name changes the reference; changing the size changes `width` and `height`.
-- **FR-9**: one icon adds exactly one copy; a second icon in the same application adds none; destroying an icon removes
-  none. A second application adds a second copy (edge case "Copies of the drawings").
-- **FR-10**: with `PLATFORM_ID` set to `'server'`, creating the icon does not throw and the page holds no copy.
+- **FR-2**: con el nombre `check`, el `svg` apunta a `#check`, y la página tiene un dibujo con ese identificador.
+- **FR-3**: con un nombre fuera del conjunto, crear el icono no lanza errores, no se llama a ninguno de los tres espías
+  de consola, el `svg` mantiene el tamaño pedido y la página no tiene ningún elemento con ese identificador. Se repite
+  con `""`, `Check` y `" check"` (caso límite).
+- **FR-4**: sin tamaño, `width` y `height` valen `20`.
+- **FR-5**: con tamaño `32`, `width` y `height` valen `32`.
+- **FR-6**: el dibujo al que apunta `check` toma su color del texto que lo rodea (`currentColor`).
+- **FR-7**: `aria-hidden` y `focusable` (ya probados), y además ningún `tabindex` en el icono ni dentro de él.
+- **FR-8**: cambiar el nombre cambia la referencia; cambiar el tamaño cambia `width` y `height`.
+- **FR-9**: un icono añade exactamente una copia; un segundo icono en la misma aplicación no añade ninguna; destruir un
+  icono no quita ninguna. Una segunda aplicación añade una segunda copia (caso límite "Copias de los dibujos").
+- **FR-10**: con `PLATFORM_ID` en `'server'`, crear el icono no lanza errores y la página no tiene ninguna copia.
 
-## Left for validation
+## Lo que queda para la validación
 
-Checked once, in `/sdd-validate`, with the Chrome DevTools MCP on the demo application or by building:
+Se comprueba una vez, en `/sdd-validate`, con el MCP de Chrome DevTools sobre la aplicación demo o haciendo la build:
 
-- **FR-1**: a `sui-icon` without a name in a demo template makes `pnpm nx run smooth-ui-demo:build` fail. The line is
-  removed afterward.
-- **FR-2, FR-5, FR-6**: an icon is seen; its measured box is N by N px and centred; its colour equals the colour of the
-  text beside it, in the light and dark themes.
-- **NFR-1**: no `package.json` has changed.
-- **NFR-2**: the accessibility audit of the demo reports no violation on an icon.
-- **NFR-3 and the built-in set**: the names in the spec are exactly the identifiers of the drawings, and the demo
-  gallery displays all 79.
+- **FR-1**: un `sui-icon` sin nombre en una plantilla de la demo hace fallar `pnpm nx run smooth-ui-demo:build`. La
+  línea se quita después.
+- **FR-2, FR-5, FR-6**: se ve un icono; su caja medida es de N por N px y está centrada; su color es igual al del texto
+  que tiene al lado, en los temas claro y oscuro.
+- **NFR-1**: ningún `package.json` ha cambiado.
+- **NFR-2**: la auditoría de accesibilidad de la demo no informa de ninguna infracción en un icono.
+- **NFR-3 y el conjunto incluido**: los nombres de la spec son exactamente los identificadores de los dibujos, y la
+  galería de la demo muestra los 79.
 
-## Risks
+## Riesgos
 
-- FR-1, FR-10 and "a size given as text does not build" come from reading the code and have not been run. If one proves
-  false, the spec is corrected before validation closes.
-- D4 assumes the test environment keeps one page for the whole file. If it does not, the clean-up is harmless.
+- FR-1, FR-10 y "un tamaño dado como texto no compila" salen de leer el código y no se han ejecutado. Si alguno resulta
+  falso, la spec se corrige antes de cerrar la validación.
+- D4 supone que el entorno de tests mantiene una sola página para todo el archivo. Si no es así, la limpieza no hace daño.

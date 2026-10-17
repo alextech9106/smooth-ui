@@ -1,13 +1,13 @@
 ---
-description: SDD · Validate the spec FR by FR (tests + Chrome DevTools)
+description: SDD · Valida la spec FR por FR (tests + Chrome DevTools)
 agent: accept edits
 ---
 
-Go through specs/$0/spec.md requirement by requirement. For each FR state which test covers it and the result of running
-it with pnpm nx run smooth-ui:test.
+Recorre specs/$0/spec.md requisito a requisito. Para cada FR indica qué test lo cubre y el resultado de ejecutarlo
+con pnpm nx run smooth-ui:test.
 
-For FRs that the tests cannot verify (what is seen in a browser, or what only a build shows), verify them with the
-Chrome DevTools MCP on the demo application (including the 375 px mobile view) or by building.
+Los FR que los tests no pueden verificar (lo que se ve en un navegador, o lo que solo muestra una build) verifícalos con
+el MCP de Chrome DevTools en la aplicación demo (incluida la vista móvil de 375 px) o haciendo la build.
 
-If any FR is not covered or fails, say so clearly. Do NOT fix anything yet. Then check the completion criteria and give
-me a verdict: is the spec fulfilled?
+Si algún FR no está cubierto o falla, dilo con claridad. NO arregles nada todavía. Después revisa los criterios de
+finalización y dame un veredicto: ¿se cumple la spec?

@@ -2,132 +2,159 @@
 
 Status: implemented (2026-10-16); FR-7 amended for spec 004, approved and implemented 2026-10-17
 
-**Amendment (spec 004, approved 2026-10-17; implemented 2026-10-17).** FR-7 adds the `pressed` input and its
-announcement; "Out of scope" narrows the toggle-button exclusion; tests cover `pressed` `true`, `false` and unset.
+**Enmienda (spec 004, aprobada el 2026-10-17; implementada el 2026-10-17).** FR-7 añade el input `pressed` y su
+anuncio; "Fuera de alcance" acota la exclusión de los botones conmutadores; los tests cubren `pressed` `true`, `false` y
+sin valor.
 
-## Context and goal
+## Contexto y objetivo
 
-Applications need consistent, themed buttons that work with a keyboard and assistive technology. `sui-button` is a
-native button with a text, an optional icon, six looks, three sizes and shapes, that can be disabled, busy or selected.
-This revision (breaking) documents the accessible-name rule, stops using the icon as a name, keeps the split `name`
-required and drops the icon size. It also darkens the light theme's `primary` and `danger` colours, because their text
-fails WCAG AA contrast there (about 3.8:1 instead of 4.5:1).
+Las aplicaciones necesitan botones coherentes, con tema, que funcionen con teclado y con tecnología de apoyo.
+`sui-button` es un botón nativo con un texto, un icono opcional, seis aspectos, tres tamaños y formas, que puede estar
+deshabilitado, ocupado o seleccionado. Esta revisión (incompatible) documenta la regla del nombre accesible, deja de usar
+el icono como nombre, mantiene obligatorio el `name` del split y quita el tamaño del icono. También oscurece los colores
+`primary` y `danger` del tema claro, porque su texto no llega al contraste WCAG AA (unos 3.8:1 en lugar de 4.5:1).
 
-## Users
+## Usuarios
 
-- **Consumer developers** and **library maintainers** (groups, split buttons); **end users**, including keyboard and
-  voice-control users and people who use assistive technology.
+- **Desarrolladores consumidores** y **mantenedores de la librería** (grupos, split buttons); **usuarios finales**,
+  incluidos los que usan teclado o control por voz y las personas que usan tecnología de apoyo.
 
-## User stories
+## Historias de usuario
 
-- US-1. As a consumer developer, I want a button with a text and an optional icon so that I do not style buttons myself.
-- US-2. As a consumer developer, I want activation events and form submit/reset so that it works like a native button.
-- US-3. As a consumer developer, I want to mark a button as unavailable or busy so that it cannot be activated
-  meanwhile.
-- US-4. As a consumer developer, I want to choose the look, size and shape of a button so that it fits each place.
-- US-5. As an assistive-technology or voice-control user, I want a name matching the visible text so that I can call it.
+- US-1. Como desarrollador consumidor, quiero un botón con un texto y un icono opcional para no tener que dar estilo a
+  los botones yo mismo.
+- US-2. Como desarrollador consumidor, quiero eventos de activación y envío/reinicio de formulario para que funcione
+  como un botón nativo.
+- US-3. Como desarrollador consumidor, quiero marcar un botón como no disponible u ocupado para que no se pueda activar
+  mientras tanto.
+- US-4. Como desarrollador consumidor, quiero elegir el aspecto, el tamaño y la forma de un botón para que encaje en
+  cada sitio.
+- US-5. Como usuario de tecnología de apoyo o de control por voz, quiero un nombre que coincida con el texto visible
+  para poder invocarlo.
 
-## Definitions
+## Definiciones
 
-- **Activation**: a pointer click, or Enter or Space with keyboard focus. **At rest**: neither hovered nor pressed.
-  **Unavailable**: activation ignored, out of the focus order and announced as unavailable.
-- **Visible text**: the `name` as given, shown inside the button; `""` shows none. **Blank**: empty or only whitespace.
-  **Contains**: after trimming, collapsing inner whitespace and ignoring case, the visible text is inside the `label`.
-- **Variant looks** (theme roles): `primary` solid accent background, accent on-solid text; `secondary` surface
-  background, primary text, default border; `tonal` soft accent background, accent text; `outline` transparent, accent
-  text and border; `ghost` transparent, secondary text, no shadow; `danger` solid danger background, on-solid text.
-- **Disabled look**: disabled background, text and border, no shadow, not-allowed cursor. **Loading indicator**: a
-  spinning ring hidden from assistive technology, 20 px (16 px plus a 2 px border per side), in the current text colour.
-- **Sizes** `sm`/`md`/`lg`: height 32/40/48 px, side padding 12/16/20 px, `md` text 14 px (theme tokens); `sm`/`lg` text
-  13/15 px and icon 16/20/24 px are fixed. **Shapes**: `flat`, `rounded` (radius 6/10/14 px, tokens) and `pill`.
+- **Activación**: un clic de puntero, o Enter o Espacio con el foco del teclado. **En reposo**: ni con el puntero encima
+  ni pulsado. **No disponible**: la activación se ignora, queda fuera del orden de foco y se anuncia como no disponible.
+- **Texto visible**: el `name` tal cual, mostrado dentro del botón; `""` no muestra ninguno. **En blanco**: vacío o solo
+  con espacios. **Contiene**: tras recortar, colapsar los espacios internos e ignorar mayúsculas, el texto visible está
+  dentro del `label`.
+- **Aspectos de las variantes** (roles del tema): `primary` fondo de acento sólido, texto sobre sólido de acento;
+  `secondary` fondo de superficie, texto primario, borde por defecto; `tonal` fondo de acento suave, texto de acento;
+  `outline` transparente, texto y borde de acento; `ghost` transparente, texto secundario, sin sombra; `danger` fondo
+  sólido de peligro, texto sobre sólido.
+- **Aspecto deshabilitado**: fondo, texto y borde de deshabilitado, sin sombra, cursor not-allowed. **Indicador de
+  carga**: un anillo que gira, oculto a la tecnología de apoyo, de 20 px (16 px más un borde de 2 px por lado), en el
+  color de texto actual.
+- **Tamaños** `sm`/`md`/`lg`: alto 32/40/48 px, relleno lateral 12/16/20 px, texto `md` de 14 px (tokens del tema); el
+  texto `sm`/`lg` de 13/15 px y el icono de 16/20/24 px son fijos. **Formas**: `flat`, `rounded` (radio 6/10/14 px,
+  tokens) y `pill`.
 
-## Functional requirements
+## Requisitos funcionales
 
-- FR-1: IF `sui-button` or the split button has no `name`, THEN THE SYSTEM fails at build time when used in markup (spec
-  001), or reports a failure when created programmatically; `""` passes this check.
-- FR-2: WHEN activated while neither disabled nor loading, THE SYSTEM emits one `trigger` with no data and, by `type`,
-  does nothing (`button`, default), submits (`submit`) or resets (`reset`) the surrounding form.
-- FR-3: WHILE `disabled` is set, with or without `loading`, THE SYSTEM is unavailable, emits nothing and, at rest, shows
-  the disabled look instead of the variant, `selected` and `state` `focus` looks.
-- FR-4: WHILE `loading` is set, THE SYSTEM shows the loading indicator instead of icon and text, is unavailable and
-  announced busy, keeps the FR-5 name and the variant look and pointer cursor, and never moves focus to another element.
-- FR-5: THE SYSTEM's accessible name is the `label` as given if not empty or whitespace-only, otherwise the visible
-  text, never the icon. The documented rule, not checked at runtime, is a non-blank `label` that contains the visible text.
-- FR-6: WHEN `expanded` is given, THE SYSTEM announces that it opens a menu and whether it is expanded; else neither.
-- FR-7: THE SYSTEM shows its variant look (`primary` by default); WHILE `selected` is set, THE SYSTEM shows the selected
-  background and accent text at rest, on hover and on pointer press (not on a Space press), without announcing it;
-  WHEN `pressed` is `true` or `false`, THE SYSTEM announces it as pressed or not pressed; WHILE it is not set or
-  `undefined`, no pressed state.
-- FR-8: THE SYSTEM offers the defined sizes (`md` default) and shapes (`rounded` default) and, WHILE `fullWidth` is
-  set, fills its container's width.
-- FR-9: WHEN an icon is given, THE SYSTEM shows it hidden from assistive technology, before the visible text or after it
-  WHILE `iconEnd` is set (spec 001 FR-3); WHEN `name` is `""`, THE SYSTEM narrows the side padding to 8 px.
-- FR-10: WHEN focused by keyboard, THE SYSTEM draws the focus ring (danger ring in `danger`); WHILE `state` is `focus`
-  and not disabled, it draws the normal ring except on `primary` hover and `primary`/`secondary` press.
+- FR-1: SI `sui-button` o el split button no tienen `name`, ENTONCES EL SISTEMA falla en tiempo de compilación cuando se
+  usa en el marcado (spec 001), o informa de un fallo cuando se crea desde código; `""` pasa esta comprobación.
+- FR-2: CUANDO se activa sin estar deshabilitado ni cargando, EL SISTEMA emite un `trigger` sin datos y, según `type`,
+  no hace nada (`button`, por defecto), envía (`submit`) o reinicia (`reset`) el formulario que lo rodea.
+- FR-3: MIENTRAS `disabled` está activo, con o sin `loading`, EL SISTEMA no está disponible, no emite nada y, en reposo,
+  muestra el aspecto deshabilitado en lugar de los aspectos de la variante, de `selected` y de `state` `focus`.
+- FR-4: MIENTRAS `loading` está activo, EL SISTEMA muestra el indicador de carga en lugar del icono y el texto, no está
+  disponible y se anuncia ocupado, mantiene el nombre de FR-5, el aspecto de la variante y el cursor pointer, y nunca
+  mueve el foco a otro elemento.
+- FR-5: El nombre accesible de EL SISTEMA es el `label` tal cual si no está vacío ni es solo espacios y, si no, el texto
+  visible; nunca el icono. La regla documentada, que no se comprueba en tiempo de ejecución, es un `label` no en blanco
+  que contenga el texto visible.
+- FR-6: CUANDO se da `expanded`, EL SISTEMA anuncia que abre un menú y si está expandido; si no, ninguna de las dos
+  cosas.
+- FR-7: EL SISTEMA muestra el aspecto de su variante (`primary` por defecto); MIENTRAS `selected` está activo, EL
+  SISTEMA muestra el fondo de seleccionado y el texto de acento en reposo, en hover y al pulsar con el puntero (no al
+  pulsar Espacio), sin anunciarlo; CUANDO `pressed` es `true` o `false`, EL SISTEMA lo anuncia como pulsado o no
+  pulsado; MIENTRAS no tiene valor o es `undefined`, no hay estado pulsado.
+- FR-8: EL SISTEMA ofrece los tamaños definidos (`md` por defecto) y las formas (`rounded` por defecto) y, MIENTRAS
+  `fullWidth` está activo, ocupa todo el ancho de su contenedor.
+- FR-9: CUANDO se da un icono, EL SISTEMA lo muestra oculto a la tecnología de apoyo, antes del texto visible o después
+  de él MIENTRAS `iconEnd` está activo (spec 001 FR-3); CUANDO `name` es `""`, EL SISTEMA reduce el relleno lateral a
+  8 px.
+- FR-10: CUANDO recibe el foco por teclado, EL SISTEMA dibuja el anillo de foco (anillo de peligro en `danger`);
+  MIENTRAS `state` es `focus` y no está deshabilitado, dibuja el anillo normal salvo en el hover de `primary` y al pulsar
+  `primary`/`secondary`.
 
-## Non-functional requirements
+## Requisitos no funcionales
 
-- NFR-1: The button adds no dependency to any package of the project (constitution, principle 1).
-- NFR-2: Every text and accessible name comes from the consumer (principle 6); the button adds no text of its own.
-- NFR-3: WHILE the user asks for reduced motion, all transitions (colour, border, shadow, movement) are instant and the
-  loading indicator turns once every 2 s instead of every 0.7 s.
-- NFR-4: Every combination of the 6 variants × 3 sizes × 4 states (`selected`, `loading`, `disabled`, `state` `focus`),
-  plus `loading` with `selected`, with `state` `focus` and with `disabled`, each with a non-blank accessible name, has
-  zero AXE violations against WCAG 2.2 AA in both light and dark theme; the on-solid text of `primary` and `danger` has
-  a contrast of at least 4.5:1 against their solid background at rest, on hover and on press, in both themes.
+- NFR-1: El botón no añade ninguna dependencia a ningún paquete del proyecto (constitución, principio 1).
+- NFR-2: Todo texto y nombre accesible viene del consumidor (principio 6); el botón no añade texto propio.
+- NFR-3: MIENTRAS el usuario pide movimiento reducido, todas las transiciones (color, borde, sombra, movimiento) son
+  instantáneas y el indicador de carga da una vuelta cada 2 s en lugar de cada 0.7 s.
+- NFR-4: Cada combinación de las 6 variantes × 3 tamaños × 4 estados (`selected`, `loading`, `disabled`, `state`
+  `focus`), más `loading` con `selected`, con `state` `focus` y con `disabled`, cada una con un nombre accesible no en
+  blanco, tiene cero infracciones de AXE frente a WCAG 2.2 AA en los temas claro y oscuro; el texto sobre sólido de
+  `primary` y `danger` tiene un contraste de al menos 4.5:1 contra su fondo sólido en reposo, en hover y al pulsar, en
+  los dos temas.
 
-## Edge cases
+## Casos límite
 
-- **Accessible name** (breaking): a whitespace-only `label` falls back to the visible text, so only a blank `label`
-  with a blank `name` gives a blank name, even with an icon, and nothing reports it. `name` "Save" fits `label`
-  `"save  DRAFT"`, not "Store" (also unreported).
-- **Split button and groups**: a split with a blank `name`, and a group entry with a blank name and no label or a label
-  not containing its name, break the documented FR-5 rule without any report; the split's menu part complies.
-- **Activation API**: only the button's `trigger` event is a supported way to react to activation; listening to raw
-  clicks on the component is unsupported. The button does not stop click propagation. A click event dispatched by
-  script on a disabled or loading button still emits `trigger` (accepted; real clicks and Enter or Space do not).
-- **No icon size** (breaking public API): a button description written directly with an icon size is rejected when the
-  code is compiled; one passed through another type keeps the field, which is ignored.
-- **Loading or disabled**: without `fullWidth` it narrows to the indicator plus padding; with both, disabled wins.
-  Loading keeps, at rest, the `selected` look (indicator in accent text colour) and the `state` `focus` ring.
-  **Pressed**: `pressed` and `selected` are independent; with `expanded` both are announced; disabled or loading keeps
-  the pressed state.
+- **Nombre accesible** (incompatible): un `label` solo con espacios recurre al texto visible, así que solo un `label` en
+  blanco con un `name` en blanco da un nombre en blanco, aunque haya icono, y nada lo avisa. El `name` "Save" encaja con
+  el `label` `"save  DRAFT"`, no con "Store" (tampoco se avisa).
+- **Split button y grupos**: un split con un `name` en blanco, y una entrada de grupo con un nombre en blanco y sin
+  label o con un label que no contiene su nombre, incumplen la regla documentada de FR-5 sin que nada lo avise; la parte
+  del menú del split la cumple.
+- **API de activación**: solo el evento `trigger` del botón es una forma admitida de reaccionar a la activación;
+  escuchar los clics en bruto sobre el componente no está admitido. El botón no detiene la propagación del clic. Un
+  evento de clic lanzado por script sobre un botón deshabilitado o cargando sigue emitiendo `trigger` (aceptado; los
+  clics reales y Enter o Espacio no lo hacen).
+- **Sin tamaño de icono** (API pública incompatible): una descripción de botón escrita directamente con un tamaño de
+  icono se rechaza al compilar el código; una que pasa por otro tipo conserva el campo, que se ignora.
+- **Cargando o deshabilitado**: sin `fullWidth` se estrecha hasta el indicador más el relleno; con los dos, gana el
+  deshabilitado. Cargando mantiene, en reposo, el aspecto de `selected` (indicador en el color de texto de acento) y el
+  anillo de `state` `focus`. **Pulsado**: `pressed` y `selected` son independientes; con `expanded` se anuncian los
+  dos; deshabilitado o cargando mantienen el estado pulsado.
 
-## Out of scope
+## Fuera de alcance
 
-- Navigating to another page (`sui-link`), projected rich content, toggling by itself (the button never changes
-  `pressed` or `selected`), colours outside the theme, right-to-left pages and forced-colour modes.
-- `sui-icon-button`, groups and split buttons (except FR-1 and FR-5) and the rest of the button description (unused
-  fields, no `disabled`, `size`/`variant` ignored by groups), left for a button-group spec.
-- Split's fixed texts "More options" and "Options" (not overridable, against principle 6): for a split or group spec.
-- The rest of the theme: only light `--sui-color-accent-solid`/`-hover`/`-active` (to `--sui-accent-600`/`700`/`800`)
-  and `--sui-color-danger-solid`/`-hover` (to `--sui-danger-600`/`700`) change; white text, dark theme and focus rings stay.
-- A `danger` press token: press keeps the danger solid colour, now lighter than hover (accepted). Reviewing
-  `sui-icon-button`, `sui-button-group`, `sui-text-field` and `sui-textarea`, which share these tokens and look darker.
+- Navegar a otra página (`sui-link`), contenido enriquecido proyectado, conmutar por sí mismo (el botón nunca cambia
+  `pressed` ni `selected`), colores fuera del tema, páginas de derecha a izquierda y modos de colores forzados.
+- `sui-icon-button`, los grupos y los split buttons (salvo FR-1 y FR-5) y el resto de la descripción del botón (campos
+  que el grupo no aplica, sin `disabled`, `size`/`variant` que los grupos no aplican), que quedan para una spec del
+  grupo de botones.
+- Los textos fijos del split "More options" y "Options" (no se pueden sustituir, en contra del principio 6): para una
+  spec del split o del grupo.
+- El resto del tema: solo cambian en claro `--sui-color-accent-solid`/`-hover`/`-active` (a
+  `--sui-accent-600`/`700`/`800`) y `--sui-color-danger-solid`/`-hover` (a `--sui-danger-600`/`700`); el texto blanco,
+  el tema oscuro y los anillos de foco se mantienen.
+- Un token de pulsado para `danger`: al pulsar se mantiene el color sólido de peligro, ahora más claro que el hover
+  (aceptado). Revisar `sui-icon-button`, `sui-button-group`, `sui-text-field` y `sui-textarea`, que comparten estos
+  tokens y se ven más oscuros.
 
-## Completion criteria
+## Criterios de finalización
 
-- FR-1, FR-2: no build without `name` on `sui-button` or the split button used in markup, and a reported failure when
-  created programmatically without it; one click, Enter or Space emits one `trigger`; `submit`/`reset` act on the form.
-- FR-3, FR-4: disabled and loading emit nothing and leave the focus order; on entering `loading` focus is on the button
-  or on no element, never on another one; the looks, indicator and cursor follow the FRs.
-- FR-5 in every name edge case: the name is the `label` as given if not blank, else the visible text (also for a
-  whitespace-only `label`), never the icon id, and nothing is reported; FR-6 and FR-7 `pressed` (`true`/`false`/unset)
-  and FR-9 hold; no icon size field.
-- The demo shows all 6 variants × 3 sizes × 4 states and the three `loading` combinations of NFR-4, a `label`-only
-  button and a `label` containing its text, and reacts to activation only through `trigger`;
-  there FR-7, FR-8, FR-10, NFR-3 and NFR-4 (WCAG 2.2 AA) hold in light and dark theme.
-- NFR-4 contrast: `primary` and `danger` text reaches 4.5:1 at rest, on hover and on press in both themes; the demo page
-  paints the theme's canvas background behind all its content in both themes, and NFR-4 holds against it.
-- NFR-1 and NFR-2 hold; changed behaviour ships with tests (principle 4), the existing test that expects the icon id as
-  the name is updated to the new FR-5 name, the other existing tests stay as they are; all project checks pass.
+- FR-1, FR-2: no hay build sin `name` en `sui-button` ni en el split button usados en el marcado, y hay un fallo
+  informado al crearlos desde código sin él; un clic, Enter o Espacio emite un `trigger`; `submit`/`reset` actúan
+  sobre el formulario.
+- FR-3, FR-4: deshabilitado y cargando no emiten nada y salen del orden de foco; al entrar en `loading` el foco está en
+  el botón o en ningún elemento, nunca en otro; los aspectos, el indicador y el cursor siguen los FR.
+- FR-5 en cada caso límite de nombre: el nombre es el `label` tal cual si no está en blanco y, si no, el texto visible
+  (también con un `label` solo de espacios), nunca el id del icono, y no se avisa de nada; se cumplen FR-6, el
+  `pressed` de FR-7 (`true`/`false`/sin valor) y FR-9; no hay campo de tamaño de icono.
+- La demo muestra las 6 variantes × 3 tamaños × 4 estados y las tres combinaciones con `loading` de NFR-4, un botón solo
+  con `label` y un `label` que contiene su texto, y reacciona a la activación solo mediante `trigger`; allí se cumplen
+  FR-7, FR-8, FR-10, NFR-3 y NFR-4 (WCAG 2.2 AA) en los temas claro y oscuro.
+- Contraste de NFR-4: el texto de `primary` y `danger` llega a 4.5:1 en reposo, en hover y al pulsar en los dos temas;
+  la página de la demo pinta el fondo canvas del tema detrás de todo su contenido en los dos temas, y NFR-4 se cumple
+  sobre él.
+- Se cumplen NFR-1 y NFR-2; el comportamiento que cambia incluye tests (principio 4), el test existente que espera el id
+  del icono como nombre se actualiza al nuevo nombre de FR-5, el resto de tests existentes se quedan como están; pasan
+  todas las comprobaciones del proyecto.
 
-## Open questions
+## Preguntas abiertas
 
-- [NEEDS CLARIFICATION] `selected` (FR-7): keep its look on a Space press (announced through `pressed` since spec 004)?
-- [NEEDS CLARIFICATION] `state="focus"` (FR-10) is demo-only and inconsistent: remove it or make it consistent?
-- [NEEDS CLARIFICATION] Loading (FR-4): suggest an indicator sized with the button and a kept width; decide look,
-  cursor, focus.
-- [NEEDS CLARIFICATION] Disabled on hover (FR-3): `ghost` text, `secondary`/`outline` border and `selected` text leak.
-- [NEEDS CLARIFICATION] Fixed values (FR-8): suggest theme tokens for the `sm`/`lg` text and icon sizes.
-- [NEEDS CLARIFICATION] Whitespace-only `name` (FR-9): suggest showing no text and the 8 px padding, as for `""`.
+- [NEEDS CLARIFICATION] `selected` (FR-7): ¿mantener su aspecto al pulsar Espacio (se anuncia mediante `pressed` desde
+  la spec 004)?
+- [NEEDS CLARIFICATION] `state="focus"` (FR-10) solo lo usa la demo y es incoherente: ¿quitarlo o hacerlo coherente?
+- [NEEDS CLARIFICATION] Carga (FR-4): se sugiere un indicador con el tamaño del botón y mantener el ancho; decidir el
+  aspecto, el cursor y el foco.
+- [NEEDS CLARIFICATION] Deshabilitado en hover (FR-3): se cuelan el texto de `ghost`, el borde de `secondary`/`outline`
+  y el texto de `selected`.
+- [NEEDS CLARIFICATION] Valores fijos (FR-8): se sugieren tokens del tema para el texto `sm`/`lg` y los tamaños de icono.
+- [NEEDS CLARIFICATION] `name` solo con espacios (FR-9): se sugiere no mostrar texto y usar el relleno de 8 px, como con
+  `""`.

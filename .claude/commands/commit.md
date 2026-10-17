@@ -1,17 +1,17 @@
 ---
-description: Write a new commit accounting for new, modified, and deleted files
+description: Escribe un commit nuevo teniendo en cuenta los archivos nuevos, modificados y borrados
 agent: plan
 ---
 
-I want to make a commit with the new, modified, and deleted files.
-Before writing the commit, prepare a plan with:
+Quiero hacer un commit con los archivos nuevos, modificados y borrados.
+Antes de escribir el commit, prepara un plan con:
 
-1. How you will write it, considering whether you should write more than one commit.
-2. Which files you would include in each commit.
-3. Edge cases and questions I need to decide before starting.
-4. All commits must be written in English.
-5. Show me the proposed commit message in the chat.
-6. Use conventional commits format (feat:, fix:, chore:, docs:, refactor:).
-7. Stage all relevant changes with git add before writing the commit message.
-8. Ensure pnpm nx run-many -t lint test build typecheck passes before committing.
-9. Always ask me before committing, and commit only once I give my approval.
+1. Cómo lo vas a escribir, valorando si conviene hacer más de un commit.
+2. Qué archivos incluirías en cada commit.
+3. Casos límite y preguntas que tengo que decidir antes de empezar.
+4. Todos los commits deben escribirse en inglés.
+5. Muéstrame en el chat el mensaje de commit propuesto.
+6. Usa el formato Conventional Commits (feat:, fix:, chore:, docs:, refactor:).
+7. Añade al staging con git add todos los cambios relevantes antes de escribir el mensaje de commit.
+8. Asegúrate de que pnpm nx run-many -t lint test build typecheck pasa antes de hacer el commit.
+9. Pregúntame siempre antes de hacer el commit, y hazlo solo cuando te dé mi aprobación.

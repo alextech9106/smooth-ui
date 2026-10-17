@@ -1,208 +1,231 @@
 # Plan 003 — sui-icon-button
 
-Status: approved (2026-10-17, re-approved after D2 was revised to accent 300 for the FR-8/NFR-4 change)
+Status: approved (2026-10-17, reaprobado después de revisar D2 a accent 300 por el cambio de FR-8/NFR-4)
 
-Spec: `specs/003-sui-icon-button/spec.md` (approved 2026-10-17; re-approved the same day after the FR-8/NFR-4 ring
-change). Its five open questions are left for later, so this plan changes only what the FRs and NFRs state: the FR-4 name (no icon-name fallback), the removal of `iconSize` from
-the component and `SuiIconButton` (breaking), the shared focus ring colour (FR-8, NFR-4), the missing tests and the demo
-matrix. Looks, sizes, shapes, badge and `.scss` are not changed. The user's working-tree changes are kept (the demo's
-reactive-form submit uses `(trigger)`, the split's `name` is required, the current `sui-button.component.scss`).
+Spec: `specs/003-sui-icon-button/spec.md` (aprobada el 2026-10-17; reaprobada el mismo día tras el cambio del anillo de
+FR-8/NFR-4). Sus cinco preguntas abiertas quedan para más adelante, así que este plan solo cambia lo que dicen los FR y
+los NFR: el nombre de FR-4 (sin recurso al nombre del icono), la eliminación de `iconSize` del componente y de
+`SuiIconButton` (incompatible), el color del anillo de foco compartido (FR-8, NFR-4), los tests que faltan y la matriz
+de la demo. Los aspectos, tamaños, formas, el badge y el `.scss` no cambian. Se mantienen los cambios del usuario en el
+árbol de trabajo (el envío del formulario reactivo de la demo usa `(trigger)`, el `name` del split es obligatorio, el
+`sui-button.component.scss` actual).
 
-## Files and responsibilities
+## Archivos y responsabilidades
 
-No new files. `public-api.ts` is not changed (it already exports the component, `SUI_ICON_BUTTON_VARIANT` and
-`SuiIconButton`).
+Sin archivos nuevos. `public-api.ts` no cambia (ya exporta el componente, `SUI_ICON_BUTTON_VARIANT` y `SuiIconButton`).
 
-Modified:
+Modificados:
 
-- `sui-icon-button.component.ts` — drops the `iconSize` input (line 19); `accessibleName` becomes
+- `sui-icon-button.component.ts` — quita el input `iconSize` (línea 19); `accessibleName` pasa a ser
   `protected readonly accessibleName: Signal<string | null> = computed(() => (this.label().trim() ? this.label() : null));`
-  (D1). Nothing else changes. FR-4, FR-6.
-- `interfaces/sui-icon-button.interface.ts` — drops `iconSize?: number` (breaking). FR-6.
-- `libs/smooth-ui/theme/theme.scss` — line 227 (light) and line 296 (dark): `--sui-focus-ring` becomes
-  `0 0 0 3px var(--sui-accent-300)` in both blocks (D2). `--sui-focus-ring-danger` (lines 228, 297) is untouched. FR-8,
-  NFR-4.
-- `sui-icon-button.component.spec.ts` — the icon-name test is updated and the new tests added (see Test strategy).
-- `apps/smooth-ui-demo/src/app/app.component.ts` — typed demo data for the icon-button matrix and the shape row (D3).
-- `apps/smooth-ui-demo/src/app/app.component.html` — lines 71-85 (13 unlabelled, partly duplicated icon buttons) are
-  replaced by a labelled shape row and the deferred matrix (D3, D4). Completion criteria 3, 4.
+  (D1). Nada más cambia. FR-4, FR-6.
+- `interfaces/sui-icon-button.interface.ts` — quita `iconSize?: number` (incompatible). FR-6.
+- `libs/smooth-ui/theme/theme.scss` — línea 227 (claro) y línea 296 (oscuro): `--sui-focus-ring` pasa a ser
+  `0 0 0 3px var(--sui-accent-300)` en los dos bloques (D2). `--sui-focus-ring-danger` (líneas 228, 297) no se toca.
+  FR-8, NFR-4.
+- `sui-icon-button.component.spec.ts` — se actualiza el test del nombre del icono y se añaden los tests nuevos (ver
+  Estrategia de tests).
+- `apps/smooth-ui-demo/src/app/app.component.ts` — datos tipados de la demo para la matriz de icon buttons y la fila de
+  formas (D3).
+- `apps/smooth-ui-demo/src/app/app.component.html` — las líneas 71-85 (13 icon buttons sin label, en parte duplicados)
+  se sustituyen por una fila de formas con label y la matriz diferida (D3, D4). Criterios de finalización 3 y 4.
 
-Read, not changed:
+Leídos, sin cambios:
 
-- `sui-icon-button.component.html` — `[aria-label]="accessibleName()"` stays; `null` removes the attribute (FR-4). The
-  native `<button type="button">` gives keyboard activation and no form submit or reset (FR-2) and `[disabled]` makes it
-  unavailable (FR-3); `sui-icon` gets `computedIconSize()` (16/20/24, FR-6); the badge is a sibling `<span>` outside the
-  `<button>` (FR-9, FR-10). The `NgClass` on the anchor is legacy but no FR touches it, so it is not migrated.
-- `sui-icon-button.component.scss` — every look, size, shape, `selected`, `focus`, disabled and badge rule (FR-3, FR-5
-  to FR-9); `transition: all` uses `--sui-duration-fast`, which reduced motion zeroes in `theme.scss` (NFR-3). All rings
-  use `var(--sui-focus-ring)`, so D2 reaches `:focus-visible` and `state` `focus` with no `.scss` change (FR-8).
-- `sui-icon/sui-icon.component.html` — the `<svg>` is `aria-hidden="true"` and `focusable="false"` (FR-4).
-- `sui-theme-toggle.component.html` — always passes a non-blank `label`, never `iconSize`: unaffected by FR-4 and FR-6;
-  its ring changes with D2 (accepted, out of scope). It keeps its raw `(click)`.
-- `sui-button-group.component.html` — passes `label ?? name`, never `iconSize`; the group's fallback is out of scope.
-  The demo's `buttonsGroup` entries have non-blank names, so its 18 icon buttons stay named.
-- Other `--sui-focus-ring` users (side effect of D2, accepted by the spec): `sui-button` (5 rings), `sui-button-split`
-  (menu items, over `--sui-color-bg-surface-raised`), `sui-link` (2), `sui-text-field` (2, next to an accent border on
-  `:focus-within`), `sui-textarea` (1). `sui-button`'s `danger` keeps `--sui-focus-ring-danger`.
-- Search for other consumers: no file in `libs/` or `apps/` binds `iconSize` on `sui-icon-button`, builds a
-  `SuiIconButton` (exported, unused) or relies on the icon-name fallback; only the demo's 13 unlabelled buttons did, and
-  they are replaced. No unit test asserts `--sui-focus-ring`, hex values or computed colours.
+- `sui-icon-button.component.html` — `[aria-label]="accessibleName()"` se queda; `null` quita el atributo (FR-4). El
+  `<button type="button">` nativo da la activación por teclado y no envía ni reinicia formularios (FR-2), y `[disabled]`
+  lo deja no disponible (FR-3); `sui-icon` recibe `computedIconSize()` (16/20/24, FR-6); el badge es un `<span>` hermano
+  fuera del `<button>` (FR-9, FR-10). El `NgClass` del ancla es legacy, pero ningún FR lo toca, así que no se migra.
+- `sui-icon-button.component.scss` — todas las reglas de aspecto, tamaño, forma, `selected`, `focus`, deshabilitado y
+  badge (FR-3, FR-5 a FR-9); `transition: all` usa `--sui-duration-fast`, que el movimiento reducido pone a cero en
+  `theme.scss` (NFR-3). Todos los anillos usan `var(--sui-focus-ring)`, así que D2 llega a `:focus-visible` y a
+  `state` `focus` sin cambiar el `.scss` (FR-8).
+- `sui-icon/sui-icon.component.html` — el `<svg>` es `aria-hidden="true"` y `focusable="false"` (FR-4).
+- `sui-theme-toggle.component.html` — siempre pasa un `label` no en blanco y nunca `iconSize`: FR-4 y FR-6 no le
+  afectan; su anillo cambia con D2 (aceptado, fuera de alcance). Mantiene su `(click)` en bruto.
+- `sui-button-group.component.html` — pasa `label ?? name` y nunca `iconSize`; el recurso del grupo queda fuera de
+  alcance. Las entradas de `buttonsGroup` de la demo tienen nombres no en blanco, así que sus 18 icon buttons siguen
+  teniendo nombre.
+- Otros usos de `--sui-focus-ring` (efecto secundario de D2, aceptado por la spec): `sui-button` (5 anillos),
+  `sui-button-split` (elementos del menú, sobre `--sui-color-bg-surface-raised`), `sui-link` (2), `sui-text-field` (2,
+  junto a un borde de acento en `:focus-within`), `sui-textarea` (1). El `danger` de `sui-button` mantiene
+  `--sui-focus-ring-danger`.
+- Búsqueda de otros consumidores: ningún archivo de `libs/` ni de `apps/` enlaza `iconSize` en `sui-icon-button`,
+  construye un `SuiIconButton` (exportado, sin uso hoy) ni depende del recurso al nombre del icono; solo lo hacían los
+  13 botones sin label de la demo, que se sustituyen. Ningún test unitario comprueba `--sui-focus-ring`, valores hex ni
+  colores calculados.
 
-## Public API
+## API pública
 
-- Selector `sui-icon-button`. Inputs: `icon` (required, FR-1), `badge` (`0`), `label` (`''`), `shape` (`rounded`),
-  `size` (`md`), `state` (`default`), `variant` (`ghost`), boolean-attribute `disabled` and `selected`. `iconSize` is
-  removed (breaking, FR-6).
-- Output `trigger: void` (FR-2), no `stopPropagation`.
-- Exported type `SuiIconButton` loses `iconSize` (breaking); everything else in it stays (out of scope).
-- Behaviour change (breaking): the icon name never becomes the accessible name; a blank `label` gives no `aria-label`.
-  Nothing is checked or reported at runtime (FR-4).
-- Theme change (breaking for looks): `--sui-focus-ring` gets a new colour in both themes, so every ring that uses it
-  changes; the variable name stays (AGENTS.md forbids renaming theme variables).
+- Selector `sui-icon-button`. Inputs: `icon` (obligatorio, FR-1), `badge` (`0`), `label` (`''`), `shape` (`rounded`),
+  `size` (`md`), `state` (`default`), `variant` (`ghost`), y los de atributo booleano `disabled` y `selected`. Se quita
+  `iconSize` (incompatible, FR-6).
+- Output `trigger: void` (FR-2), sin `stopPropagation`.
+- El tipo exportado `SuiIconButton` pierde `iconSize` (incompatible); todo lo demás se queda (fuera de alcance).
+- Cambio de comportamiento (incompatible): el nombre del icono nunca se convierte en el nombre accesible; un `label` en
+  blanco no da `aria-label`. Nada se comprueba ni se avisa en tiempo de ejecución (FR-4).
+- Cambio de tema (incompatible en el aspecto): `--sui-focus-ring` tiene un color nuevo en los dos temas, así que cambian
+  todos los anillos que lo usan; el nombre de la variable se mantiene (AGENTS.md prohíbe renombrar variables del tema).
 
-## State and what derives from it
+## Estado y lo que se deriva de él
 
-All derived with `computed()`; no `effect()`, no lifecycle hooks, no new writable state.
+Todo derivado con `computed()`; sin `effect()`, sin hooks del ciclo de vida, sin estado escribible nuevo.
 
-- `accessibleName: Signal<string | null>` — `label()` as given (untrimmed) when `label().trim()` is not empty, else
-  `null`; never `icon()`. FR-4.
-- Unchanged: `computedIconSize` (from `size` only, FR-6) and `classes` (FR-3, FR-5 to FR-8).
+- `accessibleName: Signal<string | null>` — `label()` tal cual (sin recortar) cuando `label().trim()` no está vacío y,
+  si no, `null`; nunca `icon()`. FR-4.
+- Sin cambios: `computedIconSize` (solo a partir de `size`, FR-6) y `classes` (FR-3, FR-5 a FR-8).
 
-## Where browser side effects live
+## Dónde viven los efectos secundarios del navegador
 
-None added. The component touches no browser global; the icon sprite stays in `SuiIconService` (spec 001).
+No se añade ninguno. El componente no toca ningún global del navegador; el sprite de iconos sigue en `SuiIconService`
+(spec 001).
 
-## Template and accessibility
+## Plantilla y accesibilidad
 
-- Native `<button type="button">`: Enter and Space come from the browser, no key handler of its own; never submits or
-  resets a form (FR-2). `[disabled]` removes it from the focus order and announces it as unavailable (FR-3).
-- `[aria-label]` is the non-blank `label` untrimmed, or absent; the button has no text content, so with no `label` it is
-  unnamed (the documented FR-4 violation, kept out of the demo). No `aria-pressed` for `selected` (FR-7).
-- The icon is hidden through `sui-icon` (FR-4). The badge is plain text in a sibling `<span>`, so it is exposed as its
-  own text, is not in the name and a click on it does not reach the `<button>` (FR-10).
+- `<button type="button">` nativo: Enter y Espacio los gestiona el navegador, sin manejador de teclas propio; nunca
+  envía ni reinicia un formulario (FR-2). `[disabled]` lo saca del orden de foco y lo anuncia como no disponible (FR-3).
+- `[aria-label]` es el `label` no en blanco sin recortar, o no existe; el botón no tiene contenido de texto, así que sin
+  `label` queda sin nombre (la infracción documentada de FR-4, que no aparece en la demo). Sin `aria-pressed` para
+  `selected` (FR-7).
+- El icono se oculta mediante `sui-icon` (FR-4). El badge es texto simple en un `<span>` hermano, así que se expone como
+  texto propio, no está en el nombre y un clic sobre él no llega al `<button>` (FR-10).
 
 ## Demo
 
-- `app.component.ts` gains, as `protected readonly` fields: `iconButtonVariants: SUI_ICON_BUTTON_VARIANT[]` (`ghost`,
-  `outline`, `primary`), `iconButtonStates: DemoIconButtonState[]` (4) and
-  `iconButtonMatrix: DemoIconButtonVariantGroup[]`, built once by a module-level pure function from the variants, the existing
-  `buttonSizes` and the states (D3). Local interfaces: `DemoIconButtonState` (`id`, `action`, `icon`, `selected`,
-  `disabled`, `state: SUI_STATE`, `badge`), `DemoIconButton` (the same plus a unique `id` and `label`), a row (`id`,
-  `size`, `buttons`) and a variant group (`variant`, `rows`). `SUI_ICON_BUTTON_VARIANT` is added to the import.
-- States, each alone (NFR-4): `selected` (`star`, "Add to favourites"), `disabled` (`trash`, "Delete"), `state` `focus`
-  (`settings`, "Open settings") and a badge (`bell`, "Show notifications", `badge` 3). Each `label` is the action plus
-  variant and size, for example "Delete (outline, lg)", so all 36 are non-blank and distinct.
-- Shape row (eager, before the matrix, three hand-written lines in a `.row`): `outline` `md` buttons with the `edit`
-  icon and `shape` `flat`/`rounded`/`pill`, labelled "Edit (flat)", "Edit (rounded)" and "Edit (pill)" (completion
-  criterion 3).
-- Matrix: `<div id="icon-button-matrix">` wraps `@defer (on viewport)`; inside, `@for` per variant group
-  (`track group.variant`) with an `<h2>`, per row (`track row.id`, one `.row` per size) and per button
-  (`track button.id`), binding `badge`, `disabled`, `icon`, `label`, `selected`, `size`, `state` and `variant`.
-  `@placeholder` shows "Icon button matrix", `@loading` "Loading icon button matrix…". `sui-icon-button` is also used
-  eagerly (shape row, theme toggle), so the defer delays rendering only.
-- Layout: reuses `.row` (wrapping flex, 1rem gap) and `.col`; no new rule in `app.component.scss`, so the
-  `anyComponentStyle` budget is unaffected. A row holds 4 buttons (at most 4 × 48 + 3 × 16 = 240 px, plus the badge's
-  12 px), well inside the 343 px content width at 375 px, so the page's overflow does not grow.
-- The theme toggle and the button groups need no change (out of scope; they are not part of the checks).
+- `app.component.ts` recibe, como campos `protected readonly`: `iconButtonVariants: SUI_ICON_BUTTON_VARIANT[]`
+  (`ghost`, `outline`, `primary`), `iconButtonStates: DemoIconButtonState[]` (4) e
+  `iconButtonMatrix: DemoIconButtonVariantGroup[]`, construido una vez por una función pura a nivel de módulo a partir
+  de las variantes, los `buttonSizes` existentes y los estados (D3). Interfaces locales: `DemoIconButtonState` (`id`,
+  `action`, `icon`, `selected`, `disabled`, `state: SUI_STATE`, `badge`), `DemoIconButton` (lo mismo más un `id` y un
+  `label` únicos), una fila (`id`, `size`, `buttons`) y un grupo de variante (`variant`, `rows`). Se añade
+  `SUI_ICON_BUTTON_VARIANT` al import.
+- Estados, cada uno por separado (NFR-4): `selected` (`star`, "Add to favourites"), `disabled` (`trash`, "Delete"),
+  `state` `focus` (`settings`, "Open settings") y un badge (`bell`, "Show notifications", `badge` 3). Cada `label` es la
+  acción más la variante y el tamaño, por ejemplo "Delete (outline, lg)", así que los 36 son no en blanco y distintos.
+- Fila de formas (inmediata, antes de la matriz, tres líneas escritas a mano en una `.row`): botones `outline` `md` con
+  el icono `edit` y `shape` `flat`/`rounded`/`pill`, con los labels "Edit (flat)", "Edit (rounded)" y "Edit (pill)"
+  (criterio de finalización 3).
+- Matriz: `<div id="icon-button-matrix">` envuelve `@defer (on viewport)`; dentro, `@for` por grupo de variante
+  (`track group.variant`) con un `<h2>`, por fila (`track row.id`, una `.row` por tamaño) y por botón
+  (`track button.id`), enlazando `badge`, `disabled`, `icon`, `label`, `selected`, `size`, `state` y `variant`.
+  `@placeholder` muestra "Icon button matrix" y `@loading` "Loading icon button matrix…". `sui-icon-button` también se
+  usa de forma inmediata (fila de formas, selector de tema), así que el defer solo retrasa el renderizado.
+- Maquetación: reutiliza `.row` (flex que salta de línea, separación de 1rem) y `.col`; ninguna regla nueva en
+  `app.component.scss`, así que el presupuesto `anyComponentStyle` no se ve afectado. Una fila tiene 4 botones (como
+  mucho 4 × 48 + 3 × 16 = 240 px, más los 12 px del badge), muy por dentro de los 343 px de ancho de contenido a 375 px,
+  así que el desbordamiento de la página no crece.
+- El selector de tema y los grupos de botones no necesitan cambios (fuera de alcance; no forman parte de las
+  comprobaciones).
 
-## Decisions
+## Decisiones
 
-- **D1. `accessibleName` returns `null` for a blank `label`.** `[aria-label]` with `null` removes the attribute, so the
-  button sets no name of its own (FR-4); `label()` is kept untrimmed. Discarded: returning `''` (an empty `aria-label`,
-  a name set to blank rather than none) and a runtime warning (the spec says nothing reports it).
-- **D2. `--sui-focus-ring` becomes an opaque `0 0 0 3px var(--sui-accent-300)` in both themes (user's decision,
-  2026-10-17, replacing the accent 500 applied first in T6).** Same 3 px shape as before, now opaque, so the painted
-  colour is the token colour on any background. Computed WCAG contrast of #a6b2fc: light, over the canvas
-  #f8f9fb 1.92:1 (before 1.49:1) and over white surfaces 2.02:1, both below 3:1; dark, over the canvas #10141b 9.14:1 (before
-  2.27:1). Rationale: the user's choice of a softer ring in both themes, one
-  shared token. Trade-off: the light-theme ring fails WCAG 2.2 SC 1.4.11 (AA) and the project's "WCAG AA
-  non-negotiable" rule; the spec records it as an accepted known failure (NFR-4). In dark theme accent 300 is also the
-  `primary` hover background, so on a hovered, focused `primary` button the ring merges with the button (its outer edge
-  still contrasts 9.14:1 with the canvas). Discarded: accent 500 (3.63:1 light, 4.82:1 dark, passes in both; the user
-  preferred accent 300); a per-theme ring (accent 500 light, 300 dark: passes, but the user chose one value); a
-  translucent ring (the painted colour shifts on every surface); per-component rings (one shared ring for consistency).
-- **D3. The demo matrix data is built in the component class, not in the template.** Labels need action, variant and
-  size; building them once in TypeScript keeps the template to bindings. Discarded: string concatenation in the
-  template (logic in markup) and repeating one label per state (not "its own" label).
-- **D4. The matrix is generated with `@for` inside `@defer (on viewport)` with a stable-id container**, as in 002.
-  Discarded: 36 hand-written lines and rendering it eagerly.
-- **D5. Looks are tested through classes; colours, rings, sizes and motion in the browser.** jsdom does not apply
-  component styles or `theme.scss` reliably. Discarded: `getComputedStyle` assertions in Vitest.
+- **D1. `accessibleName` devuelve `null` con un `label` en blanco.** `[aria-label]` con `null` quita el atributo, así
+  que el botón no pone ningún nombre propio (FR-4); `label()` se mantiene sin recortar. Descartado: devolver `''` (un
+  `aria-label` vacío, un nombre puesto en blanco en lugar de ninguno) y un aviso en tiempo de ejecución (la spec dice
+  que nada lo avisa).
+- **D2. `--sui-focus-ring` pasa a ser un `0 0 0 3px var(--sui-accent-300)` opaco en los dos temas (decisión del
+  usuario, 2026-10-17, que sustituye al accent 500 aplicado primero en T6).** La misma forma de 3 px que antes, ahora
+  opaca, así que el color pintado es el del token sobre cualquier fondo. Contraste WCAG calculado de #a6b2fc: en claro,
+  sobre el canvas #f8f9fb 1.92:1 (antes 1.49:1) y sobre superficies blancas 2.02:1, los dos por debajo de 3:1; en
+  oscuro, sobre el canvas #10141b 9.14:1 (antes 2.27:1). Motivo: el usuario eligió un anillo más suave en los dos temas,
+  con un solo token compartido. Contrapartida: el anillo del tema claro incumple WCAG 2.2 SC 1.4.11 (AA) y la regla del
+  proyecto "WCAG AA innegociable"; la spec lo recoge como fallo conocido aceptado (NFR-4). En el tema oscuro accent 300
+  también es el fondo de hover de `primary`, así que en un botón `primary` enfocado y con el puntero encima el anillo se
+  confunde con el botón (su borde exterior sigue contrastando 9.14:1 con el canvas). Descartado: accent 500 (3.63:1 en
+  claro y 4.82:1 en oscuro, pasa en los dos; el usuario prefirió accent 300); un anillo por tema (accent 500 en claro y
+  300 en oscuro: pasa, pero el usuario eligió un solo valor); un anillo translúcido (el color pintado cambia en cada
+  superficie); anillos por componente (un único anillo compartido por coherencia).
+- **D3. Los datos de la matriz de la demo se construyen en la clase del componente, no en la plantilla.** Los labels
+  necesitan acción, variante y tamaño; construirlos una vez en TypeScript deja la plantilla en bindings. Descartado:
+  concatenar textos en la plantilla (lógica en el marcado) y repetir un label por estado (no sería "su propio" label).
+- **D4. La matriz se genera con `@for` dentro de `@defer (on viewport)` con un contenedor de id estable**, como en la 002. Descartado: 36 líneas escritas a mano y renderizarla de inmediato.
+- **D5. Los aspectos se prueban mediante clases; los colores, anillos, tamaños y movimiento, en el navegador.** jsdom no
+  aplica de forma fiable los estilos de los componentes ni `theme.scss`. Descartado: aserciones con `getComputedStyle`
+  en Vitest.
 
-## Test strategy (Vitest and TestBed, jsdom)
+## Estrategia de tests (Vitest y TestBed, jsdom)
 
-Run with `pnpm nx run smooth-ui:test`. Inputs via `fixture.componentRef.setInput()`, then `await fixture.whenStable()`.
-Existing tests "should create", "exposes the label as accessible name" and "disables the native button…" stay.
+Se ejecutan con `pnpm nx run smooth-ui:test`. Inputs con `fixture.componentRef.setInput()` y después
+`await fixture.whenStable()`. Se quedan los tests existentes "should create", "exposes the label as accessible name" y
+"disables the native button…".
 
-Updated test: "falls back to the icon name when no label is given" becomes "never uses the icon name as accessible name":
-icon `check`, no `label` → the button has no `aria-label` attribute (and it is not `check`).
+Test actualizado: "falls back to the icon name when no label is given" pasa a ser "never uses the icon name as
+accessible name": icono `check`, sin `label` → el botón no tiene atributo `aria-label` (y no es `check`).
 
-New tests in `sui-icon-button.component.spec.ts`:
+Tests nuevos en `sui-icon-button.component.spec.ts`:
 
-- **FR-1**: a fresh fixture with no `icon` throws on `detectChanges()` (`NG0950`); `icon` `""` renders the `<svg>`.
-- **FR-2**: one click emits one `trigger` with `undefined`; dispatched keydown/keyup Enter and Space emit nothing by
-  themselves (no own key handling); the button's `type` is `button`. An in-spec host with a form, an input and the icon
-  button: a click fires no submit event and leaves an edited input value unchanged (no reset).
-- **FR-3**: with `disabled`, the native button is disabled, a click emits nothing, `sui-icon-button-disabled` is present
-  (also with `selected`, both classes), and `focus()` does not make it `document.activeElement`.
-- **FR-4**: `label` `" Close "` → `aria-label` `" Close "`; `label` `"   "` → no `aria-label`; the `<svg>` has
-  `aria-hidden="true"`; the button's text content is empty (NFR-2).
-- **FR-5**: default `sui-icon-button-ghost`; `outline` and `primary` classes.
-- **FR-6**: defaults `sui-icon-button-md` and `sui-icon-button-rounded`; `sm`/`lg` and `flat`/`pill` classes; the
-  `<svg>` width is 16/20/24 for `sm`/`md`/`lg`; `setInput('iconSize', 32)` throws (`NG0303`).
-- **FR-7**: `selected` → `sui-icon-button-selected` and no `aria-pressed`.
-- **FR-8**: `state` `focus` → `sui-icon-button-focus`, kept with `disabled`.
-- **FR-9**: `badge` 5, -1 and 1.5 show "5", "-1" and "1.5" in `.badge`; 0, `NaN` and unset show no `.badge`.
-- **FR-10**: with `badge` 3 and `label` "Show notifications", the `.badge` is not inside the `<button>`, `aria-label`
-  stays "Show notifications", and a click on the `.badge` emits no `trigger`.
+- **FR-1**: un fixture nuevo sin `icon` lanza un error en `detectChanges()` (`NG0950`); `icon` `""` pinta el `<svg>`.
+- **FR-2**: un clic emite un `trigger` con `undefined`; keydown/keyup de Enter y Espacio lanzados no emiten nada por sí
+  solos (sin manejo propio de teclas); el `type` del botón es `button`. Un anfitrión dentro del spec con un formulario,
+  un input y el icon button: un clic no lanza ningún evento de envío y deja sin cambios el valor editado del input (sin
+  reinicio).
+- **FR-3**: con `disabled`, el botón nativo está deshabilitado, un clic no emite nada, `sui-icon-button-disabled` está
+  presente (también con `selected`, las dos clases), y `focus()` no lo convierte en `document.activeElement`.
+- **FR-4**: `label` `" Close "` → `aria-label` `" Close "`; `label` `"   "` → sin `aria-label`; el `<svg>` tiene
+  `aria-hidden="true"`; el contenido de texto del botón está vacío (NFR-2).
+- **FR-5**: por defecto `sui-icon-button-ghost`; clases `outline` y `primary`.
+- **FR-6**: por defecto `sui-icon-button-md` y `sui-icon-button-rounded`; clases `sm`/`lg` y `flat`/`pill`; el ancho del
+  `<svg>` es 16/20/24 para `sm`/`md`/`lg`; `setInput('iconSize', 32)` lanza un error (`NG0303`).
+- **FR-7**: `selected` → `sui-icon-button-selected` y sin `aria-pressed`.
+- **FR-8**: `state` `focus` → `sui-icon-button-focus`, que se mantiene con `disabled`.
+- **FR-9**: `badge` 5, -1 y 1.5 muestran "5", "-1" y "1.5" en `.badge`; 0, `NaN` y sin valor no muestran `.badge`.
+- **FR-10**: con `badge` 3 y `label` "Show notifications", el `.badge` no está dentro del `<button>`, el `aria-label`
+  sigue siendo "Show notifications" y un clic sobre el `.badge` no emite `trigger`.
 
-## Left for validation (browser, Chrome DevTools MCP)
+## Lo que queda para la validación (navegador, MCP de Chrome DevTools)
 
-- **FR-1 and FR-6 at build time**: a temporary `<sui-icon-button />` and one with `[iconSize]="20"` in the demo make
-  `pnpm nx run smooth-ui-demo:build` fail; a temporary `SuiIconButton` literal with `iconSize` in `app.component.ts`
-  fails `pnpm nx run smooth-ui-demo:typecheck`. All removed afterwards.
-- **FR-2, FR-3**: real Enter and Space give one `trigger`; disabled look and not-allowed cursor at rest and on hover.
-- **FR-4**: in the accessibility tree every demo icon button exposes its `label` and no icon name.
-- **Deferred matrix**: scroll `#icon-button-matrix` into view and wait for the 36 matrix buttons (placeholder and
-  loading texts gone) before any check.
-- **FR-5 to FR-9**: looks on hover and press, sizes, radii, badge placement, keyboard ring and `state` `focus` ring.
-  **FR-8, NFR-4 ring**: the computed `box-shadow` colour is rgb(166, 178, 252) in both themes; the measured contrast
-  against the canvas is at least 3:1 in dark (9.14) and, in light, is recorded as the accepted known failure (1.92,
-  not a pass). Also glance at the rings of `sui-button`, the
-  split menu, `sui-link`, `sui-text-field` and `sui-textarea` (side effect, no FR). **NFR-3**: with reduced motion
-  emulated, transitions are `0s`.
-- **NFR-4**: confirm `getComputedStyle(document.body).backgroundColor` is the canvas colour, load axe from a CDN (no
-  package added) and run it on the icon-button section (shape row and matrix) with `wcag2a`, `wcag2aa`, `wcag21a`,
-  `wcag21aa`, `wcag22aa`: zero violations, then again in dark theme. Icon and badge contrast per state as in the spec,
-  with its single exception; press states are checked manually by the owner.
-- **375 px**: at a 375 px viewport, `document.documentElement.scrollWidth` stays 444 (not wider).
-- **NFR-1, NFR-2**: no `package.json` changed; no new string in the library.
-- Full checks: `pnpm nx format:check && pnpm nx run-many -t lint test build typecheck`; the demo build adds no new
-  `anyComponentStyle` warning.
+- **FR-1 y FR-6 en tiempo de compilación**: un `<sui-icon-button />` temporal y otro con `[iconSize]="20"` en la demo
+  hacen fallar `pnpm nx run smooth-ui-demo:build`; un literal `SuiIconButton` temporal con `iconSize` en
+  `app.component.ts` hace fallar `pnpm nx run smooth-ui-demo:typecheck`. Todo se quita después.
+- **FR-2, FR-3**: Enter y Espacio reales dan un `trigger`; aspecto deshabilitado y cursor not-allowed en reposo y en
+  hover.
+- **FR-4**: en el árbol de accesibilidad, cada icon button de la demo expone su `label` y ningún nombre de icono.
+- **Matriz diferida**: hacer scroll hasta `#icon-button-matrix` y esperar a los 36 botones de la matriz (sin los textos
+  del placeholder y de carga) antes de cualquier comprobación.
+- **FR-5 a FR-9**: aspectos en hover y al pulsar, tamaños, radios, posición del badge, anillo de teclado y anillo de
+  `state` `focus`. **FR-8, anillo de NFR-4**: el color calculado del `box-shadow` es rgb(166, 178, 252) en los dos temas;
+  el contraste medido contra el canvas es de al menos 3:1 en oscuro (9.14) y, en claro, se registra como el fallo
+  conocido aceptado (1.92, no como aprobado). Echar también un vistazo a los anillos de `sui-button`, el menú del split,
+  `sui-link`, `sui-text-field` y `sui-textarea` (efecto secundario, sin FR). **NFR-3**: con movimiento reducido
+  emulado, las transiciones son `0s`.
+- **NFR-4**: confirmar que `getComputedStyle(document.body).backgroundColor` es el color del canvas, cargar axe desde un
+  CDN (sin añadir paquetes) y ejecutarlo sobre la sección de icon buttons (fila de formas y matriz) con `wcag2a`,
+  `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa`: cero infracciones, y después otra vez en el tema oscuro. Contraste del
+  icono y del badge por estado como dice la spec, con su única excepción; los estados de pulsado los comprueba a mano el
+  propietario.
+- **375 px**: con un viewport de 375 px, `document.documentElement.scrollWidth` sigue en 444 (no más ancho).
+- **NFR-1, NFR-2**: ningún `package.json` ha cambiado; ningún texto nuevo en la librería.
+- Comprobaciones completas: `pnpm nx format:check && pnpm nx run-many -t lint test build typecheck`; la build de la
+  demo no añade ningún aviso nuevo de `anyComponentStyle`.
 
-## FR coverage
+## Cobertura de los FR
 
-FR-1 test + build check · FR-2 to FR-4 tests + browser · FR-5 to FR-7 class tests + browser · FR-6 also build and
-typecheck checks · FR-8 D2 + class test + browser · FR-9, FR-10 tests + browser · NFR-1, NFR-2 checks · NFR-3 browser ·
-NFR-4 D2 + demo + axe in both themes and contrast checks.
+FR-1 test + comprobación de build · FR-2 a FR-4 tests + navegador · FR-5 a FR-7 tests de clases + navegador · FR-6
+también comprobaciones de build y typecheck · FR-8 D2 + test de clases + navegador · FR-9, FR-10 tests + navegador ·
+NFR-1, NFR-2 comprobaciones · NFR-3 navegador · NFR-4 D2 + demo + axe en los dos temas y comprobaciones de contraste.
 
-## Release note (for `MEMORY.md` and the release)
+## Nota de release (para `MEMORY.md` y la release)
 
-Breaking: `sui-icon-button` no longer uses the icon name as accessible name (pass a non-blank `label`); `iconSize` is
-removed from `sui-icon-button` and from `SuiIconButton`; `--sui-focus-ring` is now opaque accent 300 in both themes,
-which changes every focus ring (`sui-button`, split, link, text field, textarea, icon button), unlike spec 002, which
-kept rings as they were. Known issue: the light-theme ring is 1.92:1 against the canvas, below the 3:1 of WCAG 2.2
-SC 1.4.11 (AA). The danger ring is unchanged.
+Incompatible: `sui-icon-button` ya no usa el nombre del icono como nombre accesible (pasa un `label` no en blanco); se
+quita `iconSize` de `sui-icon-button` y de `SuiIconButton`; `--sui-focus-ring` es ahora accent 300 opaco en los dos
+temas, lo que cambia todos los anillos de foco (`sui-button`, split, link, text field, textarea, icon button), a
+diferencia de la spec 002, que mantenía los anillos como estaban. Problema conocido: el anillo del tema claro tiene
+1.92:1 contra el canvas, por debajo del 3:1 de WCAG 2.2 SC 1.4.11 (AA). El anillo de peligro no cambia.
 
-## Risks
+## Riesgos
 
-- Consumers with icon-only buttons and no `label` (or groups with blank `label`/`name`) become unnamed, silently.
-- If `[aria-label]` with `null` leaves an attribute in jsdom or the browser, the FR-4 tests fail; fallback is returning
-  `null` through `[attr.aria-label]`, a deviation from the project's ARIA binding rule to be raised before applying.
-- D2 is visible everywhere: the ring turns from a translucent halo into an opaque pale accent band; next to the accent
-  border of a focused text field or textarea it reads as a thicker outline. Accepted by the spec; needs the release note.
-- D2 leaves every light-theme ring below 3:1 (1.92:1 on the canvas): a WCAG AA failure that axe will not report, so V7
-  can pass while the library does not conform. Accepted by the user; recorded in the spec and the release note.
-- axe run before the deferred block loads checks only the placeholder and passes falsely (guarded above); axe skips
-  disabled controls and does not check rings or hover/press, which are measured by hand.
-- The badge sticks out 12 px right and 10 px up; the row gap (16 px) and container padding absorb it at 375 px.
+- Los consumidores con botones solo de icono y sin `label` (o grupos con `label`/`name` en blanco) se quedan sin nombre,
+  sin aviso.
+- Si `[aria-label]` con `null` deja un atributo en jsdom o en el navegador, los tests de FR-4 fallan; la alternativa es
+  devolver `null` mediante `[attr.aria-label]`, una desviación de la regla de bindings ARIA del proyecto que hay que
+  plantear antes de aplicarla.
+- D2 se ve en todas partes: el anillo pasa de un halo translúcido a una banda opaca de acento pálido; junto al borde de
+  acento de un text field o textarea enfocado se lee como un contorno más grueso. Lo acepta la spec; necesita la nota de
+  release.
+- D2 deja todos los anillos del tema claro por debajo de 3:1 (1.92:1 sobre el canvas): un fallo WCAG AA que axe no
+  informará, así que V7 puede pasar aunque la librería no cumpla. Aceptado por el usuario; recogido en la spec y en la
+  nota de release.
+- Si axe se ejecuta antes de que cargue el bloque diferido, solo comprueba el placeholder y pasa en falso (se evita
+  arriba); axe omite los controles deshabilitados y no comprueba los anillos ni el hover/pulsado, que se miden a mano.
+- El badge sobresale 12 px a la derecha y 10 px hacia arriba; la separación de la fila (16 px) y el relleno del
+  contenedor lo absorben a 375 px.

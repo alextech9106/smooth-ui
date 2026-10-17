@@ -1,76 +1,86 @@
 ---
 name: sdd
-description: Use it whenever you work with Spec-Driven Development in this project (docs/constitution.md or any file
-  inside specs/) - drafting, reviewing or changing specs, plans and tasks, or implementing and validating tasks from a
+description: Úsala siempre que trabajes con Spec-Driven Development en este proyecto (docs/constitution.md o cualquier
+  archivo dentro de specs/) - redactar, revisar o cambiar specs, planes y tareas, o implementar y validar tareas de una
   spec.
 ---
 
 # Spec-Driven Development (SDD)
 
-## Flow
+## Flujo
 
-Constitution → Spec → Clarification → Plan → Tasks → Implementation → Validation → Change.
+Constitución → Spec → Clarificación → Plan → Tareas → Implementación → Validación → Cambio.
 
-- Never move on to the next phase without the user's explicit approval.
-- The spec rules: if something is not in the spec, it does not get implemented. If a decision is missing, stop and ask.
-- A requirements change is made first in the spec, then in the plan and the tasks, and last in the code.
-- Each spec lives in its own folder: `specs/NNN-name/` with `spec.md`, `plan.md` and `tasks.md`.
-- If the component already exists in `libs/smooth-ui/src/lib/components/`, the spec records how it behaves today.
-  Gaps go in "Open questions" as suggested changes. After the spec is approved, ask the user which open questions to
-  resolve (each becomes an FR change) and whether to cover untested FRs; with that answer the flow continues through
-  Plan, Tasks, Implementation and Validation. If the user picks none, the flow stops after Clarification.
-- When each phase is finished, update `MEMORY.md`.
+- Nunca pases a la siguiente fase sin la aprobación explícita del usuario.
+- La spec manda: si algo no está en la spec, no se implementa. Si falta una decisión, para y pregunta.
+- Un cambio de requisitos se hace primero en la spec, después en el plan y las tareas, y por último en el código.
+- Cada spec vive en su propia carpeta: `specs/NNN-nombre/` con `spec.md`, `plan.md` y `tasks.md`.
+- Si el componente ya existe en `libs/smooth-ui/src/lib/components/`, la spec recoge cómo se comporta hoy.
+  Los huecos van en "Preguntas abiertas" como cambios sugeridos. Cuando la spec esté aprobada, pregunta al usuario qué
+  preguntas abiertas resolver (cada una se convierte en un cambio de FR) y si quiere cubrir los FR sin tests; con esa
+  respuesta el flujo sigue por Plan, Tareas, Implementación y Validación. Si el usuario no elige ninguna, el flujo para
+  tras la Clarificación.
+- Al terminar cada fase, actualiza `MEMORY.md`.
 
-## Spec template (spec.md)
+## Idioma
+
+Los documentos `.md` (specs, planes, tareas, `MEMORY.md`, constitución) se escriben en español. El código, los
+identificadores, los nombres de los tests y los mensajes de commit van en inglés. La línea `Status:` y sus valores
+(`draft`, `approved`, `implemented`) y la marca `[NEEDS CLARIFICATION]` se mantienen tal cual, porque los agentes los
+leen.
+
+## Plantilla de la spec (spec.md)
 
 ```
-# Spec NNN — <Name>
+# Spec NNN — <Nombre>
 Status: draft | approved | implemented
-## Context and goal
-## Users
-## User stories
-- US-1. As a <role>, I want <action> so that <benefit>.
-## Definitions (only if there are terms that could be interpreted in several ways)
-## Functional requirements
-## Non-functional requirements
-## Edge cases
-## Out of scope
-## Completion criteria
-## Open questions
-- [NEEDS CLARIFICATION] <question>
+## Contexto y objetivo
+## Usuarios
+## Historias de usuario
+- US-1. Como <rol>, quiero <acción> para <beneficio>.
+## Definiciones (solo si hay términos que se puedan interpretar de varias formas)
+## Requisitos funcionales
+## Requisitos no funcionales
+## Casos límite
+## Fuera de alcance
+## Criterios de finalización
+## Preguntas abiertas
+- [NEEDS CLARIFICATION] <pregunta>
 ```
 
-The spec describes the WHAT and the WHY. No stack, architecture or file names.
+La spec describe el QUÉ y el PORQUÉ. Sin stack, arquitectura ni nombres de archivos.
 
-A spec is about 100 lines: 5 user stories, 10 FRs, 4 NFRs, 5 edge cases, 5 out-of-scope items and 6 completion criteria
-at most, each in one or two lines. Edge cases and out-of-scope items cover only what the change touches or what a reader
-would expect from it. Behaviour the change leaves as it is, and how something will be verified, stay out of the spec. If
-it does not fit, propose splitting the spec.
+Una spec tiene unas 100 líneas: como máximo 5 historias de usuario, 10 FR, 4 NFR, 5 casos límite, 5 puntos fuera de
+alcance y 6 criterios de finalización, cada uno en una o dos líneas. Los casos límite y lo que queda fuera de alcance
+cubren solo lo que toca el cambio o lo que un lector esperaría de él. El comportamiento que el cambio deja como está, y
+cómo se va a verificar algo, quedan fuera de la spec. Si no cabe, propón dividir la spec.
 
-## Requirements in EARS (in English)
+## Requisitos en EARS
 
-- FR-x: WHEN <event>, THE SYSTEM <response>.
-- FR-x: IF <unwanted condition>, THEN THE SYSTEM <response>.
-- FR-x: WHILE <state>, THE SYSTEM <response>.
-- FR-x: THE SYSTEM <permanent behavior>.
+- FR-x: CUANDO <evento>, EL SISTEMA <respuesta>.
+- FR-x: SI <condición no deseada>, ENTONCES EL SISTEMA <respuesta>.
+- FR-x: MIENTRAS <estado>, EL SISTEMA <respuesta>.
+- FR-x: EL SISTEMA <comportamiento permanente>.
 
-Every FR must be verifiable: no "fast", "intense" or "pretty" without a measurable criterion.
+Cada FR debe ser verificable: nada de "rápido", "intenso" o "bonito" sin un criterio medible.
 
 ## Plan (plan.md)
 
-Files and responsibilities · Public API (inputs, outputs, exported types) · State and what derives from it · Where
-browser side effects live · Template and accessibility · Decisions justified with their discarded alternative · Test
-strategy with Vitest and TestBed, and what is left for validation in a browser. State which FR each part covers.
+Archivos y responsabilidades · API pública (inputs, outputs, tipos exportados) · Estado y lo que se deriva de él ·
+Dónde viven los efectos secundarios del navegador · Plantilla y accesibilidad · Decisiones justificadas con su
+alternativa descartada · Estrategia de tests con Vitest y TestBed, y lo que queda para validar en un navegador. Indica
+qué FR cubre cada parte.
 
-## Tasks (tasks.md)
+## Tareas (tasks.md)
 
 ```
-- [ ] **Tn. <Description>.** FR-x, FR-y
-- Done when: <verifiable check>.
+- [ ] **Tn. <Descripción>.** FR-x, FR-y
+- Hecho cuando: <comprobación verificable>.
 ```
 
-At most 20-30 min per task, in dependency order. If there are more than 10, propose splitting the spec.
+Como máximo 20-30 min por tarea, en orden de dependencia. Si hay más de 10, propón dividir la spec.
 
-## Implementation
+## Implementación
 
-One task at a time: tests first (red), then the code, `pnpm nx run smooth-ui:test` green, mark the task and stop.
+Una tarea cada vez: primero los tests (rojo), después el código, `pnpm nx run smooth-ui:test` en verde, marca la tarea
+y para.

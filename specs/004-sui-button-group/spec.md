@@ -1,126 +1,151 @@
 # Spec 004 — sui-button-group
 
-Status: implemented (2026-10-17; approved as today's behaviour, re-approved with the naming, group role/name and
-pressed-state change, then implemented)
+Status: implemented (2026-10-17; aprobada como el comportamiento de hoy, reaprobada con el cambio de nombres, rol y
+nombre del grupo y estado pulsado, y después implementada)
 
-## Context and goal
+## Contexto y objetivo
 
-Applications need related actions joined into one control (toolbars, segmented choices) that works with a keyboard and
-assistive technology. `sui-button-group` shows button descriptions as adjacent text or icon segments with one size, look
-and shape, and runs each entry's action. This revision gives both types one naming rule, exposes the set as an
-optionally named group and announces `selected` as pressed through a new pressed state of specs 002 and 003 (FR-7); it
-reaches the split button ("Edge cases"). Segment looks and focus rings follow specs 002 and 003.
+Las aplicaciones necesitan unir acciones relacionadas en un solo control (barras de herramientas, elecciones
+segmentadas) que funcione con teclado y con tecnología de apoyo. `sui-button-group` muestra descripciones de botones
+como segmentos contiguos de texto o de icono con un único tamaño, aspecto y forma, y ejecuta la acción de cada entrada.
+Esta revisión da a los dos tipos una sola regla de nombre, expone el conjunto como un grupo con nombre opcional y
+anuncia `selected` como pulsado mediante un nuevo estado pulsado de las specs 002 y 003 (FR-7); llega al split button
+("Casos límite"). Los aspectos de los segmentos y los anillos de foco siguen las specs 002 y 003.
 
-**Known issues (owner's decision, 2026-10-17).** The group leaves each segment's focus ring as it is: the group clips it
-at its outer edges and a following segment with a background covers it, so the first `primary` segment and a one-entry
-group show no visible ring (a WCAG 2.2 SC 2.4.7 Focus Visible gap). In the dark theme the ring (accent 300) is the
-`primary` hover colour (about 1:1) and about 1.4:1 against `primary` at rest (accent 400). Both are accepted, like the
-light-theme ring contrast of spec 003 (1.92:1 on the canvas); axe does not detect them.
+**Problemas conocidos (decisión del propietario, 2026-10-17).** El grupo deja el anillo de foco de cada segmento como
+está: el grupo lo recorta en sus bordes exteriores y un segmento siguiente con fondo lo tapa, así que el primer segmento
+`primary` y un grupo de una sola entrada no muestran un anillo visible (un hueco de WCAG 2.2 SC 2.4.7 Foco visible). En
+el tema oscuro el anillo (accent 300) es el color de hover de `primary` (unos 1:1) y tiene unos 1.4:1 contra `primary`
+en reposo (accent 400). Los dos se aceptan, como el contraste del anillo del tema claro de la spec 003 (1.92:1 sobre el
+canvas); axe no los detecta.
 
-## Users
+## Usuarios
 
-- **Consumer developers** and **library maintainers** (the split button uses it); **end users**, including keyboard
-  users and people who use assistive technology.
+- **Desarrolladores consumidores** y **mantenedores de la librería** (el split button lo usa); **usuarios finales**,
+  incluidos los que usan teclado y las personas que usan tecnología de apoyo.
 
-## User stories
+## Historias de usuario
 
-- US-1. As a consumer developer, I want related actions joined into one control so that they read as one set.
-- US-2. As a consumer developer, I want text or icon segments with one size, look and shape so that the set stays even.
-- US-3. As a consumer developer, I want each segment to run its own action and show whether it is selected.
-- US-4. As a library maintainer, I want to build the split button on the group so that both look the same.
-- US-5. As a keyboard or assistive-technology user, I want to reach, identify and operate every segment and know which
-  one is selected.
+- US-1. Como desarrollador consumidor, quiero unir acciones relacionadas en un solo control para que se lean como un
+  conjunto.
+- US-2. Como desarrollador consumidor, quiero segmentos de texto o de icono con un único tamaño, aspecto y forma para
+  que el conjunto quede uniforme.
+- US-3. Como desarrollador consumidor, quiero que cada segmento ejecute su propia acción y muestre si está seleccionado.
+- US-4. Como mantenedor de la librería, quiero construir el split button sobre el grupo para que los dos se vean igual.
+- US-5. Como usuario de teclado o de tecnología de apoyo, quiero llegar a cada segmento, identificarlo y usarlo, y saber
+  cuál está seleccionado.
 
-## Definitions
+## Definiciones
 
-- **Entry**: one item of the `buttons` list (the exported button description). **Segment**: the button drawn for one
-  entry. The value sets of the group's `type` (`button` | `icon`) and `variant` (`ghost` | `primary`) are exported.
-- **Activation**, **blank**, **at rest** and the `ghost`/`primary` looks: as in specs 002 (text) and 003 (icon).
-- **Given**: present in the entry with a value, `true` or `false` for `selected` and `expanded`; an explicit
-  `undefined` counts as not given.
+- **Entrada**: un elemento de la lista `buttons` (la descripción de botón exportada). **Segmento**: el botón que se
+  dibuja para una entrada. Los conjuntos de valores del `type` (`button` | `icon`) y del `variant` (`ghost` |
+  `primary`) del grupo se exportan.
+- **Activación**, **en blanco**, **en reposo** y los aspectos `ghost`/`primary`: como en las specs 002 (texto) y 003
+  (icono).
+- **Dado**: presente en la entrada con un valor, `true` o `false` para `selected` y `expanded`; un `undefined` explícito
+  cuenta como no dado.
 
-## Functional requirements
+## Requisitos funcionales
 
-- FR-1: IF `sui-button-group` has no `buttons`, THEN THE SYSTEM fails at build time when used in markup, or reports a
-  failure when created programmatically; an empty list passes and shows no segment.
-- FR-2: THE SYSTEM shows one segment per entry, in list order, in one row: WHILE `type` is `button` (default), the
-  entry's `name` as text after its `icon`, if any; WHILE `icon`, the `icon` (a blank icon-sized space without one).
-- FR-3: WHEN a segment is activated, THE SYSTEM calls its entry's `callback` once, as a method of the entry and with no
-  data, or does nothing without one; the group emits no event, never changes any `selected` and never submits a form.
-- FR-4: THE SYSTEM gives every segment the group's `size` (`md` default), `variant` (`ghost` default, or `primary`) and
-  square corners, and applies from each entry its `name`, `label`, `icon`, `selected` (FR-7), `expanded` (`button`
-  type, FR-7) and `callback`; the entry description stays as it is.
-- FR-5: THE SYSTEM names every segment, in both types, with its `label` as given if not blank, else its `name`, as
-  given except in `button` type with an empty `label`, where its visible text (trimmed) names it. IF both are blank,
-  THEN the segment has no accessible name: in `button` type an empty `name` gives an empty `aria-label`, and a
-  whitespace `name` gives whitespace-only content, and no `aria-label` if `label` is empty, else a whitespace-only
-  `aria-label`; in `icon` type no `aria-label`. Nothing reports a blank name (as in specs 002 and 003).
-- FR-6: THE SYSTEM exposes the group with the `group` role, named by its optional `label` as given if not blank; IF
-  `label` is blank or not given, THEN the group has no accessible name. Every segment stays its own Tab stop, in list
-  order, and the group adds no key handling of its own.
-- FR-7: WHILE an entry's `selected` is true, THE SYSTEM shows the selected look of specs 002 and 003 (FR-7); WHEN
-  `selected` is given, the segment announces it as pressed (`true`) or not pressed (`false`), else no pressed state;
-  WHILE `type` is `button` and `expanded` is given, it also announces a menu and its state (spec 002 FR-6).
-- FR-8: THE SYSTEM keeps the segments inside the group's outline: square corners for `flat` (default), a 10 px radius
-  at every size for `rounded`, fully round ends for `pill`.
-- FR-9: WHILE `variant` is `ghost`, THE SYSTEM draws a 1 px outline around the group and a 1 px line between adjacent
-  segments, both in the default border colour; WHILE `primary`, no outline and the line in the accent solid colour.
-- FR-10: WHEN a segment is focused by keyboard, THE SYSTEM draws that segment's own ring (spec 002 FR-10, spec 003
-  FR-8), unchanged by the group: clipped at the group's outer edges and covered by a following segment with a
-  background (the known issues in "Context and goal").
+- FR-1: SI `sui-button-group` no tiene `buttons`, ENTONCES EL SISTEMA falla en tiempo de compilación cuando se usa en el
+  marcado, o informa de un fallo cuando se crea desde código; una lista vacía pasa y no muestra ningún segmento.
+- FR-2: EL SISTEMA muestra un segmento por entrada, en el orden de la lista, en una fila: MIENTRAS `type` es `button`
+  (por defecto), el `name` de la entrada como texto después de su `icon`, si lo tiene; MIENTRAS es `icon`, el `icon` (un
+  espacio en blanco del tamaño del icono si no lo tiene).
+- FR-3: CUANDO se activa un segmento, EL SISTEMA llama una vez al `callback` de su entrada, como método de la entrada y
+  sin datos, o no hace nada si no lo tiene; el grupo no emite ningún evento, nunca cambia ningún `selected` y nunca
+  envía un formulario.
+- FR-4: EL SISTEMA da a cada segmento el `size` (`md` por defecto), el `variant` (`ghost` por defecto, o `primary`) y
+  las esquinas rectas del grupo, y aplica de cada entrada su `name`, `label`, `icon`, `selected` (FR-7), `expanded`
+  (tipo `button`, FR-7) y `callback`; la descripción de la entrada se queda como está.
+- FR-5: EL SISTEMA nombra cada segmento, en los dos tipos, con su `label` tal cual si no está en blanco y, si no, con
+  su `name` tal cual, salvo en el tipo `button` con un `label` vacío, donde lo nombra su texto visible (recortado). SI
+  los dos están en blanco, ENTONCES el segmento no tiene nombre accesible: en el tipo `button` un `name` vacío da un
+  `aria-label` vacío, y un `name` de espacios da un contenido solo de espacios, y ningún `aria-label` si el `label` está
+  vacío o, si no, un `aria-label` solo de espacios; en el tipo `icon`, ningún `aria-label`. Nada avisa de un nombre en
+  blanco (como en las specs 002 y 003).
+- FR-6: EL SISTEMA expone el grupo con el rol `group`, nombrado por su `label` opcional tal cual si no está en blanco;
+  SI el `label` está en blanco o no se da, ENTONCES el grupo no tiene nombre accesible. Cada segmento sigue siendo su
+  propia parada de Tab, en el orden de la lista, y el grupo no añade ningún manejo de teclas propio.
+- FR-7: MIENTRAS el `selected` de una entrada es true, EL SISTEMA muestra el aspecto de seleccionado de las specs 002 y
+  003 (FR-7); CUANDO se da `selected`, el segmento lo anuncia como pulsado (`true`) o no pulsado (`false`) y, si no, no
+  tiene estado pulsado; MIENTRAS `type` es `button` y se da `expanded`, también anuncia un menú y su estado (spec 002
+  FR-6).
+- FR-8: EL SISTEMA mantiene los segmentos dentro del contorno del grupo: esquinas rectas en `flat` (por defecto), un
+  radio de 10 px en todos los tamaños en `rounded`, extremos totalmente redondos en `pill`.
+- FR-9: MIENTRAS `variant` es `ghost`, EL SISTEMA dibuja un contorno de 1 px alrededor del grupo y una línea de 1 px
+  entre segmentos contiguos, los dos en el color de borde por defecto; MIENTRAS es `primary`, sin contorno y con la línea
+  en el color de acento sólido.
+- FR-10: CUANDO un segmento recibe el foco por teclado, EL SISTEMA dibuja el anillo propio de ese segmento (spec 002
+  FR-10, spec 003 FR-8), sin que el grupo lo cambie: recortado en los bordes exteriores del grupo y tapado por un
+  segmento siguiente con fondo (los problemas conocidos de "Contexto y objetivo").
 
-## Non-functional requirements
+## Requisitos no funcionales
 
-- NFR-1: The group adds no dependency to any package of the project (constitution, principle 1).
-- NFR-2: Every text and accessible name comes from the consumer (principle 6): segment names from the entries, the
-  group name from its `label`; the group adds no text of its own.
-- NFR-3: The group adds no motion of its own; its segments keep the reduced-motion behaviour of specs 002 and 003.
-- NFR-4: Zero AXE violations (WCAG 2.2 AA) in both themes for each type, variant and shape at least once, in named
-  groups with named entries, one of them `selected`; the known issues in "Context and goal" are the accepted exceptions.
+- NFR-1: El grupo no añade ninguna dependencia a ningún paquete del proyecto (constitución, principio 1).
+- NFR-2: Todo texto y nombre accesible viene del consumidor (principio 6): los nombres de los segmentos, de las
+  entradas; el nombre del grupo, de su `label`; el grupo no añade texto propio.
+- NFR-3: El grupo no añade movimiento propio; sus segmentos mantienen el comportamiento de movimiento reducido de las
+  specs 002 y 003.
+- NFR-4: Cero infracciones de AXE (WCAG 2.2 AA) en los dos temas para cada tipo, variante y forma al menos una vez, en
+  grupos con nombre y entradas con nombre, una de ellas `selected`; los problemas conocidos de "Contexto y objetivo" son
+  las excepciones aceptadas.
 
-## Edge cases
+## Casos límite
 
-- **Names** (breaking in `icon` type): a blank `label` now falls back to a non-blank `name`. A `label` `" Bold "` keeps
-  its spaces in the `aria-label` attribute in both types; a `name` `" Bold "` keeps its spaces in the `aria-label`
-  in `icon` type, and in `button` type when `label` is whitespace-only; with an empty `label` it names the segment
-  through its visible text, which is trimmed.
-- **Group name**: a group `label` `" Tools "` names the group with its spaces; `""` or `"  "` gives no group name.
-- **Pressed**: `selected: false` announces not pressed and an entry without `selected` announces no pressed state, so
-  one group may mix both. In `button` type an entry with `selected` and `expanded` announces both, with no extra rule;
-  in `icon` type `expanded` is not announced (as today).
-- **Split button**: its icon mode is a `button`-type group of blank-`name` segments named by `label` (no `icon`-type
-  change reaches it); its menu is named `name() || 'Options'`. It rebuilds its entries on every menu toggle; a blank
-  split `name` leaves its main segment unnamed (FR-5); it passes no group `label` (unnamed group) and no `selected` (no
-  pressed state), keeps `expanded` on the chevron and its Tab order; the FR-6 role and FR-10 apply to it.
-- **Empty or one-entry group**: an empty group has nothing to focus; a one-entry group shows no visible ring (FR-10).
+- **Nombres** (incompatible en el tipo `icon`): un `label` en blanco ahora recurre a un `name` no en blanco. Un `label`
+  `" Bold "` conserva sus espacios en el atributo `aria-label` en los dos tipos; un `name` `" Bold "` conserva sus
+  espacios en el `aria-label` en el tipo `icon`, y en el tipo `button` cuando el `label` es solo de espacios; con un
+  `label` vacío nombra el segmento mediante su texto visible, que se recorta.
+- **Nombre del grupo**: un `label` de grupo `" Tools "` nombra el grupo con sus espacios; `""` o `"  "` no dan nombre de
+  grupo.
+- **Pulsado**: `selected: false` anuncia no pulsado y una entrada sin `selected` no anuncia ningún estado pulsado, así
+  que un mismo grupo puede mezclar los dos. En el tipo `button`, una entrada con `selected` y `expanded` anuncia los
+  dos, sin regla extra; en el tipo `icon`, `expanded` no se anuncia (como hoy).
+- **Split button**: su modo icono es un grupo de tipo `button` con segmentos de `name` en blanco nombrados por el
+  `label` (no le llega ningún cambio del tipo `icon`); su menú se nombra `name() || 'Options'`. Reconstruye sus
+  entradas en cada apertura o cierre del menú; un `name` del split en blanco deja su segmento principal sin nombre
+  (FR-5); no pasa `label` de grupo (grupo sin nombre) ni `selected` (sin estado pulsado), mantiene `expanded` en la
+  flecha y su orden de Tab; se le aplican el rol de FR-6 y FR-10.
+- **Grupo vacío o de una entrada**: un grupo vacío no tiene nada que enfocar; un grupo de una entrada no muestra un
+  anillo visible (FR-10).
 
-## Out of scope
+## Fuera de alcance
 
-- The split button's own behaviour (menu, keys, fixed texts "More options" and "Options") beyond what the group changes.
-- `sui-button` and `sui-icon-button` looks and names (specs 002 and 003), except their FR-7 pressed-state amendment;
-  the shared ring colour, how rings are drawn, clipped or covered, the dark ring on `primary` and theme tokens.
-- Arrow-key navigation, a single Tab stop for the group and selection handled by the group (owner: `group` role only).
-- Disabled segments or groups, entry identity, an activation output, the `primary` line, `rounded` radius by size, and
-  a report of blank names.
-- Vertical or wrapping layouts, right-to-left pages, forced-colour modes and colours outside the theme.
+- El comportamiento propio del split button (menú, teclas, textos fijos "More options" y "Options") más allá de lo que
+  cambia el grupo.
+- Los aspectos y nombres de `sui-button` y `sui-icon-button` (specs 002 y 003), salvo su enmienda de FR-7 del estado
+  pulsado; el color del anillo compartido, cómo se dibujan, recortan o tapan los anillos, el anillo oscuro sobre
+  `primary` y los tokens del tema.
+- La navegación con flechas, una sola parada de Tab para el grupo y la selección gestionada por el grupo (propietario:
+  solo el rol `group`).
+- Segmentos o grupos deshabilitados, la identidad de las entradas, un output de activación, la línea de `primary`, el
+  radio de `rounded` según el tamaño, y avisar de los nombres en blanco.
+- Disposiciones verticales o que salten de línea, páginas de derecha a izquierda, modos de colores forzados y colores
+  fuera del tema.
 
-## Completion criteria
+## Criterios de finalización
 
-- Approved 2026-10-17 as today's behaviour; this revision and the FR-7 amendments of specs 002 and 003 (pressed state)
-  are approved before its plan; spec 003's "Accessible name" note on icon groups follows FR-5 (principle 2).
-- Unit tests (principle 4) cover every FR: FR-1 programmatic part (build-time part by a consumer build, as in 002/003),
-  FR-2 both types, FR-3, FR-4, FR-5 every name edge case and the three no-name results, FR-6 role, name (given, blank,
-  absent) and Tab order, FR-7 look and pressed state (`true`, `false`, absent) in both types and `expanded` with and
-  without `selected`; FR-8 and FR-9 through the classes they set; the pressed state in the 002 and 003 tests; the
-  split's tests are updated where needed and stay green.
-- In a browser, both themes: FR-8 corners, FR-9 lines and colours, FR-10 rings as recorded (known issues confirmed,
-  not fixed) and the pressed state in the accessibility tree.
-- The demo shows a named group, a `primary` group, a one-entry group, an entry with `selected` beside one without, and
-  groups covering the NFR-4 set; NFR-1 to NFR-4 hold on the demo groups and split buttons; all project checks pass.
-- The release note lists the breaking `icon`-type name fallback, the `group` role and its optional `label`, the new
-  pressed input of `sui-button` and `sui-icon-button` that group segments use for `selected`, and the known issues.
+- Aprobada el 2026-10-17 como el comportamiento de hoy; esta revisión y las enmiendas de FR-7 de las specs 002 y 003
+  (estado pulsado) se aprueban antes de su plan; la nota de "Nombre accesible" de la spec 003 sobre los grupos de iconos
+  sigue FR-5 (principio 2).
+- Los tests unitarios (principio 4) cubren cada FR: la parte de FR-1 desde código (la parte de compilación con una build
+  de consumidor, como en 002/003), FR-2 en los dos tipos, FR-3, FR-4, FR-5 en cada caso límite de nombre y los tres
+  resultados sin nombre, FR-6 rol, nombre (dado, en blanco, ausente) y orden de Tab, FR-7 aspecto y estado pulsado
+  (`true`, `false`, ausente) en los dos tipos y `expanded` con y sin `selected`; FR-8 y FR-9 mediante las clases que
+  ponen; el estado pulsado en los tests de 002 y 003; los tests del split se actualizan donde haga falta y siguen en
+  verde.
+- En un navegador, en los dos temas: esquinas de FR-8, líneas y colores de FR-9, anillos de FR-10 tal como se recogen
+  (problemas conocidos confirmados, no arreglados) y el estado pulsado en el árbol de accesibilidad.
+- La demo muestra un grupo con nombre, un grupo `primary`, un grupo de una entrada, una entrada con `selected` junto a
+  una sin él, y grupos que cubren el conjunto de NFR-4; NFR-1 a NFR-4 se cumplen en los grupos y split buttons de la
+  demo; pasan todas las comprobaciones del proyecto.
+- La nota de release enumera el recurso de nombre incompatible del tipo `icon`, el rol `group` y su `label` opcional,
+  el nuevo input pressed de `sui-button` y `sui-icon-button` que usan los segmentos del grupo para `selected`, y los
+  problemas conocidos.
 
-## Open questions
+## Preguntas abiertas
 
-- Deferred (non-blocking): disabled entries and groups; entry identity (`id`, tracking by it) and an activation output
-  instead of `callback`; a visible line between `primary` segments at rest and a `rounded` radius that follows `size`.
+- Diferidas (no bloquean): entradas y grupos deshabilitados; la identidad de las entradas (`id`, seguimiento por él) y
+  un output de activación en lugar de `callback`; una línea visible entre segmentos `primary` en reposo y un radio de
+  `rounded` que siga a `size`.

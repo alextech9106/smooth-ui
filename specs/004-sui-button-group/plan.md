@@ -2,215 +2,240 @@
 
 Status: approved (2026-10-17)
 
-Spec: `specs/004-sui-button-group/spec.md` (approved 2026-10-17) and the FR-7 `pressed` amendments of
-`specs/002-sui-button/spec.md` and `specs/003-sui-icon-button/spec.md` (approved 2026-10-17). The open question
-(disabled entries, entry identity, activation output, `primary` line, `rounded` radius) is deferred and does not block.
-This plan changes only what the FRs state: the `icon`-type name rule (FR-5), the group role and `label` (FR-6), the
-pressed state (FR-7, 002/003 FR-7), the missing tests and the demo. Looks, rings, clipping, `.scss` files, `SuiButton`
-and arrow-key navigation are not changed (owner: no arrows this cycle). The public API keeps every field and input.
+Spec: `specs/004-sui-button-group/spec.md` (aprobada el 2026-10-17) y las enmiendas de FR-7 (`pressed`) de
+`specs/002-sui-button/spec.md` y `specs/003-sui-icon-button/spec.md` (aprobadas el 2026-10-17). La pregunta abierta
+(entradas deshabilitadas, identidad de las entradas, output de activación, línea de `primary`, radio de `rounded`) queda
+diferida y no bloquea. Este plan solo cambia lo que dicen los FR: la regla de nombre del tipo `icon` (FR-5), el rol y el
+`label` del grupo (FR-6), el estado pulsado (FR-7, FR-7 de 002/003), los tests que faltan y la demo. Los aspectos, los
+anillos, el recorte, los archivos `.scss`, `SuiButton` y la navegación con flechas no cambian (propietario: sin flechas
+en este ciclo). La API pública conserva todos sus campos e inputs.
 
-## Files and responsibilities
+## Archivos y responsabilidades
 
-No new library files. `public-api.ts` is not changed: no new exported type; the component and both group types are
-already exported, and the new inputs ride on exported components.
+Sin archivos nuevos en la librería. `public-api.ts` no cambia: ningún tipo exportado nuevo; el componente y los dos
+tipos del grupo ya se exportan, y los inputs nuevos van en componentes exportados.
 
-Modified:
+Modificados:
 
-- `sui-button/sui-button.component.ts` — new input, placed after `expanded`:
-  `public pressed: InputSignal<boolean | undefined> = input<boolean | undefined>(undefined);` (D1). 002 FR-7.
-- `sui-button/sui-button.component.html` — `[aria-pressed]="pressed() ?? null"` on the `<button>`. 002 FR-7.
-- `sui-icon-button/sui-icon-button.component.ts` — the same `pressed` input, after `variant` (D1). 003 FR-7.
-- `sui-icon-button/sui-icon-button.component.html` — `[aria-pressed]="pressed() ?? null"` on the `<button>`. 003 FR-7.
-- `sui-button-group/sui-button-group.component.ts` — `label` input, `groupName` and `iconLabels` computeds and the
-  `host` metadata (see Public API and State). FR-5, FR-6.
-- `sui-button-group/sui-button-group.component.html` — both branches bind `[pressed]="button.selected"` (raw) next to
-  the unchanged `[selected]="button.selected ?? false"`; the `icon` branch binds `[label]="iconLabels()[$index]"`
-  instead of `button.label ?? button.name`. Everything else (tracks, `callback?.()`, `'flat'`, size, variant, the inner
-  `div`) stays. FR-4, FR-5, FR-7.
-- Specs: `sui-button-group.component.spec.ts` (most new tests), `sui-button.component.spec.ts`,
-  `sui-icon-button.component.spec.ts`, `sui-button-split.component.spec.ts` (see Test strategy).
-- `apps/smooth-ui-demo/src/app/app.component.ts` and `.html` — demo additions (see Demo).
-- `.prettierignore` — new line `docs/smoothui-interactivo.html` (user-approved): the design reference is vendored
-  HTML and must not fail `format:check`.
-- `specs/003-sui-icon-button/spec.md` — nothing: its "Accessible name" edge case already states the FR-5 rule
-  (completion criterion 1, checked).
+- `sui-button/sui-button.component.ts` — input nuevo, colocado después de `expanded`:
+  `public pressed: InputSignal<boolean | undefined> = input<boolean | undefined>(undefined);` (D1). FR-7 de 002.
+- `sui-button/sui-button.component.html` — `[aria-pressed]="pressed() ?? null"` en el `<button>`. FR-7 de 002.
+- `sui-icon-button/sui-icon-button.component.ts` — el mismo input `pressed`, después de `variant` (D1). FR-7 de 003.
+- `sui-icon-button/sui-icon-button.component.html` — `[aria-pressed]="pressed() ?? null"` en el `<button>`. FR-7 de 003.
+- `sui-button-group/sui-button-group.component.ts` — input `label`, los computeds `groupName` e `iconLabels` y los
+  metadatos `host` (ver API pública y Estado). FR-5, FR-6.
+- `sui-button-group/sui-button-group.component.html` — las dos ramas enlazan `[pressed]="button.selected"` (tal cual)
+  junto al `[selected]="button.selected ?? false"` sin cambios; la rama `icon` enlaza `[label]="iconLabels()[$index]"`
+  en lugar de `button.label ?? button.name`. Todo lo demás (tracks, `callback?.()`, `'flat'`, tamaño, variante, el
+  `div` interior) se queda. FR-4, FR-5, FR-7.
+- Specs: `sui-button-group.component.spec.ts` (la mayoría de los tests nuevos), `sui-button.component.spec.ts`,
+  `sui-icon-button.component.spec.ts`, `sui-button-split.component.spec.ts` (ver Estrategia de tests).
+- `apps/smooth-ui-demo/src/app/app.component.ts` y `.html` — añadidos de la demo (ver Demo).
+- `.prettierignore` — línea nueva `docs/smoothui-interactivo.html` (aprobada por el usuario): la referencia de diseño es
+  HTML de terceros y no debe hacer fallar `format:check`.
+- `specs/003-sui-icon-button/spec.md` — nada: su caso límite "Nombre accesible" ya recoge la regla de FR-5 (criterio de
+  finalización 1, comprobado).
 
-Read, not changed:
+Leídos, sin cambios:
 
-- `sui-button-group.component.scss` — FR-8 radii (`-flat`/`-rounded`/`-pill`), FR-9 outline and dividers, and the
-  `overflow: hidden` behind FR-10. No motion of its own (NFR-3).
-- `sui-button.component.scss`, `sui-icon-button.component.scss` — selected look, rings (FR-7, FR-10).
-- `sui-button-split.component.ts/html` — passes no `label` and no `selected`, so its group is unnamed and its segments
-  announce no pressed state; `expanded` stays on the chevron; it never sets `type`, so FR-5's `icon`-type change does
-  not reach it. `_focusTrigger` queries `sui-button-group button` and still finds the chevron. No code change.
-- `interfaces/sui-button.interface.ts` — `SuiButton` unchanged; `selected` is the entry's source for `pressed` (D2).
+- `sui-button-group.component.scss` — radios de FR-8 (`-flat`/`-rounded`/`-pill`), contorno y separadores de FR-9, y el
+  `overflow: hidden` que hay detrás de FR-10. Sin movimiento propio (NFR-3).
+- `sui-button.component.scss`, `sui-icon-button.component.scss` — aspecto de seleccionado, anillos (FR-7, FR-10).
+- `sui-button-split.component.ts/html` — no pasa `label` ni `selected`, así que su grupo no tiene nombre y sus segmentos
+  no anuncian estado pulsado; `expanded` se queda en la flecha; nunca pone `type`, así que el cambio del tipo `icon` de
+  FR-5 no le llega. `_focusTrigger` busca `sui-button-group button` y sigue encontrando la flecha. Sin cambios de código.
+- `interfaces/sui-button.interface.ts` — `SuiButton` sin cambios; `selected` es el origen de la entrada para `pressed`
+  (D2).
 
-## Public API
+## API pública
 
-- `sui-button`: new input `pressed: boolean | undefined` (default `undefined`). `true`/`false` set `aria-pressed`;
-  `undefined` sets none. Independent of `selected`; kept while disabled or loading. 002 FR-7.
-- `sui-icon-button`: the same `pressed` input and behaviour, kept while disabled. 003 FR-7.
-- `sui-button-group`: new input `label: string` (default `''`), the group's accessible name when not blank (FR-6).
-  Inputs `buttons` (required, FR-1), `shape` (`flat`), `size` (`md`), `type` (`button`), `variant` (`ghost`) unchanged.
-  No output (FR-3). Host gets `role="group"` (FR-6).
-- Behaviour change (breaking, `icon` type): a blank `label` now falls back to `name` instead of giving no name (FR-5).
-- Exported types unchanged: `SuiButton`, `SUI_BUTTON_GROUP_TYPE`, `SUI_BUTTON_GROUP_VARIANT`.
+- `sui-button`: input nuevo `pressed: boolean | undefined` (por defecto `undefined`). `true`/`false` ponen
+  `aria-pressed`; `undefined` no pone ninguno. Independiente de `selected`; se mantiene mientras está deshabilitado o
+  cargando. FR-7 de 002.
+- `sui-icon-button`: el mismo input `pressed` con el mismo comportamiento, se mantiene mientras está deshabilitado. FR-7
+  de 003.
+- `sui-button-group`: input nuevo `label: string` (por defecto `''`), el nombre accesible del grupo cuando no está en
+  blanco (FR-6). Los inputs `buttons` (obligatorio, FR-1), `shape` (`flat`), `size` (`md`), `type` (`button`) y
+  `variant` (`ghost`) no cambian. Sin output (FR-3). El host recibe `role="group"` (FR-6).
+- Cambio de comportamiento (incompatible, tipo `icon`): un `label` en blanco ahora recurre a `name` en lugar de no dar
+  nombre (FR-5).
+- Tipos exportados sin cambios: `SuiButton`, `SUI_BUTTON_GROUP_TYPE`, `SUI_BUTTON_GROUP_VARIANT`.
 
-## State and what derives from it
+## Estado y lo que se deriva de él
 
-All derived with `computed()`; no `effect()`, no lifecycle hooks, no writable state. Member order follows ESLint
-(private → public → protected), explicit types as in the rest of the files.
+Todo derivado con `computed()`; sin `effect()`, sin hooks del ciclo de vida, sin estado escribible. El orden de miembros
+sigue a ESLint (private → public → protected), con tipos explícitos como en el resto de los archivos.
 
-- Group `groupName: Signal<string | null>` — `label()` as given (untrimmed) when `label().trim()` is not empty, else
-  `null` (the attribute is removed). FR-6, NFR-2.
-- Group `iconLabels: Signal<string[]>` — per entry, in list order: `label` as given when `label?.trim()` is not empty,
-  else `name` as given. Passed to `sui-icon-button`, whose own rule turns a blank value into no `aria-label`. FR-5 (D3).
-- Text segments: unchanged path — `name` and `label ?? ''` go to `sui-button`, whose FR-5 computed gives the name.
-- Pressed: `button.selected` raw to `pressed` (`true`/`false`/`undefined`); `selected ?? false` only for the look. An
-  explicit `selected: undefined` is "not given" (spec Definitions) and gives no `aria-pressed`. FR-7 (D2).
-- Unchanged: group `classes` (FR-8, FR-9 through `sui-button-group-<shape|size|variant>`).
+- `groupName: Signal<string | null>` del grupo — `label()` tal cual (sin recortar) cuando `label().trim()` no está vacío
+  y, si no, `null` (se quita el atributo). FR-6, NFR-2.
+- `iconLabels: Signal<string[]>` del grupo — por entrada, en el orden de la lista: el `label` tal cual cuando
+  `label?.trim()` no está vacío y, si no, el `name` tal cual. Se pasa a `sui-icon-button`, cuya propia regla convierte
+  un valor en blanco en ningún `aria-label`. FR-5 (D3).
+- Segmentos de texto: el camino no cambia — `name` y `label ?? ''` van a `sui-button`, cuyo computed de FR-5 da el
+  nombre.
+- Pulsado: `button.selected` tal cual a `pressed` (`true`/`false`/`undefined`); `selected ?? false` solo para el
+  aspecto. Un `selected: undefined` explícito es "no dado" (Definiciones de la spec) y no da `aria-pressed`. FR-7 (D2).
+- Sin cambios: las `classes` del grupo (FR-8, FR-9 mediante `sui-button-group-<shape|size|variant>`).
 
-## Where browser side effects live
+## Dónde viven los efectos secundarios del navegador
 
-None added. No component touches a browser global; the split's existing `window`/`document` use is untouched.
+No se añade ninguno. Ningún componente toca un global del navegador; el uso existente de `window`/`document` del split
+no se toca.
 
-## Template and accessibility
+## Plantilla y accesibilidad
 
-- Host: `host: { role: 'group', '[aria-label]': 'groupName()' }` (project rule: `[aria-*]`, not `[attr.aria-*]`).
-  The role sits on `sui-button-group` itself, so the inner `div` and the segment order stay and the `.scss` selectors
-  keep matching (D4). FR-6.
-- No `tabindex`, no key listener, no focus management: every segment is a native `<button>`, its own Tab stop in list
-  order. No arrow keys (out of scope). FR-6.
-- Segments: `[aria-pressed]` from `pressed` (FR-7); text type keeps `[expanded]` → `aria-expanded` + `aria-haspopup`
-  alongside it (both announced, edge case "Pressed"); icon type receives no `expanded` (unannounced, as today).
-- Activation: `(trigger)="button.callback?.()"` keeps the entry as `this`, passes no data and the group emits nothing;
-  both inner buttons are `type="button"` by default, so no form submit (FR-3).
-- Rings untouched (FR-10, known issues). Names come only from entries and `label` (NFR-2).
+- Host: `host: { role: 'group', '[aria-label]': 'groupName()' }` (regla del proyecto: `[aria-*]`, no
+  `[attr.aria-*]`). El rol va en el propio `sui-button-group`, así que el `div` interior y el orden de los segmentos se
+  quedan y los selectores del `.scss` siguen coincidiendo (D4). FR-6.
+- Sin `tabindex`, sin listener de teclas, sin gestión del foco: cada segmento es un `<button>` nativo, su propia parada
+  de Tab en el orden de la lista. Sin flechas (fuera de alcance). FR-6.
+- Segmentos: `[aria-pressed]` a partir de `pressed` (FR-7); el tipo texto mantiene `[expanded]` → `aria-expanded` +
+  `aria-haspopup` junto a él (se anuncian los dos, caso límite "Pulsado"); el tipo icono no recibe `expanded` (sin
+  anunciar, como hoy).
+- Activación: `(trigger)="button.callback?.()"` mantiene la entrada como `this`, no pasa datos y el grupo no emite
+  nada; los dos botones interiores son `type="button"` por defecto, así que no envían el formulario (FR-3).
+- Los anillos no se tocan (FR-10, problemas conocidos). Los nombres vienen solo de las entradas y de `label` (NFR-2).
 
 ## Demo
 
-- `app.component.ts`: `buttonsGroup` becomes Button 1 `selected: true`, Button 2 `selected: false`, Button 3 with no
-  `selected` (pressed, not pressed, no state side by side; completion criterion 4). New
-  `public singleButtonGroup: SuiButton[] = [{ name: 'Single action', icon: 'star' }];` (one-entry group).
-- `app.component.html`: each of the 12 existing groups gets a distinct `label` naming type, variant, shape and size,
-  for example `label="Icon group (primary, pill, lg)"`. They already cover both types × both
-  variants × three shapes, so the NFR-4 set (each type, variant and shape at least once) is met. One new row under them:
-  `<sui-button-group [buttons]="singleButtonGroup" label="Single action group" />`.
-- Split buttons unchanged (they check FR-6 role and "no pressed state"). No new rule in `app.component.scss`, so the
-  `anyComponentStyle` budget is unaffected; Signal Forms / Reactive Forms rules do not apply (no form control).
+- `app.component.ts`: `buttonsGroup` pasa a tener Button 1 con `selected: true`, Button 2 con `selected: false` y
+  Button 3 sin `selected` (pulsado, no pulsado y sin estado, uno junto a otro; criterio de finalización 4). Nuevo
+  `public singleButtonGroup: SuiButton[] = [{ name: 'Single action', icon: 'star' }];` (grupo de una entrada).
+- `app.component.html`: cada uno de los 12 grupos existentes recibe un `label` distinto que nombra el tipo, la variante,
+  la forma y el tamaño, por ejemplo `label="Icon group (primary, pill, lg)"`. Ya cubren los dos tipos × las dos
+  variantes × las tres formas, así que se cumple el conjunto de NFR-4 (cada tipo, variante y forma al menos una vez).
+  Una fila nueva debajo: `<sui-button-group [buttons]="singleButtonGroup" label="Single action group" />`.
+- Los split buttons no cambian (sirven para comprobar el rol de FR-6 y "sin estado pulsado"). Ninguna regla nueva en
+  `app.component.scss`, así que el presupuesto `anyComponentStyle` no se ve afectado; las reglas de Signal Forms /
+  Reactive Forms no aplican (no es un control de formulario).
 
-## Decisions
+## Decisiones
 
-- **D1. `pressed` is a plain `boolean | undefined` input, no `booleanAttribute`.** The transform would turn `undefined`
-  into `false` and announce "not pressed" where the spec wants no state. Discarded: `booleanAttribute` (wrong for
-  `undefined`) and reusing `selected` for ARIA (002/003 FR-7 keep the look and the announcement apart).
-- **D2. The group maps `selected` to `pressed`; `SuiButton` gets no `pressed` field.** The spec names `selected` as the
-  entry's source and keeps the description as it is. Discarded: a new `SuiButton.pressed` (API change no FR asks for).
-- **D3. The `icon`-type name rule is a `computed()` list indexed by `$index`.** Templates bind, state derives in
-  `computed()` (principle 3), and the `@for` and its `track` stay as they are, so the split's DOM reuse is unchanged.
-  Discarded: an inline `label?.trim() ? … : …` ternary (logic in markup) and a view-model list with new tracking (entry
-  identity is deferred).
-- **D4. `role` and `aria-label` go on the host.** No new wrapper and no `.scss` change. Discarded: putting them on the
-  inner `div` (works too, but the brief and the design's `role="group"` container point at the component itself).
-- **D5. Looks through classes in Vitest; corners, lines, colours, rings and the accessibility tree in the browser.**
-  jsdom does not apply component styles or `theme.scss`. Discarded: `getComputedStyle` assertions.
+- **D1. `pressed` es un input simple `boolean | undefined`, sin `booleanAttribute`.** La transformación convertiría
+  `undefined` en `false` y anunciaría "no pulsado" donde la spec no quiere estado. Descartado: `booleanAttribute`
+  (incorrecto para `undefined`) y reutilizar `selected` para ARIA (el FR-7 de 002/003 mantiene separados el aspecto y el
+  anuncio).
+- **D2. El grupo traslada `selected` a `pressed`; `SuiButton` no recibe un campo `pressed`.** La spec nombra `selected`
+  como el origen de la entrada y mantiene la descripción como está. Descartado: un `SuiButton.pressed` nuevo (un cambio
+  de API que ningún FR pide).
+- **D3. La regla de nombre del tipo `icon` es una lista `computed()` indexada por `$index`.** Las plantillas enlazan y
+  el estado se deriva en `computed()` (principio 3), y el `@for` y su `track` se quedan como están, así que la
+  reutilización del DOM del split no cambia. Descartado: un ternario `label?.trim() ? … : …` en línea (lógica en el
+  marcado) y una lista de view-model con un seguimiento nuevo (la identidad de las entradas está diferida).
+- **D4. `role` y `aria-label` van en el host.** Sin envoltorio nuevo y sin cambios en el `.scss`. Descartado: ponerlos
+  en el `div` interior (también funciona, pero el encargo y el contenedor `role="group"` del diseño apuntan al propio
+  componente).
+- **D5. Aspectos mediante clases en Vitest; esquinas, líneas, colores, anillos y el árbol de accesibilidad en el
+  navegador.** jsdom no aplica los estilos de los componentes ni `theme.scss`. Descartado: aserciones con
+  `getComputedStyle`.
 
-## Test strategy (Vitest and TestBed, jsdom)
+## Estrategia de tests (Vitest y TestBed, jsdom)
 
-Run with `pnpm nx run smooth-ui:test`. Inputs via `fixture.componentRef.setInput()`, then `await fixture.whenStable()`.
-Existing tests stay; the group's "names icon buttons after the button name" and both text-entry tests keep passing.
+Se ejecutan con `pnpm nx run smooth-ui:test`. Inputs con `fixture.componentRef.setInput()` y después
+`await fixture.whenStable()`. Los tests existentes se quedan; "names icon buttons after the button name" del grupo y los
+dos tests de entradas de texto siguen pasando.
 
-`sui-button-group.component.spec.ts` (new):
+`sui-button-group.component.spec.ts` (nuevos):
 
-- **FR-1**: a fresh fixture without `buttons` throws `NG0950` on `detectChanges()`; `[]` renders no `<button>`.
-- **FR-2**: three entries render three buttons in list order, one row (single inner `div`); `button` type shows the
-  icon `<svg>` before the `name` text; `icon` type shows one `<svg>` per segment and no text, also for an entry
-  without `icon`.
-- **FR-3**: per type, a click calls `callback` once, with no arguments and `this` the entry (`mock.contexts[0]`); an
-  entry without `callback` clicks without error; the entry still equals a copy taken before (no `selected` change); an
-  in-spec host with a `<form (submit)>` around the group records no submit.
-- **FR-4**: defaults give `sui-button-md`, `sui-button-ghost`, `sui-button-flat` (and `sui-icon-button-*`); `size` `lg`
-  and `variant` `primary` reach every segment in both types; an entry with its own `size`, `variant` or `shape` still
-  shows the group's values; `name`, `label`, `icon` reach the segment.
-- **FR-5**, `button` type: `label` `" Bold "` → `aria-label` `" Bold "`; `label` `""`, `name` `" Bold "` → no
-  `aria-label`, text `"Bold"` trimmed; `label` `"  "`, `name` `" Bold "` → `aria-label` `" Bold "`; no-name results:
-  `name` `""` + `label` `""` → `aria-label` `""`; `name` `"  "` + `label` `""` → no `aria-label`, whitespace text;
-  `name` `"  "` + `label` `" "` → whitespace-only `aria-label`. `icon` type: `label` `" Bold "` → `" Bold "`; `label`
-  `"  "` or `""` or absent with `name` `" Bold "` → `" Bold "`; both blank → no `aria-label`. A `console.error`/`warn`
-  spy stays uncalled (nothing reported).
-- **FR-6**: host `role` is `group`; `label` `" Tools "` → host `aria-label` `" Tools "`; `""`, `"  "` and unset → no
-  `aria-label`; segments have no `tabindex` attribute and `tabIndex` 0, in list order; a dispatched `ArrowRight`
-  keydown on the first segment leaves `document.activeElement` on it (no key handling).
-- **FR-7**, both types: `selected` `true` → selected class + `aria-pressed="true"`; `false` → no class +
-  `"false"`; absent and explicit `undefined` → no class, no `aria-pressed`; one group mixing all three. `button` type:
-  `expanded` `false` with and without `selected` → `aria-expanded="false"`, `aria-haspopup="menu"`, and `aria-pressed`
-  only with `selected`. `icon` type with `expanded` → no `aria-expanded`.
-- **FR-8, FR-9**: group classes `sui-button-group-flat` (default), `-rounded`, `-pill`; `-ghost` (default),
-  `-primary`; segments keep `flat` in every group shape.
-- **NFR-2**: with `[]` and no `label`, the host's text content is empty and it has no `aria-label` (no own text).
+- **FR-1**: un fixture nuevo sin `buttons` lanza `NG0950` en `detectChanges()`; `[]` no pinta ningún `<button>`.
+- **FR-2**: tres entradas pintan tres botones en el orden de la lista, en una fila (un solo `div` interior); el tipo
+  `button` muestra el `<svg>` del icono antes del texto del `name`; el tipo `icon` muestra un `<svg>` por segmento y
+  ningún texto, también para una entrada sin `icon`.
+- **FR-3**: en cada tipo, un clic llama a `callback` una vez, sin argumentos y con la entrada como `this`
+  (`mock.contexts[0]`); una entrada sin `callback` recibe el clic sin error; la entrada sigue siendo igual a una copia
+  tomada antes (ningún cambio de `selected`); un anfitrión dentro del spec con un `<form (submit)>` alrededor del grupo
+  no registra ningún envío.
+- **FR-4**: los valores por defecto dan `sui-button-md`, `sui-button-ghost`, `sui-button-flat` (y `sui-icon-button-*`);
+  `size` `lg` y `variant` `primary` llegan a todos los segmentos en los dos tipos; una entrada con su propio `size`,
+  `variant` o `shape` sigue mostrando los valores del grupo; `name`, `label` e `icon` llegan al segmento.
+- **FR-5**, tipo `button`: `label` `" Bold "` → `aria-label` `" Bold "`; `label` `""`, `name` `" Bold "` → sin
+  `aria-label`, texto `"Bold"` recortado; `label` `"  "`, `name` `" Bold "` → `aria-label` `" Bold "`; resultados sin
+  nombre: `name` `""` + `label` `""` → `aria-label` `""`; `name` `"  "` + `label` `""` → sin `aria-label`, texto de
+  espacios; `name` `"  "` + `label` `" "` → `aria-label` solo de espacios. Tipo `icon`: `label` `" Bold "` →
+  `" Bold "`; `label` `"  "`, `""` o ausente con `name` `" Bold "` → `" Bold "`; los dos en blanco → sin `aria-label`.
+  Un espía de `console.error`/`warn` no se llama (no se avisa de nada).
+- **FR-6**: el `role` del host es `group`; `label` `" Tools "` → `aria-label` del host `" Tools "`; `""`, `"  "` y sin
+  valor → sin `aria-label`; los segmentos no tienen atributo `tabindex` y tienen `tabIndex` 0, en el orden de la lista;
+  un keydown de `ArrowRight` lanzado en el primer segmento deja `document.activeElement` en él (sin manejo de teclas).
+- **FR-7**, en los dos tipos: `selected` `true` → clase de seleccionado + `aria-pressed="true"`; `false` → sin clase +
+  `"false"`; ausente y `undefined` explícito → sin clase y sin `aria-pressed`; un grupo que mezcla los tres. Tipo
+  `button`: `expanded` `false` con y sin `selected` → `aria-expanded="false"`, `aria-haspopup="menu"`, y `aria-pressed`
+  solo con `selected`. Tipo `icon` con `expanded` → sin `aria-expanded`.
+- **FR-8, FR-9**: clases del grupo `sui-button-group-flat` (por defecto), `-rounded`, `-pill`; `-ghost` (por defecto),
+  `-primary`; los segmentos mantienen `flat` en cualquier forma del grupo.
+- **NFR-2**: con `[]` y sin `label`, el contenido de texto del host está vacío y no tiene `aria-label` (sin texto
+  propio).
 
-`sui-button.component.spec.ts` (002 FR-7): `pressed` `true` → `aria-pressed="true"`; `false` → `"false"`; unset and
-`undefined` → none; `selected` without `pressed` → none (existing test); `pressed` with `expanded` → both; kept while
-`disabled` and while `loading`.
+`sui-button.component.spec.ts` (FR-7 de 002): `pressed` `true` → `aria-pressed="true"`; `false` → `"false"`; sin valor y
+`undefined` → ninguno; `selected` sin `pressed` → ninguno (test existente); `pressed` con `expanded` → los dos; se
+mantiene mientras `disabled` y mientras `loading`.
 
-`sui-icon-button.component.spec.ts` (003 FR-7): `true`/`false`/unset/`undefined` as above; `selected` alone → none
-(existing test); kept while `disabled`.
+`sui-icon-button.component.spec.ts` (FR-7 de 003): `true`/`false`/sin valor/`undefined` como arriba; `selected` solo →
+ninguno (test existente); se mantiene mientras `disabled`.
 
-`sui-button-split.component.spec.ts`: in both modes, the inner `sui-button-group` has `role="group"` and no
-`aria-label`, and no segment has `aria-pressed`, also after opening the menu; the existing focus, Escape and selection
-tests stay green (they cover the rebuilt entries and the unchanged `track`).
+`sui-button-split.component.spec.ts`: en los dos modos, el `sui-button-group` interior tiene `role="group"` y ningún
+`aria-label`, y ningún segmento tiene `aria-pressed`, también después de abrir el menú; los tests existentes de foco,
+Escape y selección siguen en verde (cubren las entradas reconstruidas y el `track` sin cambios).
 
-## Left for validation (browser, Chrome DevTools MCP)
+## Lo que queda para la validación (navegador, MCP de Chrome DevTools)
 
-- **FR-1 in markup**: a temporary `<sui-button-group />` makes `pnpm nx run smooth-ui-demo:build` fail; removed.
-- **FR-8, FR-9**: radii (0, 10 px, round ends) and lines (1 px, border default; `primary` accent solid, no outline) in
-  both themes. **FR-10**: keyboard ring per segment, clipped at the edges and covered by the next segment; none visible
-  on the first `primary` segment and the one-entry group (known issues confirmed, not fixed).
-- **FR-6, FR-7**: accessibility tree shows the named `group`, segment names and pressed `true`/`false`/none; the split
-  shows an unnamed group and no pressed state; Tab visits every segment in order.
-- **NFR-3**: with reduced motion emulated, segment transitions are `0s`. **NFR-4**: confirm the canvas background, load
-  axe 4.10.2 from cdnjs (no package) and run it on the group and split sections with `wcag2a`, `wcag2aa`, `wcag21a`,
-  `wcag21aa`, `wcag22aa`: zero violations in light and dark theme. **NFR-1, NFR-2**: no `package.json` change, no new
-  library string.
+- **FR-1 en el marcado**: un `<sui-button-group />` temporal hace fallar `pnpm nx run smooth-ui-demo:build`; se quita.
+- **FR-8, FR-9**: radios (0, 10 px, extremos redondos) y líneas (1 px, borde por defecto; `primary` acento sólido, sin
+  contorno) en los dos temas. **FR-10**: anillo de teclado por segmento, recortado en los bordes y tapado por el
+  segmento siguiente; ninguno visible en el primer segmento `primary` ni en el grupo de una entrada (problemas conocidos
+  confirmados, no arreglados).
+- **FR-6, FR-7**: el árbol de accesibilidad muestra el `group` con nombre, los nombres de los segmentos y pulsado
+  `true`/`false`/ninguno; el split muestra un grupo sin nombre y sin estado pulsado; Tab recorre cada segmento en orden.
+- **NFR-3**: con movimiento reducido emulado, las transiciones de los segmentos son `0s`. **NFR-4**: confirmar el fondo
+  canvas, cargar axe 4.10.2 desde cdnjs (sin paquete) y ejecutarlo sobre las secciones del grupo y del split con
+  `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa`: cero infracciones en los temas claro y oscuro. **NFR-1,
+  NFR-2**: ningún `package.json` cambiado, ningún texto nuevo en la librería.
 
-## FR coverage
+## Cobertura de los FR
 
-- FR-1: no change (required input) · unit test + demo build check.
-- FR-2, FR-3, FR-4: no change · unit tests (DOM order, callback, classes and inputs).
-- FR-5: `iconLabels` + the icon-branch `[label]` · unit tests for every edge case and no-name result.
-- FR-6: `label`, `groupName`, `host` role and name · unit tests + accessibility tree.
-- FR-7: `pressed` on both buttons + `[pressed]` in both branches · unit tests (group, 002, 003, split) + tree.
-- FR-8, FR-9: no change · class tests + browser. FR-10: no change · browser (known issues recorded).
-- NFR-1 to NFR-4: demo labels, one-entry group, mixed `selected` · checks + axe in both themes.
+- FR-1: sin cambio (input obligatorio) · test unitario + comprobación de build de la demo.
+- FR-2, FR-3, FR-4: sin cambio · tests unitarios (orden del DOM, callback, clases e inputs).
+- FR-5: `iconLabels` + el `[label]` de la rama de icono · tests unitarios de cada caso límite y resultado sin nombre.
+- FR-6: `label`, `groupName`, rol y nombre del `host` · tests unitarios + árbol de accesibilidad.
+- FR-7: `pressed` en los dos botones + `[pressed]` en las dos ramas · tests unitarios (grupo, 002, 003, split) + árbol.
+- FR-8, FR-9: sin cambio · tests de clases + navegador. FR-10: sin cambio · navegador (problemas conocidos recogidos).
+- NFR-1 a NFR-4: labels de la demo, grupo de una entrada, `selected` mezclado · comprobaciones + axe en los dos temas.
 
-## Constitution check
+## Comprobación de la constitución
 
-1 no dependency · 2 specs 002/003/004 updated before code · 3 template binds, names derive in `computed()`, no side
-effects · 4 Vitest/TestBed specs beside each component · 5 no data handling · 6 no new string, every name an input ·
-7 behaviour added through new inputs (`pressed`, `label`); no branch grows for a new variant.
+1 sin dependencias · 2 specs 002/003/004 actualizadas antes del código · 3 la plantilla enlaza, los nombres se derivan en
+`computed()`, sin efectos secundarios · 4 specs de Vitest/TestBed junto a cada componente · 5 sin tratamiento de datos ·
+6 ningún texto nuevo, cada nombre es un input · 7 el comportamiento se añade con inputs nuevos (`pressed`, `label`);
+ninguna rama crece por una variante nueva.
 
-## Release note (for `MEMORY.md` and the release)
+## Nota de release (para `MEMORY.md` y la release)
 
-Breaking: in `icon` type a blank entry `label` now falls back to its `name`. New: `sui-button-group` has
-`role="group"` and an optional `label` (its accessible name when not blank); `sui-button` and `sui-icon-button` gain a
-`pressed` input (`aria-pressed`; unset gives none), which group segments receive from each entry's `selected`. Known
-issues: group rings clipped at the edges and covered by the next segment, none visible on the first `primary` segment
-or a one-entry group (SC 2.4.7); dark ring about 1:1 with `primary` hover and 1.4:1 at rest.
+Incompatible: en el tipo `icon`, un `label` de entrada en blanco ahora recurre a su `name`. Nuevo: `sui-button-group`
+tiene `role="group"` y un `label` opcional (su nombre accesible cuando no está en blanco); `sui-button` y
+`sui-icon-button` ganan un input `pressed` (`aria-pressed`; sin valor no da ninguno), que los segmentos del grupo
+reciben del `selected` de cada entrada. Problemas conocidos: los anillos del grupo se recortan en los bordes y los tapa
+el segmento siguiente, sin anillo visible en el primer segmento `primary` ni en un grupo de una entrada (SC 2.4.7);
+anillo oscuro de unos 1:1 con el hover de `primary` y 1.4:1 en reposo.
 
-## Verification
+## Verificación
 
-`pnpm nx run smooth-ui:test` after each task; at the end
-`pnpm nx format:check && pnpm nx run-many -t lint test build typecheck` (owner or implementer; the planner cannot
-run Prettier).
+`pnpm nx run smooth-ui:test` después de cada tarea; al final
+`pnpm nx format:check && pnpm nx run-many -t lint test build typecheck` (el propietario o el implementer; el planner no
+puede ejecutar Prettier).
 
-## Risks and pitfalls
+## Riesgos y trampas
 
-- `booleanAttribute` on `pressed` would silently announce "not pressed" for every unset button (D1).
-- The split rebuilds its entries on every menu toggle; `iconLabels` recomputes, but tracks stay `label ?? name`, so the
-  DOM is reused and focus stays on the chevron. Changing the `track` would break the split's focus return.
-- Emulated encapsulation (ShadowCss) scopes `sui-button:not(:first-child)` to the group's own template elements: a new
-  wrapper around segments or a `role` element between them would stop the dividers matching (`::ng-deep` forbidden).
-- If `'[aria-label]'` in `host` does not remove the attribute for `null` in jsdom or the browser, the FR-6 tests fail;
-  fallback `'[attr.aria-label]'`, a deviation from the ARIA binding rule to raise before applying.
-- Duplicate `label ?? name` among entries gives a duplicate-track warning (entry identity deferred, not fixed here).
-- Consumers relying on unnamed icon segments with a blank `label` now get the `name` (breaking, release note).
+- `booleanAttribute` en `pressed` anunciaría en silencio "no pulsado" en cada botón sin valor (D1).
+- El split reconstruye sus entradas en cada apertura o cierre del menú; `iconLabels` se recalcula, pero los tracks siguen
+  siendo `label ?? name`, así que el DOM se reutiliza y el foco se queda en la flecha. Cambiar el `track` rompería la
+  vuelta del foco del split.
+- La encapsulación emulada (ShadowCss) limita `sui-button:not(:first-child)` a los elementos de la propia plantilla del
+  grupo: un envoltorio nuevo alrededor de los segmentos o un elemento con `role` entre ellos haría que los separadores
+  dejaran de coincidir (`::ng-deep` prohibido).
+- Si `'[aria-label]'` en `host` no quita el atributo con `null` en jsdom o en el navegador, los tests de FR-6 fallan; la
+  alternativa es `'[attr.aria-label]'`, una desviación de la regla de bindings ARIA que hay que plantear antes de
+  aplicarla.
+- Un `label ?? name` duplicado entre entradas da un aviso de track duplicado (identidad de las entradas diferida, no se
+  arregla aquí).
+- Los consumidores que dependían de segmentos de icono sin nombre con un `label` en blanco ahora reciben el `name`
+  (incompatible, nota de release).

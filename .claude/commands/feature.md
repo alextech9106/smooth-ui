@@ -1,17 +1,17 @@
 ---
-description: Plan a new feature before touching code
+description: Planifica una funcionalidad nueva antes de tocar el código
 agent: plan
 ---
 
-I want to add this feature: $ARGUMENTS
-Before writing code, prepare a plan with:
+Quiero añadir esta funcionalidad: $ARGUMENTS
+Antes de escribir código, prepara un plan con:
 
-1. How you will implement it, following the rules in AGENTS.md.
-2. Which files you will modify and what changes in each.
-3. Edge cases and questions I need to decide before starting.
-4. What you would update in AGENTS.md and MEMORY.md.
-5. Take into account the current project state: @MEMORY.md
-6. Do not modify any files until I approve the plan.
-7. Present the plan as a numbered list with: approach, files to modify, risks, and verification steps.
-8. Include how to verify the feature works (tests, manual checks).
-9. If the feature spans multiple commits, break it into phases.
+1. Cómo la vas a implementar, siguiendo las reglas de AGENTS.md.
+2. Qué archivos vas a modificar y qué cambia en cada uno.
+3. Casos límite y preguntas que tengo que decidir antes de empezar.
+4. Qué actualizarías en AGENTS.md y MEMORY.md.
+5. Ten en cuenta el estado actual del proyecto: @MEMORY.md
+6. No modifiques ningún archivo hasta que apruebe el plan.
+7. Presenta el plan como una lista numerada con: enfoque, archivos a modificar, riesgos y pasos de verificación.
+8. Incluye cómo verificar que la funcionalidad funciona (tests, comprobaciones manuales).
+9. Si la funcionalidad ocupa varios commits, divídela en fases.

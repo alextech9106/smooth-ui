@@ -1,39 +1,40 @@
 ---
 name: web-design-guidelines
-description: Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI", "check accessibility", "audit design", "review UX", or "check my site against best practices".
+description: Revisa código de UI frente a las Web Interface Guidelines. Úsala cuando pidan "revisa mi UI", "comprueba la accesibilidad", "audita el diseño", "revisa la UX" o "comprueba mi sitio frente a las buenas prácticas".
 metadata:
   author: vercel
   version: "1.0.0"
-  argument-hint: <file-or-pattern>
+  argument-hint: <archivo-o-patrón>
 ---
 
 # Web Interface Guidelines
 
-Review files for compliance with Web Interface Guidelines.
+Revisa archivos para comprobar que cumplen las Web Interface Guidelines.
 
-## How It Works
+## Cómo funciona
 
-1. Fetch the latest guidelines from the source URL below
-2. Read the specified files (or prompt user for files/pattern)
-3. Check against all rules in the fetched guidelines
-4. Output findings in the terse `file:line` format
+1. Descarga las guías más recientes desde la URL de origen de abajo
+2. Lee los archivos indicados (o pide al usuario los archivos o el patrón)
+3. Comprueba todas las reglas de las guías descargadas
+4. Muestra los hallazgos en el formato breve `archivo:línea`
 
-## Guidelines Source
+## Origen de las guías
 
-Fetch fresh guidelines before each review:
+Descarga las guías actualizadas antes de cada revisión:
 
 ```
 https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md
 ```
 
-Use WebFetch to retrieve the latest rules. The fetched content contains all the rules and output format instructions.
+Usa WebFetch para obtener las reglas más recientes. El contenido descargado incluye todas las reglas y las
+instrucciones del formato de salida.
 
-## Usage
+## Uso
 
-When a user provides a file or pattern argument:
-1. Fetch guidelines from the source URL above
-2. Read the specified files
-3. Apply all rules from the fetched guidelines
-4. Output findings using the format specified in the guidelines
+Cuando el usuario indique un archivo o un patrón como argumento:
+1. Descarga las guías desde la URL de origen de arriba
+2. Lee los archivos indicados
+3. Aplica todas las reglas de las guías descargadas
+4. Muestra los hallazgos con el formato que indican las guías
 
-If no files specified, ask the user which files to review.
+Si no se indica ningún archivo, pregunta al usuario qué archivos revisar.

@@ -1,45 +1,46 @@
 ---
 name: format-code
-description: Format source code in this workspace with Prettier through Nx. Use when the user asks to format, prettify or fix the style of files, or before drafting a commit.
+description: Formatea el código fuente de este workspace con Prettier a través de Nx. Úsala cuando el usuario pida formatear, embellecer o arreglar el estilo de archivos, o antes de redactar un commit.
 ---
 
-# Format code
+# Formatear código
 
-Prettier 3 is the only formatter. Its config is `.prettierrc` (`singleQuote: true`, `printWidth: 150`) and
-`.prettierignore`; never restate or override those options inline, and never hand-format code Prettier owns.
+Prettier 3 es el único formateador. Su configuración está en `.prettierrc` (`singleQuote: true`, `printWidth: 150`) y
+`.prettierignore`; nunca repitas ni sobrescribas esas opciones en línea, y nunca formatees a mano código que gestiona
+Prettier.
 
-## Steps
+## Pasos
 
-1. Pick the scope: files named by the user, otherwise the uncommitted changes.
-2. Check first (read-only): `pnpm nx format:check --files=<a,b>` or `pnpm nx format:check --uncommitted`.
-3. List the files that would change and ask for approval.
-4. Once approved, write: `pnpm nx format:write --files=<a,b>` or `pnpm nx format:write --uncommitted`.
-5. Report the files that were reformatted, nothing else.
+1. Elige el alcance: los archivos que nombre el usuario o, si no, los cambios sin commitear.
+2. Comprueba primero (solo lectura): `pnpm nx format:check --files=<a,b>` o `pnpm nx format:check --uncommitted`.
+3. Enumera los archivos que cambiarían y pide aprobación.
+4. Una vez aprobado, escribe: `pnpm nx format:write --files=<a,b>` o `pnpm nx format:write --uncommitted`.
+5. Informa de los archivos que se reformatearon, nada más.
 
-## Class member order
+## Orden de los miembros de una clase
 
-Prettier doesn't reorder members, so apply this order by hand when writing or formatting a class. ESLint enforces it
-through `@typescript-eslint/member-ordering` in `eslint.config.mjs`:
+Prettier no reordena miembros, así que aplica este orden a mano al escribir o formatear una clase. ESLint lo exige con
+`@typescript-eslint/member-ordering` en `eslint.config.mjs`:
 
-1. Private declarations
-2. Public declarations
-3. Protected declarations
-4. Constructor, if there is one
-5. Private methods and functions
-6. Public methods and functions
-7. Protected methods and functions
+1. Declaraciones privadas
+2. Declaraciones públicas
+3. Declaraciones protegidas
+4. Constructor, si lo hay
+5. Métodos y funciones privados
+6. Métodos y funciones públicos
+7. Métodos y funciones protegidos
 
-## Private member naming
+## Nombres de los miembros privados
 
-Every `private` member (fields, methods and functions, static or not) must start with `_`, e.g. `private readonly _injector`
-and `private _resolvePlacement()`. Public and protected members never take the prefix. When a private member lacks it,
-rename it and update every reference in the class.
+Todo miembro `private` (campos, métodos y funciones, estáticos o no) debe empezar por `_`, por ejemplo
+`private readonly _injector` y `private _resolvePlacement()`. Los miembros públicos y protegidos nunca llevan el prefijo.
+Si a un miembro privado le falta, renómbralo y actualiza todas las referencias de la clase.
 
-## Rules
+## Reglas
 
-- Never format the whole workspace (`--all`) unless the user asks for it.
-- Formatting only: apart from the class member order and the private `_` prefix above, no lint fixes, import
-  reordering, renames or refactors in the same pass.
-- Don't touch `dist/`, `node_modules/`, `pnpm-lock.yaml` or anything in `.prettierignore`.
-- If a file fails to parse, stop and show the error instead of editing around it.
-- Changing `.prettierrc` or `.prettierignore` is a config change: propose the diff and wait.
+- Nunca formatees todo el workspace (`--all`) salvo que el usuario lo pida.
+- Solo formato: aparte del orden de miembros y del prefijo `_` de los privados, nada de correcciones de lint,
+  reordenación de imports, renombrados ni refactors en la misma pasada.
+- No toques `dist/`, `node_modules/`, `pnpm-lock.yaml` ni nada de `.prettierignore`.
+- Si un archivo no se puede parsear, para y enseña el error en lugar de editar alrededor.
+- Cambiar `.prettierrc` o `.prettierignore` es un cambio de configuración: propón el diff y espera.

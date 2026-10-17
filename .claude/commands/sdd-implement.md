@@ -1,14 +1,14 @@
 ---
-description: SDD · Implement ONE task, tests first (usage - /sdd-implement 002-name T3)
+description: SDD · Implementa UNA tarea, primero los tests (uso - /sdd-implement 002-nombre T3)
 agent: accept edits
 ---
 
-Implement ONLY task $1 of specs/$0/tasks.md, following specs/$0/plan.md, docs/constitution.md
-and the sdd skill.
+Implementa SOLO la tarea $1 de specs/$0/tasks.md, siguiendo specs/$0/plan.md, docs/constitution.md
+y la skill sdd.
 
-1. Write the tests first and check that they fail.
-2. Write the code until they pass.
-3. Run pnpm nx run smooth-ui:test and show me the result.
-4. Mark $1 as done in tasks.md and state which FR it covers.
+1. Escribe primero los tests y comprueba que fallan.
+2. Escribe el código hasta que pasen.
+3. Ejecuta pnpm nx run smooth-ui:test y enséñame el resultado.
+4. Marca $1 como hecha en tasks.md e indica qué FR cubre.
 
-Then STOP. Do not start the next task.
+Después PARA. No empieces la siguiente tarea.
