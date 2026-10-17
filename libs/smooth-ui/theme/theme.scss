@@ -224,7 +224,7 @@
   --sui-elevation-md: 0 2px 4px -1px rgba(16, 20, 27, 0.05), 0 6px 12px -2px rgba(16, 20, 27, 0.07);
   --sui-elevation-lg: 0 4px 8px -2px rgba(16, 20, 27, 0.05), 0 14px 24px -4px rgba(16, 20, 27, 0.09);
   --sui-elevation-xl: 0 8px 16px -4px rgba(16, 20, 27, 0.06), 0 28px 48px -8px rgba(16, 20, 27, 0.13);
-  --sui-focus-ring: 0 0 0 3px rgba(110, 118, 238, 0.35);
+  --sui-focus-ring: 0 0 0 3px var(--sui-accent-300);
   --sui-focus-ring-danger: 0 0 0 3px rgba(222, 82, 101, 0.32);
   color-scheme: light;
 }
@@ -293,7 +293,7 @@
   --sui-elevation-md: 0 2px 4px -1px rgba(0, 0, 0, 0.3), 0 6px 12px -2px rgba(0, 0, 0, 0.36);
   --sui-elevation-lg: 0 4px 8px -2px rgba(0, 0, 0, 0.32), 0 14px 24px -4px rgba(0, 0, 0, 0.44);
   --sui-elevation-xl: 0 8px 16px -4px rgba(0, 0, 0, 0.36), 0 28px 48px -8px rgba(0, 0, 0, 0.55);
-  --sui-focus-ring: 0 0 0 3px rgba(133, 144, 247, 0.45);
+  --sui-focus-ring: 0 0 0 3px var(--sui-accent-300);
   --sui-focus-ring-danger: 0 0 0 3px rgba(238, 113, 128, 0.42);
   color-scheme: dark;
 }
