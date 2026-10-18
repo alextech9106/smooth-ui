@@ -3,71 +3,57 @@
 ## Estado actual
 
 - Componentes: button, icon-button, button-group, button-split, link, text-field, textarea, icon, theme-toggle, error.
-  ESLint: orden de miembros private → public → protected, `_` en los privados. Skills/agentes en `.claude/`, MCP en `.mcp.json`.
-- 001 validada; 002 implementada el 10-16; 003, 004 y las enmiendas de FR-7 (`pressed`) de 002/003 implementadas el 10-17;
-  todas con @reviewer APPROVED (004: 2026-10-17, 232 tests en verde con `--skip-nx-cache`, ejecución real ~4 s; axe en
-  tema oscuro 0 sobre 25 nodos de grupo/split; comprobación manual del propietario con lector de pantalla y Espacio
-  mantenido, correcta). Ciclo 004 cerrado.
-- Seguimientos del reviewer (no bloquean): en el spec del grupo, los tests "does nothing for an entry without a callback"
-  y de ArrowRight aportan poco; `pressed` false/ausente y las medidas del anillo dependen de T9 y de la comprobación manual.
-- Cambios propios del usuario, fuera de las tareas: `(trigger)` en el submit reactivo de la demo, `name` del split
-  obligatorio, spinner sin `color`.
-- Pendiente: scss de `sui-button` 4.35 kB (> 4 kB); NG0505 al cargar en dev; desbordamiento a 375 px (444 px); servidor
-  de dev en 4200.
-- 2026-10-17: los `.md` (salvo AGENTS.md, CLAUDE.md, README.md y `.agents/`) traducidos al español; principio 6 de la
-  constitución modificado con aprobación del propietario: código y commits en inglés, documentación `.md` en español.
+- Specs 001-005 `implemented`. 005 `sui-button-split` validada por @reviewer APPROVED el 2026-10-18 (16 FR y 4 NFR, 289
+  tests, axe 0 en claro y oscuro). Falta el commit: `specs/005-sui-button-split/` nunca se ha confirmado en git y va en el
+  mismo commit que el código (principio 2).
+- `.md` en español (salvo AGENTS.md, CLAUDE.md, README.md y `.agents/`); código, comentarios y commits en inglés.
 
-## Decisiones (y por qué)
+## Decisiones vigentes (y por qué)
 
-- Pautas del propietario: mantener la API pública (aún falta lógica de negocio); nunca proponer quitar campos o inputs
-  ni llamarlos sin uso, ignorados o muertos; solo arreglar lógica que pueda dar problemas reales. Resolver dudas primero
-  con el diseño de `docs/smoothui-interactivo.html` (ignorado en git); su navegación ← → del grupo NO se quiere en este ciclo.
-- 004: `role="group"`, cada segmento es su propia parada de Tab, el Tab del split no cambia; `label` del grupo =
-  `aria-label` si no está en blanco (el split no lo pasa); nombre del segmento = `label` no en blanco tal cual, si no
-  `name`; `selected` dado → `aria-pressed` true/false, ausente → ninguno; `selected`+`expanded` anuncian los dos;
-  `expanded` en icono no se anuncia.
-- Los botones enlazan `disabled` nativo y toman `label` para `aria-label`; los campos usan `aria-describedby` + un
-  contenedor `aria-live`; ARIA se enlaza como `[aria-*]`, no `[attr.aria-*]` (desviarse necesita al usuario).
-  `trigger` es la única activación.
-- `sui-button-split` emite `trigger` e `itemSelected`; `MenuItem` son datos simples con `id` obligatorio (sin callbacks).
-- Reduced motion pone a cero los tokens `--sui-duration-*`, no una regla global `*`, para que las apps consumidoras
-  mantengan sus animaciones.
-- 002 FR-5: `label().trim() ? label() : name()`. 003: nombre = `label` no en blanco sin recortar, si no `null`, nunca el
-  icono. `primary`/`danger` del tema claro un paso más oscuros (propietario). D2 (usuario): `--sui-focus-ring` opaco
-  accent 300; en claro < 3:1, aceptado.
+- Propietario: mantener la API pública (falta lógica de negocio); nunca proponer quitar campos o inputs sin uso. Dudas
+  de diseño: primero `docs/smoothui-interactivo.html` (fuera de git); su navegación ← → del grupo no entra en este ciclo.
+- Botones: `disabled` nativo, `label` → `aria-label`, `trigger` como única activación; ARIA con `[aria-*]` (a `null`
+  quita el atributo). Campos: `aria-describedby` + `aria-live`. Ningún botón se nombra por su icono.
+- Grupo (004): `role="group"`, cada segmento su parada de Tab; nombre del segmento = `label` no en blanco, si no `name`;
+  `selected` → `aria-pressed`. Reduced motion pone a cero `--sui-duration-*`; `--sui-focus-ring` opaco accent 300.
+- Split (005): `arrowLabel`/`menuFallbackLabel` como inputs con "More options"/"Options" por defecto (compatibles);
+  Flecha abajo/arriba en la flecha abre y enfoca primera/última y sin opciones no abre (WAI-ARIA, no anunciar un menú
+  vacío); opciones con `tabindex="-1"` y foco itinerante; Mayús+Tab con `preventDefault` + foco a la flecha por código.
+- Split (005): `menuOpen` = `linkedSignal` sobre `hasItems` (cierra sin un effect que escriba estado); el foco de FR-15
+  en un `effect()` de componente, que corre con el menú aún en el DOM; `inject(DOCUMENT)` en vez de globales (principio 3).
+- Fuera del ciclo 005: disabled/danger/atajo/encabezado en opciones; ancho 210 px y hueco 6 px se mantienen.
 
-## Aprendizajes y trampas que evitar
+## Trampas
 
-- Contrastar los informes del implementer con el archivo; el propietario o el implementer repiten format:check +
-  run-many (el planner no puede ejecutar Prettier, el reviewer solo `smooth-ui:test`). `smooth-ui:test` puede salir de
-  la caché de Nx: usar `--skip-nx-cache` para una ejecución real.
-- jsdom: Enter/Space no generan click, mantiene el foco en un botón que pasa a deshabilitado (Chrome lo pasa a
-  `body`); NG0950 salta en `detectChanges()`. `smooth-ui-demo:typecheck` (`tsc` plano) no revisa plantillas: NG8008
-  solo aparece en la build.
-- `expect(() => el.click()).not.toThrow()` no prueba nada: los errores de los listeners no llegan a quien llama a `click()`.
-- DevTools MCP: no hace clic en elementos deshabilitados ni mantiene `:active` (el propietario comprueba el pulsado a
-  mano). axe 4.10.2 desde cdnjs, nunca como paquete; no mide el contraste del anillo. Esperar a los bloques diferidos;
-  leer `box-shadow` ~500 ms después del foco; tras un clic de ratón, pulsar antes un Tab real. Su árbol solo muestra
-  `pressed` true; capturas solo en `tmp/` (ignorado en git).
-- Prettier colapsa los dobles espacios en Markdown y une una línea partida que empieza por `27)` (marca de lista): usar
-  backticks; nunca formatear `pnpm-lock.yaml` ni archivos de terceros. Un archivo: `pnpm nx format:write --files=<ruta>`.
-- `[aria-label]`/`[aria-pressed]` enlazados a `null` quitan el atributo, también como binding de host. Los botones son border-box.
-- Grupo: el split nunca pone `type` y reconstruye sus entradas en cada apertura del menú; mantener el `track` del grupo
-  (la vuelta del foco del split depende de reutilizar el DOM) y sin envoltorio entre segmentos (selectores del
-  separador con ámbito; `::ng-deep` prohibido). `pressed` NO debe usar `booleanAttribute` (`undefined` pasaría a
-  `false`, "no pulsado"); `?? false` solo para el aspecto.
-- `Array.from(el.children)` es `Element[]` (`HTMLElement[]`: TS2769); "sin output" con `reflectComponentType`.
+- Vitest: `--include` debe apuntar a `*.spec.ts` (con `**/sui-button-split/**` falla por "No loader is configured for
+  .html") y en zsh va entre comillas. Ejecución real: `--skip-nx-cache`.
+- `setInput()` de un input inexistente lanza NG0303: ese rojo no prueba el comportamiento; confirmarlo con una mutación
+  temporal del valor esperado. Con varias aserciones, la mutación solo prueba la primera que falla.
+- `host` con `keydown.arrowdown` tipa `$event` como `Event`, no `KeyboardEvent` (TS2345).
+- `hasItems` debe declararse antes de `menuOpen` (el `linkedSignal` lo lee al inicializar el campo).
+- `effect()` en el `constructor()`: guardarlo en un campo private sin leer da TS6138 (`noUnusedLocals`).
+- ESLint `member-ordering`: private → public → protected; métodos private tras el `constructor()`, `_` en los privados.
+- jsdom: Enter/Espacio no generan clic; sin navegación con Tab (un test de Tab solo comprueba cierre y que no hay
+  `preventDefault`); mantiene el foco en un botón deshabilitado. NG8008 solo aparece en la build, no en typecheck.
+- `sui-button-group` pinta sus clases en el `div` interno, no en el host; `track button.label ?? button.name`.
+- Prettier: no partir código en línea entre dos líneas; colapsa dobles espacios y une líneas que empiezan por `27)`. Un
+  archivo: `pnpm nx format:write --files=<ruta>`; nunca `pnpm-lock.yaml`.
+- Chrome DevTools MCP: `emulate` para viewport < 500 px (recarga la página: se pierde el `data-theme` puesto a mano);
+  esperar a los bloques diferidos antes de medir; axe 4.10.2 desde cdnjs; capturas solo en `tmp/`.
 
-## Nota de release (desde 0.5.0) y temas abiertos
+## Pendientes
 
-- Cambios incompatibles: `primary`/`danger` del tema claro más oscuros; `MenuItem.id` y `name` del split obligatorios;
-  `sui-error` pierde `inputId`; `getCustomMessage` recibe el error; `SUI_ICON_NAME`; ningún botón se nombra por su
-  icono; `iconSize` eliminado; `--sui-focus-ring` opaco accent 300; los segmentos de grupo de tipo `icon` se nombran
-  por el `label` no en blanco, si no por `name`.
-- Nuevo: input `label` opcional en `sui-button-group` (host `role="group"`, `aria-label` si no está en blanco); input
-  `pressed` en `sui-button` y `sui-icon-button` (`aria-pressed`; sin valor o `undefined` = sin atributo); los segmentos
-  del grupo anuncian el `selected` de cada entrada mediante `aria-pressed`.
-- Problemas conocidos: el primer segmento `primary` y el grupo de una entrada no muestran anillo de foco visible
-  (SC 2.4.7); anillo en oscuro sobre `primary` 1:1 en hover y 1.42:1 en reposo; anillo en claro 1.92:1 sobre el lienzo
-  (SC 1.4.11); icon button `primary` seleccionado pulsado con Espacio 1.85:1 en claro y 1.34:1 en oscuro.
-- Abierto: `name`/`autocomplete` de los campos, texto del badge, títulos de la demo; CSP estricta frente al sprite (sin probar).
+- Anillo de foco heredado de la spec 004 con contraste bajo: claro 1,92:1 con la página; oscuro 1,42:1 con primary.
+- Tema oscuro: `--sui-color-bg-subtle`, `--sui-color-border-subtle` y `--sui-color-bg-surface-raised` valen #232935, así
+  que hover, borde y separador del menú no se distinguen.
+- Comprobación manual del split con lector de pantalla.
+- Tab desde el segmento principal con el menú abierto deja el menú abierto (seguimiento en otra spec).
+- `menuItems` mutado in situ no dispara FR-15 (los signals comparan la referencia; uso incorrecto del consumidor).
+- Aviso de presupuesto: `sui-button.component.scss` pesa 4,35 kB (> 4 kB).
+- Demo: desbordamiento a 375 px por la cabecera (`sui-theme-toggle`).
+
+## Nota de release (desde 0.5.0)
+
+- Incompatibles: `primary`/`danger` del claro más oscuros; `MenuItem.id` y `name` del split obligatorios; `sui-error`
+  sin `inputId`; `iconSize` eliminado; `--sui-focus-ring` opaco; segmentos `icon` nombrados por `label` o `name`.
+- Nuevo: `label` en `sui-button-group`; `pressed` en botones; split con `arrowLabel`, `menuFallbackLabel` y teclado.

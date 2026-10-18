@@ -5,18 +5,18 @@
     <sui-button-group [buttons]="iconSplit()" [shape]="shape()" [size]="size()" [variant]="variant()" />
   }
 
-  @if (menuOpen() && menuItems().length) {
+  @if (menuOpen() && hasItems()) {
     <div
       #menu
       (keydown)="onMenuKeydown($event)"
-      [aria-label]="name() || 'Options'"
+      [aria-label]="menuName()"
       [class.split-menu-top]="placement() === 'top'"
       class="split-menu"
       role="menu"
       tabindex="-1"
     >
       @for (menuItem of menuItems(); track menuItem.id) {
-        <button (click)="selectItem(menuItem)" class="split-menu-item" role="menuitem" type="button">
+        <button (click)="selectItem(menuItem)" class="split-menu-item" role="menuitem" tabindex="-1" type="button">
           <sui-icon [name]="menuItem.icon.name" [size]="menuItem.icon.size" />
           <span>{{ menuItem.title }}</span>
         </button>

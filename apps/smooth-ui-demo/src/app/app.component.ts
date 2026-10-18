@@ -16,7 +16,7 @@ import {
   SUI_SIZE,
   SUI_STATE,
 } from '@alextech9106/smooth-ui';
-import { Component, signal, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, inject, signal, WritableSignal } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { disabled, form, FormField, max, maxLength, min, minLength, pattern, readonly, required } from '@angular/forms/signals';
 
@@ -107,6 +107,10 @@ function buildIconButtonMatrix(
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  private readonly _destroyRef: DestroyRef = inject(DestroyRef);
+
+  private _emptyMenuItemsTimeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
+
   public icons: SUI_ICON_NAME[] = [
     'check',
     'x',
@@ -202,6 +206,8 @@ export class AppComponent {
     { id: 'item-2', title: 'Item 2', icon: { name: 'x', size: 16 }, separatorAfter: true },
     { id: 'item-3', title: 'Item 3', icon: { name: 'star', size: 16 } },
   ];
+
+  protected readonly emptiableMenuItems: WritableSignal<MenuItem[]> = signal<MenuItem[]>([...this.menuItems]);
 
   protected readonly buttonVariants: SUI_BUTTON_VARIANT[] = ['primary', 'secondary', 'tonal', 'outline', 'ghost', 'danger'];
 
@@ -346,6 +352,29 @@ export class AppComponent {
 
     readonly(schemaPath.readonlyTextarea);
   });
+
+  constructor() {
+    this._destroyRef.onDestroy((): void => this._cancelEmptyMenuItems());
+  }
+
+  private _cancelEmptyMenuItems(): void {
+    if (this._emptyMenuItemsTimeoutId === undefined) return;
+    clearTimeout(this._emptyMenuItemsTimeoutId);
+    this._emptyMenuItemsTimeoutId = undefined;
+  }
+
+  protected scheduleEmptyMenuItems(): void {
+    this._cancelEmptyMenuItems();
+    this._emptyMenuItemsTimeoutId = setTimeout((): void => {
+      this._emptyMenuItemsTimeoutId = undefined;
+      this.emptiableMenuItems.set([]);
+    }, 3000);
+  }
+
+  protected restoreMenuItems(): void {
+    this._cancelEmptyMenuItems();
+    this.emptiableMenuItems.set([...this.menuItems]);
+  }
 
   protected onSubmitFormGroup(): void {
     if (this.formGroup.invalid) {

@@ -152,6 +152,27 @@
       <sui-button-split [menuItems]="menuItems" name="Save" shape="rounded" variant="primary" />
       <sui-button-split [menuItems]="menuItems" name="Save" shape="pill" size="lg" variant="primary" />
     </div>
+
+    <div class="row">
+      <sui-button-split [menuItems]="menuItems" icon="save" mode="icon" name="Save" shape="flat" size="sm" />
+      <sui-button-split [menuItems]="menuItems" icon="save" mode="icon" name="Save" shape="rounded" />
+      <sui-button-split [menuItems]="menuItems" icon="save" mode="icon" name="Save" shape="pill" size="lg" />
+
+      <sui-button-split [menuItems]="menuItems" icon="save" mode="icon" name="Save" shape="flat" size="sm" variant="primary" />
+      <sui-button-split [menuItems]="menuItems" icon="save" mode="icon" name="Save" shape="rounded" variant="primary" />
+      <sui-button-split [menuItems]="menuItems" icon="save" mode="icon" name="Save" shape="pill" size="lg" variant="primary" />
+    </div>
+
+    <div class="row">
+      <sui-button-split [menuItems]="menuItems" arrowLabel="More save options" name="Save" />
+      <sui-button-split [menuItems]="[]" arrowLabel="No options" name="Publish" />
+    </div>
+
+    <div class="row">
+      <sui-button-split [menuItems]="emptiableMenuItems()" name="Share" />
+      <sui-button (trigger)="scheduleEmptyMenuItems()" name="Empty options in 3 s" type="button" />
+      <sui-button (trigger)="restoreMenuItems()" name="Restore options" type="button" />
+    </div>
   </div>
 
   <div class="col">
